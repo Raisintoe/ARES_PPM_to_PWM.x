@@ -78,7 +78,7 @@
 
 // Struct Definitions
 
-/*PORT_Data Struct*/
+//PORT_Data Struct
 typedef struct PORT_Data {
     const uint8_t PORT_SIZE;// = _PORT_REG_SIZE;
     //const uint8_t
@@ -100,20 +100,20 @@ typedef struct PORT_Data {
 };//portData;
     
 
-/*PWM_Data Struct*/
+//PWM_Data Struct
 typedef struct PWM_Data {
     
     const uint8_t PWM_REG_SIZE;// = _PWM_REG_SIZE;
     //const uint8_t I_PWM_REG_DATA_START = _I_PWM_REG_DATA_START;
-    const uint16_t EP_ARRAY[2*_PWM_REG_SIZE];/* = {       //Full 180 degrees allowed on all channels
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP
-    };  //contains all endpoint values
-    */
+    const uint16_t EP_ARRAY[2*_PWM_REG_SIZE];// = {       //Full 180 degrees allowed on all channels
+    //    _1MS_COMP, _2MS_COMP,
+    //    _1MS_COMP, _2MS_COMP,
+    //    _1MS_COMP, _2MS_COMP,
+    //    _1MS_COMP, _2MS_COMP,
+    //    _1MS_COMP, _2MS_COMP,
+    //    _1MS_COMP, _2MS_COMP
+    //};  //contains all endpoint values
+    
     
     uint16_t reg[_PWM_REG_SIZE];     //contains filtered data
     uint8_t iReg;
@@ -125,7 +125,7 @@ typedef struct PWM_Data {
 };//pwmData;
 
 
-/*UART_Data Struct*/
+//UART_Data Struct
 typedef struct UART_Data {
     //GO command constants
     const uint8_t UART_BUF_SIZE;// = _UART_BUF_GO_SIZE;  //Size of Data buffer ("GO" is the PID)
@@ -138,25 +138,25 @@ typedef struct UART_Data {
     
     
     
-    /* For setting endpoints. This option is on hold for now, and will be considered for future improvement
+    // For setting endpoints. This option is on hold for now, and will be considered for future improvement
     //AT initialization command constants
-    const uint8_t BUF_AT_SIZE = _UART_BUF_AT_SIZE;
-    const uint8_t I_AT_DATA_START = _I_UART_AT_DATA_START;
-    */
-     
-    /* Maybe later
-    //RAM allocation for GO data
-    uint8_t buf[BUF_AT_SIZE];     //contains byte data values sent via UART (used for GO and AT packets, notice that AT packets are larger)
-    uint8_t iBuf;
-    */
+    //const uint8_t BUF_AT_SIZE = _UART_BUF_AT_SIZE;
+    //const uint8_t I_AT_DATA_START = _I_UART_AT_DATA_START;
     
-    /* Might use later
+     
+    // Maybe later
+    //RAM allocation for GO data
+    //uint8_t buf[BUF_AT_SIZE];     //contains byte data values sent via UART (used for GO and AT packets, notice that AT packets are larger)
+    //uint8_t iBuf;
+    
+    
+    // Might use later
     //RAM allocation for AT data
-    uint8_t ep_reg[BUF_AT_SIZE];
-    */
-    /*enum LoadState{READY, G_RECEIVED, O_RECEIVED, A_RECEIVED, 
-                    T_RECEIVED, PID_GO_DRIVE_RECEIVED, PID_AT_SET_EP_RECEIVED};
-   */
+    //uint8_t ep_reg[BUF_AT_SIZE];
+    
+    //enum LoadState{READY, G_RECEIVED, O_RECEIVED, A_RECEIVED, 
+    //                T_RECEIVED, PID_GO_DRIVE_RECEIVED, PID_AT_SET_EP_RECEIVED};
+   
     
     
     //bool goPacketReady;
@@ -238,38 +238,9 @@ void Init_PORT_Data(struct PORT_Data port);
 //void EndFrame(); //I think it belongs up here, not in PWM_Data
 
 
-//Initialize Structs
-//Declare Instances
-struct PORT_Data portData = {_PORT_REG_SIZE};
-
-
-struct PWM_Data pwmData = {
-    _PWM_REG_SIZE, 
-    {       //Full 180 degrees allowed on all channels
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP
-    }  //contains all endpoint values};
-};
-
-struct UART_Data uartData = {
-    _UART_BUF_GO_SIZE,  //Size of Data buffer ("GO" is the PID)
-    _I_UART_GO_DIR,   //Direction byte 4'bxx000111' = rev,rev,rev,frw,frw,frw
-    _I_UART_GO_CRC,   //Cyclic redundancy check, this is a check-sum of data bytes only, (PID not included)
-    _I_UART_DATA_START  //Start position of data (is 0)
-};
-
-struct PPM_Data ppmData = {
-    _PPM_BUF_SIZE,                 //PPM buffer size
-    //_I_PPM_BUF_MANUAL_MODE,
-    _I_PPM_BUF_CTRL_MODE,   //_2MS for drive
-    _I_PPM_BUF_AUTO_MODE,
-    _I_PPM_BUF_DATA_START
-};
-
-enum UARTLoadState uartLoadState = UART_READY;
-enum PPMLoadState ppmLoadState = PPM_READY;
+//Needed for TMR3 and TMR5 CallBack() functions
+//struct PORT_Data GetPortData();
+//struct PWM_Data GetPwmData();
+//struct UART_Data GetUartData();
+//struct PPM_Data GetPpmData();
 

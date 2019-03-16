@@ -53,9 +53,10 @@
  */
 
 //#include <xc.h>
+//#include "../main.h"
+//#include "tmr5.h"
+//#include "tmr3.h"
 #include "../main.h"
-#include "tmr5.h"
-#include "tmr3.h"
 
 /**
   Section: Global Variables Definitions
@@ -175,6 +176,12 @@ void TMR5_ISR(void)
 void TMR5_CallBack(void)
 {
     // Add your custom callback code here
+    //struct PORT_Data portData = GetPortData();
+    //struct PWM_Data pwmData = GetPwmData();
+    
+    extern struct PORT_Data portData;
+    extern struct PWM_Data pwmData;
+    
     portData.frameEnd = false;  //is set true when the last expected PPM pulse 
                                 //  is received. Performed by TMR3_Callback()
     portData.iPort = 0;         //start counting PPM pulses from 0

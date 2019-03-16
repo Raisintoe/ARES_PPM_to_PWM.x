@@ -1,22 +1,4 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"82 mcc_generated_files/../main.h
-[s S2097 `Cuc 1 `uc 1 `uc 1 ]
-[n S2097 PORT_Data PORT_SIZE iPort frameEnd ]
-"104
-[s S2098 `Cuc 1 `Cui * -> 2 `i -> 6 `i `ui -> 6 `i `uc 1 ]
-[n S2098 PWM_Data PWM_REG_SIZE EP_ARRAY reg iReg ]
-"129
-[s S2099 `Cuc 1 `Cuc 1 `Cuc 1 `Cuc 1 `uc -> 8 `i `uc 1 ]
-[n S2099 UART_Data UART_BUF_SIZE I_DIR I_CRC I_UART_BUF_DATA_START buf iBuf ]
-"168
-[s S2100 `Cuc 1 `Cuc 1 `Cuc 1 `Cuc 1 `ui -> 8 `i `uc 1 ]
-[n S2100 PPM_Data PPM_BUF_SIZE I_CTRL_MODE I_AUTO_MODE I_PPM_BUF_DATA_START buf iBuf ]
-"273
-[c E14645 0 1 2 3 .. ]
-[n E14645 UARTLoadState UART_READY G_RECEIVED O_RECEIVED PID_GO_DRIVE_RECEIVED  ]
-"274
-[c E14657 0 1 .. ]
-[n E14657 PPMLoadState PPM_READY BREAK_RECEIVED  ]
 [v F14551 `(v ~T0 @X0 0 tf ]
 "1612 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
 [v _T3GCON `Vuc ~T0 @X0 0 e@31 ]
@@ -83,6 +65,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _T3GCONbits `VS76 ~T0 @X0 0 e@31 ]
 "385 mcc_generated_files/../mcc_generated_files/tmr3.h
 [v _TMR3_CallBack `(v ~T0 @X0 0 ef ]
+"82 mcc_generated_files/../main.h
+[s S2097 `Cuc 1 `uc 1 `uc 1 ]
+[n S2097 PORT_Data PORT_SIZE iPort frameEnd ]
+"104
+[s S2098 `Cuc 1 `Cui * -> 2 `i -> 6 `i `ui -> 6 `i `uc 1 ]
+[n S2098 PWM_Data PWM_REG_SIZE EP_ARRAY reg iReg ]
 "3073 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
 [v _LATD `Vuc ~T0 @X0 0 e@271 ]
 [; ;xc.h: 18: extern const char __xc8_OPTIM_SPEED;
@@ -16715,114 +16703,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.h: 228: void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm);
 [; ;main.h: 233: uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
 [; ;main.h: 237: void Init_PORT_Data(struct PORT_Data port);
-"243 mcc_generated_files/../main.h
-[v _portData `S2097 ~T0 @X0 1 e ]
-[i _portData
-:U ..
-:U ..
--> -> 6 `i `uc
-..
-..
-]
-[; ;main.h: 243: struct PORT_Data portData = {6};
-"246
-[v _pwmData `S2098 ~T0 @X0 1 e ]
-[i _pwmData
-:U ..
-:U ..
-"247
--> -> 6 `i `uc
-:U ..
-"249
--> 57536 `ui
--> 49536 `ui
-"250
--> 57536 `ui
--> 49536 `ui
-"251
--> 57536 `ui
--> 49536 `ui
-"252
--> 57536 `ui
--> 49536 `ui
-"253
--> 57536 `ui
--> 49536 `ui
-"254
--> 57536 `ui
-"255
--> 49536 `ui
-..
-..
-..
-]
-[; ;main.h: 246: struct PWM_Data pwmData = {
-[; ;main.h: 247: 6,
-[; ;main.h: 248: {
-[; ;main.h: 249: 0xE0C0, 0xC180,
-[; ;main.h: 250: 0xE0C0, 0xC180,
-[; ;main.h: 251: 0xE0C0, 0xC180,
-[; ;main.h: 252: 0xE0C0, 0xC180,
-[; ;main.h: 253: 0xE0C0, 0xC180,
-[; ;main.h: 254: 0xE0C0, 0xC180
-[; ;main.h: 255: }
-[; ;main.h: 256: };
-"258
-[v _uartData `S2099 ~T0 @X0 1 e ]
-[i _uartData
-:U ..
-:U ..
-"259
--> -> 8 `i `uc
-"260
--> -> 6 `i `uc
-"261
--> - -> 8 `i -> 1 `i `uc
-"263
--> -> 0 `i `uc
-..
-..
-]
-[; ;main.h: 258: struct UART_Data uartData = {
-[; ;main.h: 259: 8,
-[; ;main.h: 260: 6,
-[; ;main.h: 261: 8 - 1,
-[; ;main.h: 262: 0
-[; ;main.h: 263: };
-"265
-[v _ppmData `S2100 ~T0 @X0 1 e ]
-[i _ppmData
-:U ..
-:U ..
-"266
--> -> 8 `i `uc
-"268
--> -> 0 `i `uc
-"269
--> -> 1 `i `uc
-"271
--> -> 2 `i `uc
-..
-..
-]
-[; ;main.h: 265: struct PPM_Data ppmData = {
-[; ;main.h: 266: 8,
-[; ;main.h: 268: 0,
-[; ;main.h: 269: 1,
-[; ;main.h: 270: 2
-[; ;main.h: 271: };
-"273
-[v _uartLoadState `E14645 ~T0 @X0 1 e ]
-[i _uartLoadState
-. `E14645 0
-]
-[; ;main.h: 273: enum UARTLoadState uartLoadState = UART_READY;
-"274
-[v _ppmLoadState `E14657 ~T0 @X0 1 e ]
-[i _ppmLoadState
-. `E14657 0
-]
-[; ;main.h: 274: enum PPMLoadState ppmLoadState = PPM_READY;
 "58 mcc_generated_files/tmr3.c
 [v _timer3ReloadVal `Vui ~T0 @X0 1 e ]
 [; ;tmr3.c: 58: volatile uint16_t timer3ReloadVal;
@@ -17054,84 +16934,90 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;tmr3.c: 171: {
 [e :U _TMR3_CallBack ]
 [f ]
-[; ;tmr3.c: 173: if(!portData.frameEnd) {
-"173
+"175
+[v _portData `S2097 ~T0 @X0 0 e ]
+"176
+[v _pwmData `S2098 ~T0 @X0 0 e ]
+[; ;tmr3.c: 175: extern struct PORT_Data portData;
+[; ;tmr3.c: 176: extern struct PWM_Data pwmData;
+[; ;tmr3.c: 178: if(!portData.frameEnd) {
+"178
 [e $ ! ! != -> . _portData 2 `i -> -> -> 0 `i `uc `i 2113  ]
 {
-[; ;tmr3.c: 175: if(portData.iPort < (portData.PORT_SIZE - 1)) {
-"175
+[; ;tmr3.c: 180: if(portData.iPort < (portData.PORT_SIZE - 1)) {
+"180
 [e $ ! < -> . _portData 1 `i - -> . _portData 0 `i -> 1 `i 2114  ]
 {
-[; ;tmr3.c: 176: LATD << 1;
-"176
+[; ;tmr3.c: 181: LATD << 1;
+"181
 [e << -> _LATD `i -> 1 `i ]
-[; ;tmr3.c: 177: portData.iPort++;
-"177
-[e ++ . _portData 1 -> -> 1 `i `uc ]
-[; ;tmr3.c: 180: TMR3_WriteTimer(pwmData.reg[portData.iPort]);
-"180
-[e ( _TMR3_WriteTimer (1 *U + &U . _pwmData 2 * -> . _portData 1 `ux -> -> # *U &U . _pwmData 2 `ui `ux ]
+[; ;tmr3.c: 182: portData.iPort++;
 "182
-}
-[; ;tmr3.c: 182: }
-[e $U 2115  ]
-"183
-[e :U 2114 ]
-[; ;tmr3.c: 183: else {
-{
-[; ;tmr3.c: 184: LATD = 0;
-"184
-[e = _LATD -> -> 0 `i `uc ]
-[; ;tmr3.c: 185: portData.frameEnd = 1;
+[e ++ . _portData 1 -> -> 1 `i `uc ]
+[; ;tmr3.c: 185: TMR3_WriteTimer(pwmData.reg[portData.iPort]);
 "185
-[e = . _portData 2 -> -> 1 `i `uc ]
-"186
-}
-[e :U 2115 ]
+[e ( _TMR3_WriteTimer (1 *U + &U . _pwmData 2 * -> . _portData 1 `ux -> -> # *U &U . _pwmData 2 `ui `ux ]
 "187
 }
-[e :U 2113 ]
-[; ;tmr3.c: 186: }
 [; ;tmr3.c: 187: }
-[; ;tmr3.c: 189: if(TMR3_InterruptHandler)
-"189
-[e $ ! != _TMR3_InterruptHandler -> -> 0 `i `*F14551 2116  ]
-[; ;tmr3.c: 190: {
-"190
+[e $U 2115  ]
+"188
+[e :U 2114 ]
+[; ;tmr3.c: 188: else {
 {
-[; ;tmr3.c: 191: TMR3_InterruptHandler();
+[; ;tmr3.c: 189: LATD = 0;
+"189
+[e = _LATD -> -> 0 `i `uc ]
+[; ;tmr3.c: 190: portData.frameEnd = 1;
+"190
+[e = . _portData 2 -> -> 1 `i `uc ]
 "191
-[e ( *U _TMR3_InterruptHandler ..  ]
+}
+[e :U 2115 ]
 "192
 }
-[e :U 2116 ]
+[e :U 2113 ]
+[; ;tmr3.c: 191: }
 [; ;tmr3.c: 192: }
-[; ;tmr3.c: 193: }
-"193
+[; ;tmr3.c: 194: if(TMR3_InterruptHandler)
+"194
+[e $ ! != _TMR3_InterruptHandler -> -> 0 `i `*F14551 2116  ]
+[; ;tmr3.c: 195: {
+"195
+{
+[; ;tmr3.c: 196: TMR3_InterruptHandler();
+"196
+[e ( *U _TMR3_InterruptHandler ..  ]
+"197
+}
+[e :U 2116 ]
+[; ;tmr3.c: 197: }
+[; ;tmr3.c: 198: }
+"198
 [e :UE 2112 ]
 }
-"195
+"200
 [v _TMR3_SetInterruptHandler `(v ~T0 @X0 1 ef1`*F14548 ]
 {
-[; ;tmr3.c: 195: void TMR3_SetInterruptHandler(void (* InterruptHandler)(void)){
+[; ;tmr3.c: 200: void TMR3_SetInterruptHandler(void (* InterruptHandler)(void)){
 [e :U _TMR3_SetInterruptHandler ]
-[v F14728 `(v ~T0 @X0 0 tf ]
-[v _InterruptHandler `*F14728 ~T0 @X0 1 r1 ]
+[v F14724 `(v ~T0 @X0 0 tf ]
+[v _InterruptHandler `*F14724 ~T0 @X0 1 r1 ]
 [f ]
-[; ;tmr3.c: 196: TMR3_InterruptHandler = InterruptHandler;
-"196
+[; ;tmr3.c: 201: TMR3_InterruptHandler = InterruptHandler;
+"201
 [e = _TMR3_InterruptHandler _InterruptHandler ]
-[; ;tmr3.c: 197: }
-"197
-[e :UE 2117 ]
-}
-"199
-[v _TMR3_DefaultInterruptHandler `(v ~T0 @X0 1 ef ]
-{
-[; ;tmr3.c: 199: void TMR3_DefaultInterruptHandler(void){
-[e :U _TMR3_DefaultInterruptHandler ]
-[f ]
 [; ;tmr3.c: 202: }
 "202
+[e :UE 2117 ]
+}
+"204
+[v _TMR3_DefaultInterruptHandler `(v ~T0 @X0 1 ef ]
+{
+[; ;tmr3.c: 204: void TMR3_DefaultInterruptHandler(void){
+[e :U _TMR3_DefaultInterruptHandler ]
+[f ]
+[; ;tmr3.c: 207: }
+"207
 [e :UE 2118 ]
 }

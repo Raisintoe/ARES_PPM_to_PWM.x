@@ -24415,40 +24415,6 @@ uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
 
 void Init_PORT_Data(struct PORT_Data port);
 
-# 243
-struct PORT_Data portData = {6};
-
-
-struct PWM_Data pwmData = {
-6,
-{
-0xE0C0, 0xC180,
-0xE0C0, 0xC180,
-0xE0C0, 0xC180,
-0xE0C0, 0xC180,
-0xE0C0, 0xC180,
-0xE0C0, 0xC180
-}
-};
-
-struct UART_Data uartData = {
-8,
-6,
-8 - 1,
-0
-};
-
-struct PPM_Data ppmData = {
-8,
-
-0,
-1,
-2
-};
-
-enum UARTLoadState uartLoadState = UART_READY;
-enum PPMLoadState ppmLoadState = PPM_READY;
-
 # 58 "mcc_generated_files/tmr3.c"
 volatile uint16_t timer3ReloadVal;
 void (*TMR3_InterruptHandler)(void);
@@ -24561,6 +24527,11 @@ TMR3_CallBack();
 
 void TMR3_CallBack(void)
 {
+
+
+
+extern struct PORT_Data portData;
+extern struct PWM_Data pwmData;
 
 if(!portData.frameEnd) {
 

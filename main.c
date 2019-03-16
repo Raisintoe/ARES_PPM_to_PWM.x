@@ -44,10 +44,42 @@
 //#include "ares_main.h"
 //#include <xc.h>
 //#include "mcc_generated_files/mcc.h"
-#include "ARES_PPM_to_PWM.c"
+//#include "ARES_PPM_to_PWM.c"
 
 
+//ARES_PPM_to_PWM.c///////////////////////////////
 
+//*
+// * File:   ARES_PPM_to_PWM.c
+// * Author: Derek
+// * 
+// * A few equations from the datasheet, assuming a clock source Fosc/4:
+// *  PWM Period = [(TxPR)+1]*4*Tosc*TMR_Prescale
+// *  Pulse Width = CCPRxH:CCPRxL*Tosc*TMR_Prescale
+// *  Duty Cycle Ratio = (CCPRxH:CCPRxL)/[4(TxPR+1)]
+// *  Resolution = log[4(TxPR+1)]/log(2) bits
+// *  See page 317 of the datasheet for further details
+// * 
+// *  Baud rate (Page 487 of datasheet)
+// *      Fclock = Fosc/[4(SSPxADD + 1)]
+// * 
+// * Talon SRX requirements:
+// * 
+// *  PWM Period:
+// *      Min: 2.9 ms
+// *      Max: 100 ms
+// *      Typical: 20 ms
+// *      Decided: 10 ms to increase control resolution
+// * 
+// *  High Pulse:
+// *      Min: 1 ms (reverse)
+// *      Max: 2 ms (forward)
+// *      Mid: 1.5 ms (Stopped)
+// *
+// * Created on March 12, 2019, 5:09 PM
+// */
+
+#include "main.h"
 
 
 /*
@@ -79,6 +111,12 @@ void main(void)
     // RAM Initialization
     
     // Initialize Objects
+    
+    extern struct PORT_Data portData;
+    extern struct PWM_Data pwmData;
+    extern struct UART_Data uartData;
+    extern struct PPM_Data ppmData;
+    
     Init_PORT_Data(portData);
     Init_PWM_Data(pwmData);
     Init_UART_Data(uartData);

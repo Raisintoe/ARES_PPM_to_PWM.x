@@ -29,6 +29,48 @@
 // */
 
 #include "main.h"
+
+
+//Initialize Structs
+//Declare Instances
+struct PORT_Data portData = {_PORT_REG_SIZE};
+
+
+struct PWM_Data pwmData = {
+    _PWM_REG_SIZE, 
+    {       //Full 180 degrees allowed on all channels
+        _1MS_COMP, _2MS_COMP,
+        _1MS_COMP, _2MS_COMP,
+        _1MS_COMP, _2MS_COMP,
+        _1MS_COMP, _2MS_COMP,
+        _1MS_COMP, _2MS_COMP,
+        _1MS_COMP, _2MS_COMP
+    }  //contains all endpoint values};
+};
+
+struct UART_Data uartData = {
+    _UART_BUF_GO_SIZE,  //Size of Data buffer ("GO" is the PID)
+    _I_UART_GO_DIR,   //Direction byte 4'bxx000111' = rev,rev,rev,frw,frw,frw
+    _I_UART_GO_CRC,   //Cyclic redundancy check, this is a check-sum of data bytes only, (PID not included)
+    _I_UART_DATA_START  //Start position of data (is 0)
+};
+
+struct PPM_Data ppmData = {
+    _PPM_BUF_SIZE,                 //PPM buffer size
+    //_I_PPM_BUF_MANUAL_MODE,
+    _I_PPM_BUF_CTRL_MODE,   //_2MS for drive
+    _I_PPM_BUF_AUTO_MODE,
+    _I_PPM_BUF_DATA_START
+};
+
+enum UARTLoadState uartLoadState = UART_READY;
+enum PPMLoadState ppmLoadState = PPM_READY;
+
+//struct PORT_Data GetPortData() {return portData;}
+//struct PWM_Data GetPwmData() {return pwmData;}
+//struct UART_Data GetUartData() {return uartData;}
+//struct PPM_Data GetPpmData() {return ppmData;}
+
 //PORT_Data struct
 void Init_PORT_Data(struct PORT_Data port) {
     port.iPort = 0;

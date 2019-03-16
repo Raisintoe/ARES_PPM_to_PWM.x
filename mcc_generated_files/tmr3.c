@@ -50,7 +50,7 @@
 
 //#include <xc.h>
 #include "../main.h"
-#include "tmr3.h"
+//#include "tmr3.h"
 
 /**
   Section: Global Variables Definitions
@@ -170,6 +170,11 @@ void TMR3_ISR(void)
 void TMR3_CallBack(void)
 {
     // Add your custom callback code here
+    //struct PORT_Data portData = GetPortData();
+    //struct PWM_Data pwmData = GetPwmData();
+    extern struct PORT_Data portData;
+    extern struct PWM_Data pwmData;
+    
     if(!portData.frameEnd) {    //if the frame has ended, and a new one has not 
                                 // started (20ms have not passed), then exit
         if(portData.iPort < (portData.PORT_SIZE - 1)) {

@@ -24415,7 +24415,7 @@ uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
 
 void Init_PORT_Data(struct PORT_Data port);
 
-# 243
+# 36 "ARES_PPM_to_PWM.c"
 struct PORT_Data portData = {6};
 
 
@@ -24449,7 +24449,7 @@ struct PPM_Data ppmData = {
 enum UARTLoadState uartLoadState = UART_READY;
 enum PPMLoadState ppmLoadState = PPM_READY;
 
-# 33 "ARES_PPM_to_PWM.c"
+# 75
 void Init_PORT_Data(struct PORT_Data port) {
 port.iPort = 0;
 port.frameEnd = 1;
@@ -24507,7 +24507,7 @@ pwm.reg[i] = Filter(pwm, ppm.buf[i], i);
 
 void Init_PPM_Data(struct PPM_Data ppm) {
 
-if(1) ppm.buf[ppm.I_CTRL_MODE] = 0xC180;
+if(1 == 1) ppm.buf[ppm.I_CTRL_MODE] = 0xC180;
 else ppm.buf[ppm.I_CTRL_MODE] = 0xE0C0;
 ppm.buf[ppm.I_AUTO_MODE] = 0xE0C0;
 for (uint8_t i = ppm.I_PPM_BUF_DATA_START; i < ppm.PPM_BUF_SIZE; i++) {
@@ -24642,7 +24642,7 @@ uart.iBuf = 0;
 else uartLoadState == UART_READY;
 break;
 
-# 235
+# 277
 case PID_GO_DRIVE_RECEIVED:
 uart.buf[uart.iBuf] = EUSART_Read();
 uart.iBuf++;
@@ -24653,7 +24653,7 @@ uartLoadState = UART_READY;
 }
 break;
 
-# 254
+# 296
 default:
 
 uartLoadState = UART_READY;
