@@ -48,7 +48,8 @@
   Section: Included Files
 */
 
-#include <xc.h>
+//#include <xc.h>
+#include "../main.h"
 #include "tmr3.h"
 
 /**
@@ -174,8 +175,10 @@ void TMR3_CallBack(void)
         if(portData.iPort < (portData.PORT_SIZE - 1)) {
             LATD << 1;  //turn previous channel off, and next channel on to create pulse
             portData.iPort++;
-            timer3ReloadVal = pwmData.reg[portData.iPort];
-            TMR3_WriteTimer(timer3ReloadVal);
+            //timer3ReloadVal = pwmData.reg[portData.iPort];
+            //TMR3_WriteTimer(timer3ReloadVal);
+            TMR3_WriteTimer(pwmData.reg[portData.iPort]);
+            
         }
         else {
             LATD = 0;       //clear LATD when all channels have completed their pulse output

@@ -78,16 +78,21 @@ void main(void)
     
     // RAM Initialization
     
+    // Initialize Objects
+    Init_PORT_Data(portData);
+    Init_PWM_Data(pwmData);
+    Init_UART_Data(uartData);
+    Init_PPM_Data(ppmData);
     
     while (1)
     {
         // Add your application code
         /*Load PPM and UART buffers*/
         if(PIR1bits.CCP1IF == 1) {
-            ppmData.PPMRead();  //periodic check for data, and read from ppm input
+            PPMRead(ppmData, pwmData);  //periodic check for data, and read from ppm input
         }
         if(PIR1bits.RCIF == 1) {    //if a byte was received on the UART
-            uartData.LoadByte();    //then load the byte to it's destination
+            LoadByte(uartData, ppmData, pwmData);    //then load the byte to it's destination
         }
         
         

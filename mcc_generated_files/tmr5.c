@@ -52,8 +52,10 @@
  * Timer 5 is the PWM period timer (20 ms timer)
  */
 
-#include <xc.h>
+//#include <xc.h>
+#include "../main.h"
 #include "tmr5.h"
+#include "tmr3.h"
 
 /**
   Section: Global Variables Definitions
@@ -177,9 +179,9 @@ void TMR5_CallBack(void)
                                 //  is received. Performed by TMR3_Callback()
     portData.iPort = 0;         //start counting PPM pulses from 0
     LATD = 0x01;                //First channel is at PORTD 0
-    timer3ReloadVal = pwmData.reg[portData.iPort];
-    TMR3_Reload(timer3ReloadVal);   //!!!Make sure this is all I need to do to set TMR3
-    
+    //timer3ReloadVal = pwmData.reg[portData.iPort];
+    //TMR3_Reload(timer3ReloadVal);   //!!!Make sure this is all I need to do to set TMR3
+    TMR3_WriteTimer(pwmData.reg[portData.iPort]);   //!!!Make sure this is all I need to do to set TMR3
     
     if(TMR5_InterruptHandler)
     {
