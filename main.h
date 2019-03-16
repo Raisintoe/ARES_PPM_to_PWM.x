@@ -78,7 +78,7 @@
 
 // Struct Definitions
 
-struct PORT_Data {
+typedef struct PORT_Data {
     const uint8_t PORT_SIZE = _PORT_REG_SIZE;
     //const uint8_t
     //TODO other stuff
@@ -100,7 +100,7 @@ struct PORT_Data {
     
 }portData;
 
-struct PWM_Data {
+typedef struct PWM_Data {
     
     const uint8_t PWM_REG_SIZE = _PWM_REG_SIZE;
     //const uint8_t I_PWM_REG_DATA_START = _I_PWM_REG_DATA_START;
@@ -132,7 +132,7 @@ struct PWM_Data {
     
 }pwmData;
 
-struct UART_Data {
+typedef struct UART_Data {
     //GO command constants
     const uint8_t UART_BUF_SIZE = _UART_BUF_GO_SIZE;  //Size of Data buffer ("GO" is the PID)
     const uint8_t I_DIR = _I_UART_GO_DIR;   //Direction byte 4'bxx000111' = rev,rev,rev,frw,frw,frw
@@ -175,7 +175,7 @@ struct UART_Data {
     //bool atPacketReady;
 }uartData;
 
-struct PPM_Data {
+typedef struct PPM_Data {
     const uint8_t PPM_BUF_SIZE = _PPM_BUF_SIZE;                 //PPM buffer size
     //const uint8_t I_MANUAL_MODE = _I_PPM_BUF_MANUAL_MODE;
     const uint8_t I_CTRL_MODE = _I_PPM_BUF_CTRL_MODE;   //_2MS for drive
