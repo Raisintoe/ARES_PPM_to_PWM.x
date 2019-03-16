@@ -79,7 +79,7 @@
 // Struct Definitions
 
 struct PORT_Data {
-    const uint8_t PORT_SIZE = _PORT_REG_SIZE;
+    const uint8_t PORT_SIZE;
     //const uint8_t
     //TODO other stuff
     
@@ -95,51 +95,68 @@ struct PORT_Data {
                     //  sets LATD = 0x01
                     //  loads TMR3 with reg[iPort]
     
-    PORT_Data();
     //void EndFrame(); //I think it belongs up here, not in PWM_Data
     
-}portData;
+}portData = {
+    _PORT_REG_SIZE, 
+    0, 
+    true};
+
+/*PORT_Data functions*/
+//void Init_PORT_Data(PORT_Data);
 
 struct PWM_Data {
     
-    const uint8_t PWM_REG_SIZE = _PWM_REG_SIZE;
+    const uint8_t PWM_REG_SIZE;
     //const uint8_t I_PWM_REG_DATA_START = _I_PWM_REG_DATA_START;
     
-    uint16_t reg[PWM_REG_SIZE];     //contains filtered data
+    uint16_t reg[_PWM_REG_SIZE];     //contains filtered data
     uint8_t iReg;
     //uint16_t buf[PWM_REG_SIZE];
     //uint8_t iBuf;
     //uint8_t ep_reg[2*PWM_REG_SIZE];    //end point register set (used for filtering buf data before entering reg)
-    const uint16_t EP_ARRAY[] = {       //Full 180 degrees allowed on all channels
+    const uint16_t EP_ARRAY[2*_PWM_REG_SIZE];       //Full 180 degrees allowed on all channels
+        //contains all endpoint values    
+}pwmData = {
+    _PWM_REG_SIZE,
+    {
+        _1_5MS_COMP,
+        _1_5MS_COMP,
+        _1_5MS_COMP,
+        _1_5MS_COMP,
+        _1_5MS_COMP,
+        _1_5MS_COMP},
+    0,
+    {
         _1MS_COMP, _2MS_COMP,
         _1MS_COMP, _2MS_COMP,
         _1MS_COMP, _2MS_COMP,
         _1MS_COMP, _2MS_COMP,
         _1MS_COMP, _2MS_COMP,
-        _1MS_COMP, _2MS_COMP
-    };  //contains all endpoint values
-    
-    PWM_Data();
-    //done in PORT_Data Struct: void EndFrame();    //Ends PWM frame at period clock interrupt
-    void UpdatePWM(UART_Data* &uart);   //filters/converts data from uart buf, and sends it to the pwm register
-    void UpdatePWM(PPM_Data* &ppm);     //filters/converts data from ppm buf, and sends it to the pwm register
-    
+        _1MS_COMP, _2MS_COMP}
+    };
+
+//void Init_PWM_Data();
+//done in PORT_Data Struct: void EndFrame();    //Ends PWM frame at period clock interrupt
+void UpdatePWM();//(UART_Data);   //filters/converts data from uart buf, and sends it to the pwm register
+void UpdatePWM();//(PPM_Data);     //filters/converts data from ppm buf, and sends it to the pwm register
+
 //private:
-    //void Convert(UART_Data* &uart); //Converts values to TMR3 usable values
-    //void Convert(PPM_Data* &ppm);
-    void Filter(); //cuts values at celing
-    //void UpdateReg(); //moves buf to reg
-    
-}pwmData;
+//void Convert(UART_Data* &uart); //Converts values to TMR3 usable values
+//void Convert(PPM_Data* &ppm);
+void Filter(); //cuts values at celing
+//void UpdateReg(); //moves buf to reg
+
+
 
 struct UART_Data {
     //GO command constants
-    const uint8_t UART_BUF_SIZE = _UART_BUF_GO_SIZE;  //Size of Data buffer ("GO" is the PID)
-    const uint8_t I_DIR = _I_UART_GO_DIR;   //Direction byte 4'bxx000111' = rev,rev,rev,frw,frw,frw
-    const uint8_t I_CRC = _I_UART_GO_CRC;   //Cyclic redundancy check, this is a check-sum of data bytes only, (PID not included)
-    const uint8_t I_UART_BUF_DATA_START = _I_UART_DATA_START;  //Start position of data (is 0)
+    const uint8_t UART_BUF_SIZE;  //Size of Data buffer ("GO" is the PID)
+    const uint8_t I_DIR;   //Direction byte 4'bxx000111' = rev,rev,rev,frw,frw,frw
+    const uint8_t I_CRC;   //Cyclic redundancy check, this is a check-sum of data bytes only, (PID not included)
+    const uint8_t I_UART_BUF_DATA_START;  //Start position of data (is 0)
     
-    uint8_t buf[UART_BUF_SIZE];
+    uint8_t buf[_UART_GO_BUF_SIZE];
     uint8_t iBuf;
     
     /* For setting endpoints. This option is on hold for now, and will be considered for future improvement
@@ -162,18 +179,30 @@ struct UART_Data {
                     T_RECEIVED, PID_GO_DRIVE_RECEIVED, PID_AT_SET_EP_RECEIVED};
    */
     enum LoadState{READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
-    UART_Data();            //Constructor, (if not allowed in C, then call it explicitly)
-    bool CheckCRC();                    //Adds data bits, and compares with CRC byte
-    //void UpdateBuf(PPM_Data* &data);    //Translates data, and sends it to PPM_Data->buf;
-    //Update to PPM buffer happens externally
-    //bool IsGOPacketReady();   //Returns true if whole packet has been received
-    //bool IsATPacketReady();
-    void LoadByte(PPM_Data* &ppmMode, PWM_Data* &pwm);        //loads byte from Receive Register
+    
     //state made into an enum: uint8_t loadState;     //holds the current state of data packet reception
     
     //bool goPacketReady;
     //bool atPacketReady;
-}uartData;
+}uartData = {
+    _UART_BUF_GO_SIZE,
+    _I_UART_GO_DIR,
+    _I_UART_GO_CRC,
+    _I_UART_DATA_START,
+    { 0, 0, 0, 0, 0, 0, 0, 0 },
+    0};
+
+//void Init_UART_Data();            //Constructor, (if not allowed in C, then call it explicitly)
+bool CheckCRC();                    //Adds data bits, and compares with CRC byte
+//void UpdateBuf(PPM_Data* &data);    //Translates data, and sends it to PPM_Data->buf;
+//Update to PPM buffer happens externally
+//bool IsGOPacketReady();   //Returns true if whole packet has been received
+//bool IsATPacketReady();
+void LoadByte(PPM_Data* &ppmMode, PWM_Data* &pwm);        //loads byte from Receive Register
+
+
+    
+}
 
 struct PPM_Data {
     const uint8_t PPM_BUF_SIZE = _PPM_BUF_SIZE;                 //PPM buffer size
@@ -189,7 +218,7 @@ struct PPM_Data {
 
     //bool ppmValid;
     
-    PPM_Data();         //Constructor (if allowed in C)
+    void Init_PPM_Data();         //Constructor (if allowed in C)
     //size_t state;         //tracks the state of the PPM input (0: waiting for break pulse, 1: break pulse received)
     void PPMRead(PWM_Data* &pwm);     //Sends captured CCP1 value to PPM buffer
     

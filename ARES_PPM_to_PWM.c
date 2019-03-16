@@ -30,18 +30,20 @@
 
 #include "main.h"
 
-PORT_Data::PORT_Data() {
-    iPort = 0;
-    frameEnd = true;    //must wait for break pulse before sending PWM pulses
-}
+//Init_PORT_Data(PORT_Data port) {
+//    port.PORT_SIZE = _PORT_REG_SIZE;
+//    port.iPort = 0;
+//    port.frameEnd = true;    //must wait for break pulse before sending PWM pulses
+//}
 
 /*PWM_Data struct functions*/
-PWM_Data::PWM_Data() {
+/*PWM_Data::Init_PWM_Data() {
     for(uint8_t i = 0; i < PWM_REG_SIZE; i++) {
         reg[i] = _1_5MS_COMP;   //initialize at center position (or stop position)
     }
     iReg = 0; //indecies used in case of interrupt triggered increment
 }
+*/
 
 PWM_Data::UpdatePWM(UART_Data* &uart) {
     
@@ -84,7 +86,7 @@ uint16_t PWM_Data::Filter(uint16_t temp, uint8_t i) {
 
 
 /*PPM_Data struct functions*/
-PPM_Data::PPM_Data() {
+PPM_Data::Init_PPM_Data() {
 //    buf[I_MANUAL_MODE] = _1MS_COMP;     //Manual mode is disabled by default
     if(_PIC_IS_DRIVE_CONT) buf[I_CTRL_MODE] = _2MS_COMP;      //Drive mode is selected by default (not manipulation mode)
     else buf[I_CTRL_MODE] = _1MS_COMP;
@@ -113,7 +115,7 @@ PPM_Data::PPMRead(PWM_Data* &pwm) {
                     if(iBuf >= PPM_BUF_SIZE) {
                         if(IsPPMMode()) {
                             //ppmValid = true;   //PPM frame has been loaded, set status to valid
-                            pwm->UpdatePWM(PPM_Data);
+                            pwm->UpdatePWM(Init_PPM_Data);
                         }
                         LoadState = READY;
                     }
@@ -176,14 +178,14 @@ bool PPM_Data::IsPPMMode() {
 }
 
 /* UART_Data struct functions */
-UART_Data::UART_Data() {
+/*UART_Data::Init_UART_Data() {
     for (uint8_t i = I_UART_BUF_DATA_START; i < UART_BUF_SIZE; i++) {
         buf[i] = 0;    //set all defaults at 0 position, CRC is also 0
     }
     
     iBuf = 0;   //buffer index
 }
-
+*/
 bool UART_Data::CheckCRC() {
     uint8_t inc = 0;
     for(uint8_t i = I_UART_BUF_DATA_START; i < I_CRC; i++) {
@@ -233,7 +235,7 @@ UART_Data::LoadByte(PPM_Data* &ppmMode, PWM_Data* &pwm) {
             buf[iBuf] = EUSART_Read();
             iBuf++;
             if(iBuf >= UART_BUF_SIZE) {
-                if(CheckCRC()) pwm->UpdatePWM(UART_Data); //update the pwm register if UART check cum was successful
+                if(CheckCRC()) pwm->UpdatePWM(Init_UART_Data); //update the pwm register if UART check cum was successful
                 LoadState = READY;
                 //goPacketReady = true;   //NOTE: make sure the buffer is read before goPacketReady = false
             }

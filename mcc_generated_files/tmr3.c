@@ -48,7 +48,8 @@
   Section: Included Files
 */
 
-#include <xc.h>
+//#include <xc.h>
+#include "../main.h"
 #include "tmr3.h"
 
 /**

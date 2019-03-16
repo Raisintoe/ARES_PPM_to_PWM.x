@@ -78,6 +78,11 @@ void main(void)
     
     // RAM Initialization
     
+    //Initialize Objects
+    Init_PORT_Data(portData);
+    pwmData.Init_PWM_Data();
+    uartData.Init_UART_Data();
+    ppmData.Init_PPM_Data();
     
     while (1)
     {

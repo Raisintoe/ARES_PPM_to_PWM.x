@@ -52,7 +52,8 @@
  * Timer 5 is the PWM period timer (20 ms timer)
  */
 
-#include <xc.h>
+//#include <xc.h>
+#include "../main.h"
 #include "tmr5.h"
 
 /**
