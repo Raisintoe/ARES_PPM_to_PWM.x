@@ -24309,266 +24309,147 @@ void OSCILLATOR_Initialize(void);
 # 99
 void WDT_Initialize(void);
 
-# 54 "main.h"
-struct PPM_Data {
-const uint8_t BUF_SIZE = 9;
-const uint8_t I_MANUAL_MODE = 0;
-const uint8_t I_CTRL_MODE = 1;
-const uint8_t I_AUTO_MODE = 2;
-const uint8_t I_BUF_DATA_START = 3;
+# 82 "main.h"
+typedef struct PORT_Data {
+const uint8_t PORT_SIZE;
 
-const uint8_t REG_SIZE = 6;
-const uint8_t I_REG_DATA_START = 0;
 
-const enum LoadState{READY, BREAK_RECEIVED};
 
-uint16_t buf[BUF_SIZE];
-uint8_t iBuf;
-uint16_t reg[REG_SIZE];
+
+uint8_t iPort;
+bool frameEnd;
+
+# 100
+};
+
+
+
+typedef struct PWM_Data {
+
+const uint8_t PWM_REG_SIZE;
+
+const uint16_t EP_ARRAY[2*6];
+
+# 118
+uint16_t reg[6];
 uint8_t iReg;
-uint8_t ep_reg[2*REG_SIZE];
 
-PPM_Data();
-
-void PPMRead();
-void EndFrame();
-bool ppmValid();
-void UpdateReg();
-bool IsManualMode();
-bool IsManipulationMode();
-bool IsAutoMode();
-}ppmData;
-
-struct UART_Data {
-
-const size_t BUF_GO_SIZE = 8;
-const size_t I_DIR = 6;
-const size_t I_CRC = 7;
-const size_t I_GO_DATA_START = 0;
-
-
-const size_t BUF_AT_SIZE = 13;
-const size_t I_AT_DATA_START = 0;
-
-
-uint8_t buf[BUF_AT_SIZE];
-size_t iBuf;
-
-
-uint8_t ep_reg[BUF_AT_SIZE];
-
-enum LoadState{READY, G_RECEIVED, O_RECEIVED, A_RECEIVED,
-T_RECEIVED, PID_GO_RECEIVED, PID_AT_RECEIVED};
-
-UART_Data();
-bool CheckCRC();
-void UpdateBuf(PPM_Data* &data);
-bool IsGOPacketReady();
-bool IsATPacketReady();
-void LoadByte();
-
-bool goPacketReady;
-bool atPacketReady;
-}uartData;
-
-# 33 "ARES_PPM_to_PWM.c"
-PPM_Data::PPM_Data() {
-buf[I_MANUAL_MODE] = 0xE0C0;
-buf[I_CTRL_MODE] = 0xE0C0;
-buf[I_AUTO_MODE] = 0xE0C0;
-for (uint8_t i = I_BUF_DATA_START; i < BUF_SIZE; i++) {
-buf[i] = 0xD120;
-}
-
-iBuf = 0;
-
-for (uint8_t i = I_REG_DATA_START; i < REG_SIZE; i++) {
-reg[i] = buf[i+I_BUF_DATA_START];
-}
-
-iReg = 0;
-
-LoadState = READY;
-}
-
-PPM_Data::PPMRead() {
-if(CCP1_IsCapturedDataReady()) {
-switch(LoadState) {
-case READY:
-if(CCP1_CaptureRead() <= 0x4480) {
-iBuf = 0;
-LoadState = BREAK_RECEIVED;
-}
-break;
-case BREAK_RECEIVED:
-if(iBuf < BUF_SIZE) {
-buf[iBuf] = CCP1_CaptureRead();
-iBuf++;
-}
-else {
-ppmValid = 0;
-LoadState = READY;
-}
-break;
-default:
-ppmValid = 0;
-
-LoadState = READY;
-}
-
-if(iBuf < BUF_SIZE) {
-buf[iBuf] = CCP1_CaptureRead();
-iBuf++;
-}
-else ppmValid = 0;
-
-}
-
-}
-
-PPM_Data::EndFrame() {
-if(iBuf == BUF_SIZE) ppmValid = 1;
-
-}
-
-UART_Data::UART_Data() {
-for (uint8_t i = I_GO_DATA_START; i < BUF_GO_SIZE; i++) {
-buf[i] = 0xD120;
-}
+# 125
+};
 
 
 
-for(uint8_t i = BUF_GO_SIZE; i < BUF_AT_SIZE; i++) {
-buf[i] = 0xD120;
-}
+typedef struct UART_Data {
 
-iBuf = 0;
+const uint8_t UART_BUF_SIZE;
+const uint8_t I_DIR;
+const uint8_t I_CRC;
+const uint8_t I_UART_BUF_DATA_START;
 
-for (uint8_t i = I_AT_DATA_START; i < BUF_AT_SIZE; i = i+2) {
-ep_reg[i] = 0xE0C0;
-ep_reg[i+1] = 0xC180;
-}
+uint8_t buf[8];
+uint8_t iBuf;
 
-goPacketReady = 0;
-atPacketReady = 0;
-}
+# 164
+};
 
-UART_Data::CheckCRC() {
+enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
 
-}
+typedef struct PPM_Data {
+const uint8_t PPM_BUF_SIZE;
 
-UART_Data::UpdateBuf(PPM_Data dat) {
-for (uint8_t i = 0; i < dat->buf
-}
+const uint8_t I_CTRL_MODE;
+const uint8_t I_AUTO_MODE;
+const uint8_t I_PPM_BUF_DATA_START;
 
-UART_Data::LoadByte() {
-if(PIR1bits.RCIF == 1) {
-PIR1bits.RCIF = 0;
 
-}
 
-switch(LoadState) {
-case READY:
-uint8_t byte = EUSART_Read();
-if(byte == 'G') LoadState = G_RECEIVED;
-else if(byte == 'A') LoadState = A_RECEIVED;
-break;
-case G_RECEIVED:
-if(EUSART_Read() == 'O') LoadState = O_RECEIVED;
-else LoadState == READY;
-break;
-case O_RECEIVED:
-if(EUSART_Read() == 0x00) {
-LoadState = PID_GO_RECEIVED;
-iBuf = 0;
-}
-else LoadState == READY;
-break;
-case A_RECEIVED:
-if(EUSART_Read() == 'T') LoadState = T_RECEIVED;
-else LoadState == READY;
-break;
-case T_RECEIVED:
-if(EUSART_Read() == 0x00) {
-LoadState = PID_AT_RECEIVED;
-iBuf = 0;
-}
-else LoadState == READY;
-break;
-case PID_GO_RECEIVED:
-buf[iBuf] = EUSART_Read();
-iBuf++;
-if(iBuf >= BUF_GO_SIZE) {
-LoadState = READY;
-goPacketReady = 1;
-}
-break;
-case PID_AT_RECEIVED:
-buf[iBuf] = EUSART_Read();
-iBuf++;
-if(iBuf >= BUF_AT_SIZE) {
-LoadState = READY;
-atPacketReady = 1;
-}
-break;
-default:
+uint16_t buf[8];
+uint8_t iBuf;
 
-LoadState = READY;
 
-}
-}
+};
 
-bool UART_Data::IsGOPacketReady() {
-return goPacketReady;
-}
+enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
 
-bool UART_DATA::IsATPacketReady() {
-return atPacketReady;
-}
 
-bool UART_Data::CheckCRC() {
-for(size_t i = )
-}
 
-void PPM_Data::UpdateReg() {
-if(CheckCRC()) {
-for (size_t i = 0; i < BUF_SIZE; i++) {
-reg[i] = buf[i];
-}
-}
-}
 
-# 56 "main.c"
+void Init_PPM_Data(struct PPM_Data ppm);
+
+void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm);
+
+
+
+bool IsManualMode(struct PPM_Data ppm);
+bool IsManipulationMode(struct PPM_Data ppm);
+bool IsAutoMode(struct PPM_Data ppm);
+
+bool IsDriveCont();
+bool IsUARTMode(struct PPM_Data ppm);
+bool IsPPMMode(struct PPM_Data ppm);
+
+bool GetAutoModeState(struct PPM_Data ppm);
+bool GetCtrlModeState(struct PPM_Data ppm);
+
+# 213
+void Init_UART_Data(struct UART_Data uart);
+bool CheckCRC(struct UART_Data uart);
+
+
+
+
+void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm);
+
+# 225
+void Init_PWM_Data(struct PWM_Data pwm);
+
+void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart);
+void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm);
+
+
+
+
+uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
+
+
+
+void Init_PORT_Data(struct PORT_Data port);
+
+# 88 "main.c"
 void main(void)
 {
 
 SYSTEM_Initialize();
 
-# 65
+# 97
 (INTCONbits.GIE = 1);
 
 
 (INTCONbits.PEIE = 1);
 
-# 82
+# 115
+extern struct PORT_Data portData;
+extern struct PWM_Data pwmData;
+extern struct UART_Data uartData;
+extern struct PPM_Data ppmData;
+
+Init_PORT_Data(portData);
+Init_PWM_Data(pwmData);
+Init_UART_Data(uartData);
+Init_PPM_Data(ppmData);
+
 while (1)
 {
 
-if(CCP1_IsCapturedDataReady()) {
-ppmData.PPMRead();
-}
 
+if(PIR1bits.CCP1IF == 1) {
+PPMRead(ppmData, pwmData);
+}
 if(PIR1bits.RCIF == 1) {
-uartData.LoadByte();
+LoadByte(uartData, ppmData, pwmData);
 }
 
-if(uartData.IsATPacketReady()) {
 
-}
-
-if(ppmData.IsAutoMode()&&uartData.IsGOPacketReady()) {
-
-}
 
 }
 }

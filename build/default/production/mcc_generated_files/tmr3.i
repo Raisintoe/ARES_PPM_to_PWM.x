@@ -24021,8 +24021,11 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
-typedef unsigned char bool;
+# 114 "mcc_generated_files/../mcc_generated_files/pin_manager.h"
+void PIN_MANAGER_Initialize (void);
+
+# 126
+void PIN_MANAGER_IOC(void);
 
 # 13 "/opt/microchip/xc8/v2.05/pic/include/c90/stdint.h"
 typedef signed char int8_t;
@@ -24110,7 +24113,55 @@ typedef int16_t intptr_t;
 
 typedef uint16_t uintptr_t;
 
-# 101 "mcc_generated_files/tmr3.h"
+# 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
+typedef unsigned char bool;
+
+# 15
+typedef unsigned char bool;
+
+# 101 "mcc_generated_files/../mcc_generated_files/tmr5.h"
+void TMR5_Initialize(void);
+
+# 130
+void TMR5_StartTimer(void);
+
+# 162
+void TMR5_StopTimer(void);
+
+# 197
+uint16_t TMR5_ReadTimer(void);
+
+# 236
+void TMR5_WriteTimer(uint16_t timerVal);
+
+# 272
+void TMR5_Reload(void);
+
+# 311
+void TMR5_StartSinglePulseAcquisition(void);
+
+# 350
+uint8_t TMR5_CheckGateValueStatus(void);
+
+# 368
+void TMR5_ISR(void);
+
+# 385
+void TMR5_CallBack(void);
+
+# 403
+void TMR5_SetInterruptHandler(void (* InterruptHandler)(void));
+
+# 421
+extern void (*TMR5_InterruptHandler)(void);
+
+# 439
+void TMR5_DefaultInterruptHandler(void);
+
+# 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
+typedef unsigned char bool;
+
+# 101 "mcc_generated_files/../mcc_generated_files/tmr3.h"
 void TMR3_Initialize(void);
 
 # 130
@@ -24149,11 +24200,226 @@ extern void (*TMR3_InterruptHandler)(void);
 # 439
 void TMR3_DefaultInterruptHandler(void);
 
-# 57 "mcc_generated_files/tmr3.c"
+# 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
+typedef unsigned char bool;
+
+# 100 "mcc_generated_files/../mcc_generated_files/tmr1.h"
+void TMR1_Initialize(void);
+
+# 129
+void TMR1_StartTimer(void);
+
+# 161
+void TMR1_StopTimer(void);
+
+# 196
+uint16_t TMR1_ReadTimer(void);
+
+# 235
+void TMR1_WriteTimer(uint16_t timerVal);
+
+# 271
+void TMR1_Reload(void);
+
+# 310
+void TMR1_StartSinglePulseAcquisition(void);
+
+# 349
+uint8_t TMR1_CheckGateValueStatus(void);
+
+# 387
+bool TMR1_HasOverflowOccured(void);
+
+# 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
+typedef unsigned char bool;
+
+# 80 "mcc_generated_files/../mcc_generated_files/ccp1.h"
+typedef union CCPR1Reg_tag
+{
+struct
+{
+uint8_t ccpr1l;
+uint8_t ccpr1h;
+};
+struct
+{
+uint16_t ccpr1_16Bit;
+};
+} CCP1_PERIOD_REG_T ;
+
+# 123
+void CCP1_Initialize(void);
+
+# 150
+bool CCP1_IsCapturedDataReady(void);
+
+# 180
+uint16_t CCP1_CaptureRead(void);
+
+# 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
+typedef unsigned char bool;
+
+# 75 "mcc_generated_files/../mcc_generated_files/eusart.h"
+typedef union {
+struct {
+unsigned perr : 1;
+unsigned ferr : 1;
+unsigned oerr : 1;
+unsigned reserved : 5;
+};
+uint8_t status;
+}eusart_status_t;
+
+# 111
+void EUSART_Initialize(void);
+
+# 159
+bool EUSART_is_tx_ready(void);
+
+# 207
+bool EUSART_is_rx_ready(void);
+
+# 254
+bool EUSART_is_tx_done(void);
+
+# 302
+eusart_status_t EUSART_get_last_status(void);
+
+# 322
+uint8_t EUSART_Read(void);
+
+# 342
+void EUSART_Write(uint8_t txData);
+
+# 362
+void EUSART_SetFramingErrorHandler(void (* interruptHandler)(void));
+
+# 380
+void EUSART_SetOverrunErrorHandler(void (* interruptHandler)(void));
+
+# 398
+void EUSART_SetErrorHandler(void (* interruptHandler)(void));
+
+# 74 "mcc_generated_files/../mcc_generated_files/mcc.h"
+void SYSTEM_Initialize(void);
+
+# 87
+void OSCILLATOR_Initialize(void);
+
+# 99
+void WDT_Initialize(void);
+
+# 82 "mcc_generated_files/../main.h"
+typedef struct PORT_Data {
+const uint8_t PORT_SIZE;
+
+
+
+
+uint8_t iPort;
+bool frameEnd;
+
+# 100
+};
+
+
+
+typedef struct PWM_Data {
+
+const uint8_t PWM_REG_SIZE;
+
+const uint16_t EP_ARRAY[2*6];
+
+# 118
+uint16_t reg[6];
+uint8_t iReg;
+
+# 125
+};
+
+
+
+typedef struct UART_Data {
+
+const uint8_t UART_BUF_SIZE;
+const uint8_t I_DIR;
+const uint8_t I_CRC;
+const uint8_t I_UART_BUF_DATA_START;
+
+uint8_t buf[8];
+uint8_t iBuf;
+
+# 164
+};
+
+enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
+
+typedef struct PPM_Data {
+const uint8_t PPM_BUF_SIZE;
+
+const uint8_t I_CTRL_MODE;
+const uint8_t I_AUTO_MODE;
+const uint8_t I_PPM_BUF_DATA_START;
+
+
+
+uint16_t buf[8];
+uint8_t iBuf;
+
+
+};
+
+enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
+
+
+
+
+void Init_PPM_Data(struct PPM_Data ppm);
+
+void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm);
+
+
+
+bool IsManualMode(struct PPM_Data ppm);
+bool IsManipulationMode(struct PPM_Data ppm);
+bool IsAutoMode(struct PPM_Data ppm);
+
+bool IsDriveCont();
+bool IsUARTMode(struct PPM_Data ppm);
+bool IsPPMMode(struct PPM_Data ppm);
+
+bool GetAutoModeState(struct PPM_Data ppm);
+bool GetCtrlModeState(struct PPM_Data ppm);
+
+# 213
+void Init_UART_Data(struct UART_Data uart);
+bool CheckCRC(struct UART_Data uart);
+
+
+
+
+void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm);
+
+# 225
+void Init_PWM_Data(struct PWM_Data pwm);
+
+void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart);
+void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm);
+
+
+
+
+uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
+
+
+
+void Init_PORT_Data(struct PORT_Data port);
+
+# 58 "mcc_generated_files/tmr3.c"
 volatile uint16_t timer3ReloadVal;
 void (*TMR3_InterruptHandler)(void);
 
-# 64
+# 65
 void TMR3_Initialize(void)
 {
 
@@ -24252,7 +24518,7 @@ void TMR3_ISR(void)
 
 
 PIR4bits.TMR3IF = 0;
-TMR3_WriteTimer(timer3ReloadVal);
+
 
 
 
@@ -24262,10 +24528,29 @@ TMR3_CallBack();
 void TMR3_CallBack(void)
 {
 
+
+
+uint8_t saveWREG = WREG;
+uint8_t saveBSR = BSR;
+uint8_t saveSTATUS = STATUS;
+uint8_t saveFSR0H = FSR0H;
+uint8_t saveFSR0L = FSR0L;
+uint8_t saveFSR1H = FSR1H;
+uint8_t saveFSR1L = FSR1L;
+
 if(TMR3_InterruptHandler)
 {
 TMR3_InterruptHandler();
 }
+
+
+FSR0H = saveFSR0H;
+FSR0L = saveFSR0L;
+FSR1H = saveFSR1H;
+FSR1L = saveFSR1L;
+STATUS = saveSTATUS;
+BSR = saveBSR;
+WREG = saveWREG;
 }
 
 void TMR3_SetInterruptHandler(void (* InterruptHandler)(void)){
@@ -24275,5 +24560,24 @@ TMR3_InterruptHandler = InterruptHandler;
 void TMR3_DefaultInterruptHandler(void){
 
 
+
+extern struct PORT_Data portData;
+extern struct PWM_Data pwmData;
+
+if(!portData.frameEnd) {
+
+if(portData.iPort < (portData.PORT_SIZE - 1)) {
+LATD << 1;
+portData.iPort++;
+
+
+TMR3_WriteTimer(pwmData.reg[portData.iPort]);
+
+}
+else {
+LATD = 0;
+portData.frameEnd = 1;
+}
+}
 }
 

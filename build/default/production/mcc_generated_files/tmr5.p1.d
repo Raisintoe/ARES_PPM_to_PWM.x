@@ -1,5 +1,5 @@
- build/default/debug/mcc_generated_files/tmr5.d  \
- build/default/debug/mcc_generated_files/tmr5.p1:  \
+ build/default/production/mcc_generated_files/tmr5.d  \
+ build/default/production/mcc_generated_files/tmr5.p1:  \
  mcc_generated_files/tmr5.c  \
 mcc_generated_files/../mcc_generated_files/mcc.h  \
 mcc_generated_files/../mcc_generated_files/device_config.h  \

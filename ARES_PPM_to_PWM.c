@@ -96,7 +96,7 @@ void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart) {
     //Convert, and place in buf[]
     uint8_t dir_reg = uart.buf[uart.I_DIR];
     for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
-        //if(_PIC_IS_DRIVE_CONT) {    //if this the PIC is the drive controller, 
+        //if(_PIC_IS_DRIVE_CONT == true) {    //if this the PIC is the drive controller, 
                                     //  then the 3 last channels are reversed
                                     //  data interpretation is also different
                                     //  but as for now, no manipulation data should be coming through uart
@@ -129,7 +129,7 @@ void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm) {
 //PPM_Data struct functions
 void Init_PPM_Data(struct PPM_Data ppm) {
 //    buf[I_MANUAL_MODE] = _1MS_COMP;     //Manual mode is disabled by default
-    if(_PIC_IS_DRIVE_CONT) ppm.buf[ppm.I_CTRL_MODE] = _2MS_COMP;      //Drive mode is selected by default (not manipulation mode)
+    if(_PIC_IS_DRIVE_CONT == true) ppm.buf[ppm.I_CTRL_MODE] = _2MS_COMP;      //Drive mode is selected by default (not manipulation mode)
     else ppm.buf[ppm.I_CTRL_MODE] = _1MS_COMP;
     ppm.buf[ppm.I_AUTO_MODE] = _1MS_COMP;      //Autonomous Mode is disabled by default
     for (uint8_t i = ppm.I_PPM_BUF_DATA_START; i < ppm.PPM_BUF_SIZE; i++) {
@@ -141,7 +141,7 @@ void Init_PPM_Data(struct PPM_Data ppm) {
 }
 
 void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm) {
-    if(CCP1_IsCapturedDataReady()) {
+    if(CCP1_IsCapturedDataReady() == true) {
         switch(ppmLoadState) {
             case PPM_READY:
                 ppm.iBuf = 0;
@@ -154,7 +154,7 @@ void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm) {
                     ppm.buf[ppm.iBuf] = CCP1_CaptureRead();
                     ppm.iBuf++;
                     if(ppm.iBuf >= ppm.PPM_BUF_SIZE) {
-                        if(IsPPMMode(ppm)) {
+                        if(IsPPMMode(ppm) == true) {
                             //ppmValid = true;   //PPM frame has been loaded, set status to valid
                             PPMUpdatePWM(pwm, ppm);
                         }
@@ -187,17 +187,17 @@ bool GetCtrlModeState(struct PPM_Data ppm) {
 }
 
 bool IsAutoMode(struct PPM_Data ppm) {
-    if(GetAutoModeState(ppm)&&GetCtrlModeState(ppm)) return true;
+    if((GetAutoModeState(ppm) == true)&&(GetCtrlModeState(ppm) == true)) return true;
     else return false;
 }
 
 bool IsManualMode(struct PPM_Data ppm) {
-    if((!GetAutoModeState(ppm))&&GetCtrlModeState(ppm)) return true;
+    if((GetAutoModeState(ppm) == false)&&(GetCtrlModeState(ppm) == true)) return true;
     else return false;
 }
 
 bool IsManipulationMode(struct PPM_Data ppm) {
-    if(!GetCtrlModeState(ppm)) return true;
+    if(GetCtrlModeState(ppm) == false) return true;
     else return false;
 }
 
@@ -206,12 +206,12 @@ bool IsDriveCont() {  //might upgrade this to be configurable over UART, and sav
 }
 
 bool IsUARTMode(struct PPM_Data ppm) {
-    if(IsDriveCont()&&IsAutoMode(ppm)) return true;
+    if((IsDriveCont() == true)&&(IsAutoMode(ppm) == true)) return true;
     else return false;
 }
 
 bool IsPPMMode(struct PPM_Data ppm) {
-    if((IsDriveCont()&&IsManualMode(ppm))
+    if(((IsDriveCont() == true)&&(IsManualMode(ppm) == true))
             ||(!IsDriveCont()&&IsManipulationMode(ppm))) {
         return true;
     }
@@ -257,7 +257,7 @@ void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pw
             else uartLoadState = UART_READY;    //revert back to READY if 'O' was not received consecutively
             break;
         case O_RECEIVED:
-            if((EUSART_Read() == _PID_DRIVE)&&IsUARTMode(ppmMode)) { //0 byte at start of frame
+            if((EUSART_Read() == _PID_DRIVE)&&(IsUARTMode(ppmMode) == true)) { //0 byte at start of frame
                 uartLoadState = PID_GO_DRIVE_RECEIVED;
                 uart.iBuf = 0;   //initialize the buffer pointer
             }
@@ -278,7 +278,7 @@ void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pw
             uart.buf[uart.iBuf] = EUSART_Read();
             uart.iBuf++;
             if(uart.iBuf >= uart.UART_BUF_SIZE) {
-                if(CheckCRC(uart)) UARTUpdatePWM(pwm, uart); //update the pwm register if UART check cum was successful
+                if(CheckCRC(uart) == true) UARTUpdatePWM(pwm, uart); //update the pwm register if UART check cum was successful
                 uartLoadState = UART_READY;
                 //goPacketReady = true;   //NOTE: make sure the buffer is read before goPacketReady = false
             }
@@ -287,7 +287,7 @@ void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pw
         //    buf[iBuf] = EUSART_Read();
         //    iBuf++;
         //    if(iBuf >= BUF_AT_SIZE) {
-        //        if(CheckCRC()) pwmData.UpdateReg(uartData);
+        //        if(CheckCRC() == true) pwmData.UpdateReg(uartData);
         //        !!!//need to get data size in packet, or something to know where the end of packet is 
         //        LoadState = READY;
         //        //atPacketReady = true;   //NOTE: make sure the buffer is read before atPacketReady = false

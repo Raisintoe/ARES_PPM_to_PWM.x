@@ -24309,231 +24309,354 @@ void OSCILLATOR_Initialize(void);
 # 99
 void WDT_Initialize(void);
 
-# 54 "main.h"
-struct PPM_Data {
-const uint8_t BUF_SIZE = 9;
-const uint8_t I_MANUAL_MODE = 0;
-const uint8_t I_CTRL_MODE = 1;
-const uint8_t I_AUTO_MODE = 2;
-const uint8_t I_BUF_DATA_START = 3;
+# 82 "main.h"
+typedef struct PORT_Data {
+const uint8_t PORT_SIZE;
 
-const uint8_t REG_SIZE = 6;
-const uint8_t I_REG_DATA_START = 0;
 
-const enum LoadState{READY, BREAK_RECEIVED};
 
-uint16_t buf[BUF_SIZE];
-uint8_t iBuf;
-uint16_t reg[REG_SIZE];
+
+uint8_t iPort;
+bool frameEnd;
+
+# 100
+};
+
+
+
+typedef struct PWM_Data {
+
+const uint8_t PWM_REG_SIZE;
+
+const uint16_t EP_ARRAY[2*6];
+
+# 118
+uint16_t reg[6];
 uint8_t iReg;
-uint8_t ep_reg[2*REG_SIZE];
 
-PPM_Data();
-
-void PPMRead();
-void EndFrame();
-bool ppmValid();
-void UpdateReg();
-bool IsManualMode();
-bool IsManipulationMode();
-bool IsAutoMode();
-}ppmData;
-
-struct UART_Data {
-
-const size_t BUF_GO_SIZE = 8;
-const size_t I_DIR = 6;
-const size_t I_CRC = 7;
-const size_t I_GO_DATA_START = 0;
+# 125
+};
 
 
-const size_t BUF_AT_SIZE = 13;
-const size_t I_AT_DATA_START = 0;
+
+typedef struct UART_Data {
+
+const uint8_t UART_BUF_SIZE;
+const uint8_t I_DIR;
+const uint8_t I_CRC;
+const uint8_t I_UART_BUF_DATA_START;
+
+uint8_t buf[8];
+uint8_t iBuf;
+
+# 164
+};
+
+enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
+
+typedef struct PPM_Data {
+const uint8_t PPM_BUF_SIZE;
+
+const uint8_t I_CTRL_MODE;
+const uint8_t I_AUTO_MODE;
+const uint8_t I_PPM_BUF_DATA_START;
 
 
-uint8_t buf[BUF_AT_SIZE];
-size_t iBuf;
+
+uint16_t buf[8];
+uint8_t iBuf;
 
 
-uint8_t ep_reg[BUF_AT_SIZE];
+};
 
-enum LoadState{READY, G_RECEIVED, O_RECEIVED, A_RECEIVED,
-T_RECEIVED, PID_GO_RECEIVED, PID_AT_RECEIVED};
+enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
 
-UART_Data();
-bool CheckCRC();
-void UpdateBuf(PPM_Data* &data);
-bool IsGOPacketReady();
-bool IsATPacketReady();
-void LoadByte();
 
-bool goPacketReady;
-bool atPacketReady;
-}uartData;
 
-# 33 "ARES_PPM_to_PWM.c"
-PPM_Data::PPM_Data() {
-buf[I_MANUAL_MODE] = 0xE0C0;
-buf[I_CTRL_MODE] = 0xE0C0;
-buf[I_AUTO_MODE] = 0xE0C0;
-for (uint8_t i = I_BUF_DATA_START; i < BUF_SIZE; i++) {
-buf[i] = 0xD120;
+
+void Init_PPM_Data(struct PPM_Data ppm);
+
+void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm);
+
+
+
+bool IsManualMode(struct PPM_Data ppm);
+bool IsManipulationMode(struct PPM_Data ppm);
+bool IsAutoMode(struct PPM_Data ppm);
+
+bool IsDriveCont();
+bool IsUARTMode(struct PPM_Data ppm);
+bool IsPPMMode(struct PPM_Data ppm);
+
+bool GetAutoModeState(struct PPM_Data ppm);
+bool GetCtrlModeState(struct PPM_Data ppm);
+
+# 213
+void Init_UART_Data(struct UART_Data uart);
+bool CheckCRC(struct UART_Data uart);
+
+
+
+
+void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm);
+
+# 225
+void Init_PWM_Data(struct PWM_Data pwm);
+
+void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart);
+void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm);
+
+
+
+
+uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
+
+
+
+void Init_PORT_Data(struct PORT_Data port);
+
+# 36 "ARES_PPM_to_PWM.c"
+struct PORT_Data portData = {6};
+
+
+struct PWM_Data pwmData = {
+6,
+{
+0xE0C0, 0xC180,
+0xE0C0, 0xC180,
+0xE0C0, 0xC180,
+0xE0C0, 0xC180,
+0xE0C0, 0xC180,
+0xE0C0, 0xC180
+}
+};
+
+struct UART_Data uartData = {
+8,
+6,
+8 - 1,
+0
+};
+
+struct PPM_Data ppmData = {
+8,
+
+0,
+1,
+2
+};
+
+enum UARTLoadState uartLoadState = UART_READY;
+enum PPMLoadState ppmLoadState = PPM_READY;
+
+# 75
+void Init_PORT_Data(struct PORT_Data port) {
+port.iPort = 0;
+port.frameEnd = 1;
 }
 
-iBuf = 0;
 
-for (uint8_t i = I_REG_DATA_START; i < REG_SIZE; i++) {
-reg[i] = buf[i+I_BUF_DATA_START];
+void Init_PWM_Data(struct PWM_Data pwm) {
+for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
+pwm.reg[i] = 0xD120;
+}
+pwm.iReg = 0;
 }
 
-iReg = 0;
-
-LoadState = READY;
+uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i) {
+if(temp > pwm.EP_ARRAY[2*i]) temp = pwm.EP_ARRAY[2*i];
+else if(temp < pwm.EP_ARRAY[2*i + 1]) temp = pwm.EP_ARRAY[2*i + 1];
+return temp;
 }
 
-PPM_Data::PPMRead() {
-if(CCP1_IsCapturedDataReady()) {
-switch(LoadState) {
-case READY:
+void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart) {
+
+
+uint8_t dir_reg = uart.buf[uart.I_DIR];
+for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
+
+
+
+
+uint8_t dir = dir_reg&0x01;
+dir_reg = dir_reg >> 1;
+const uint16_t HIGH_PULSE = 0xC180;
+const uint16_t MID_PULSE = 0xD120;
+const uint16_t LOW_PULSE = 0xE0C0;
+const uint8_t UART_MAX = 0xFF;
+
+uint16_t temp = 0;
+if(((i < 3)&&(dir == 1))||((i >= 3)&&(dir == 0))) {
+temp = ((uint16_t)((double)uart.buf[i]*(HIGH_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+}
+else {
+temp = ((uint16_t)((double)uart.buf[i]*(LOW_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+}
+
+
+pwm.reg[i] = Filter(pwm, temp, i);
+}
+}
+
+void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm) {
+for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
+pwm.reg[i] = Filter(pwm, ppm.buf[i], i);
+}
+}
+
+
+void Init_PPM_Data(struct PPM_Data ppm) {
+
+if(1 == 1) ppm.buf[ppm.I_CTRL_MODE] = 0xC180;
+else ppm.buf[ppm.I_CTRL_MODE] = 0xE0C0;
+ppm.buf[ppm.I_AUTO_MODE] = 0xE0C0;
+for (uint8_t i = ppm.I_PPM_BUF_DATA_START; i < ppm.PPM_BUF_SIZE; i++) {
+ppm.buf[i] = 0xD120;
+}
+ppm.iBuf = 0;
+
+ppmLoadState = PPM_READY;
+}
+
+void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm) {
+if(CCP1_IsCapturedDataReady() == 1) {
+switch(ppmLoadState) {
+case PPM_READY:
+ppm.iBuf = 0;
 if(CCP1_CaptureRead() <= 0x4480) {
-iBuf = 0;
-LoadState = BREAK_RECEIVED;
+ppmLoadState = BREAK_RECEIVED;
 }
 break;
 case BREAK_RECEIVED:
-if(iBuf < BUF_SIZE) {
-buf[iBuf] = CCP1_CaptureRead();
-iBuf++;
+if(ppm.iBuf < ppm.PPM_BUF_SIZE) {
+ppm.buf[ppm.iBuf] = CCP1_CaptureRead();
+ppm.iBuf++;
+if(ppm.iBuf >= ppm.PPM_BUF_SIZE) {
+if(IsPPMMode(ppm) == 1) {
+
+PPMUpdatePWM(pwm, ppm);
+}
+ppmLoadState = PPM_READY;
+}
 }
 else {
-ppmValid = 0;
-LoadState = READY;
+
+ppmLoadState = PPM_READY;
 }
 break;
 default:
-ppmValid = 0;
 
-LoadState = READY;
-}
 
-if(iBuf < BUF_SIZE) {
-buf[iBuf] = CCP1_CaptureRead();
-iBuf++;
+ppmLoadState = PPM_READY;
 }
-else ppmValid = 0;
 
 }
 
 }
 
-PPM_Data::EndFrame() {
-if(iBuf == BUF_SIZE) ppmValid = 1;
-
+bool GetAutoModeState(struct PPM_Data ppm) {
+if(ppm.buf[ppm.I_AUTO_MODE] > 0xD120) return 0;
+else return 1;
 }
 
-UART_Data::UART_Data() {
-for (uint8_t i = I_GO_DATA_START; i < BUF_GO_SIZE; i++) {
-buf[i] = 0xD120;
+bool GetCtrlModeState(struct PPM_Data ppm) {
+if(ppm.buf[ppm.I_CTRL_MODE] > 0xD120) return 0;
+else return 1;
+}
+
+bool IsAutoMode(struct PPM_Data ppm) {
+if((GetAutoModeState(ppm) == 1)&&(GetCtrlModeState(ppm) == 1)) return 1;
+else return 0;
+}
+
+bool IsManualMode(struct PPM_Data ppm) {
+if((GetAutoModeState(ppm) == 0)&&(GetCtrlModeState(ppm) == 1)) return 1;
+else return 0;
+}
+
+bool IsManipulationMode(struct PPM_Data ppm) {
+if(GetCtrlModeState(ppm) == 0) return 1;
+else return 0;
+}
+
+bool IsDriveCont() {
+return 1;
+}
+
+bool IsUARTMode(struct PPM_Data ppm) {
+if((IsDriveCont() == 1)&&(IsAutoMode(ppm) == 1)) return 1;
+else return 0;
+}
+
+bool IsPPMMode(struct PPM_Data ppm) {
+if(((IsDriveCont() == 1)&&(IsManualMode(ppm) == 1))
+||(!IsDriveCont()&&IsManipulationMode(ppm))) {
+return 1;
+}
+else return 0;
 }
 
 
-
-for(uint8_t i = BUF_GO_SIZE; i < BUF_AT_SIZE; i++) {
-buf[i] = 0xD120;
+void Init_UART_Data(struct UART_Data uart) {
+for (uint8_t i = uart.I_UART_BUF_DATA_START; i < uart.UART_BUF_SIZE; i++) {
+uart.buf[i] = 0;
 }
 
-iBuf = 0;
-
-for (uint8_t i = I_AT_DATA_START; i < BUF_AT_SIZE; i = i+2) {
-ep_reg[i] = 0xE0C0;
-ep_reg[i+1] = 0xC180;
+uart.iBuf = 0;
 }
 
-goPacketReady = 0;
-atPacketReady = 0;
+bool CheckCRC(struct UART_Data uart) {
+uint8_t inc = 0;
+for(uint8_t i = uart.I_UART_BUF_DATA_START; i < uart.I_CRC; i++) {
+for(uint8_t j = 0; j < 8; j++) {
+inc = inc + ((uart.buf[i] >> j)&0x01);
+}
+}
+if(inc == uart.buf[uart.I_CRC]) return 1;
+else return 0;
 }
 
-UART_Data::CheckCRC() {
-
-}
-
-UART_Data::UpdateBuf(PPM_Data dat) {
-for (uint8_t i = 0; i < dat->buf
-}
-
-UART_Data::LoadByte() {
+void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm) {
 if(PIR1bits.RCIF == 1) {
-PIR1bits.RCIF = 0;
+
 
 }
 
-switch(LoadState) {
-case READY:
-uint8_t byte = EUSART_Read();
-if(byte == 'G') LoadState = G_RECEIVED;
-else if(byte == 'A') LoadState = A_RECEIVED;
+uint8_t byte;
+
+switch(uartLoadState) {
+case UART_READY:
+byte = EUSART_Read();
+if(byte == 'G') uartLoadState = G_RECEIVED;
+
 break;
 case G_RECEIVED:
-if(EUSART_Read() == 'O') LoadState = O_RECEIVED;
-else LoadState == READY;
+if(EUSART_Read() == 'O') uartLoadState = O_RECEIVED;
+else uartLoadState = UART_READY;
 break;
 case O_RECEIVED:
-if(EUSART_Read() == 0x00) {
-LoadState = PID_GO_RECEIVED;
-iBuf = 0;
+if((EUSART_Read() == 0x00)&&(IsUARTMode(ppmMode) == 1)) {
+uartLoadState = PID_GO_DRIVE_RECEIVED;
+uart.iBuf = 0;
 }
-else LoadState == READY;
+else uartLoadState == UART_READY;
 break;
-case A_RECEIVED:
-if(EUSART_Read() == 'T') LoadState = T_RECEIVED;
-else LoadState == READY;
-break;
-case T_RECEIVED:
-if(EUSART_Read() == 0x00) {
-LoadState = PID_AT_RECEIVED;
-iBuf = 0;
-}
-else LoadState == READY;
-break;
-case PID_GO_RECEIVED:
-buf[iBuf] = EUSART_Read();
-iBuf++;
-if(iBuf >= BUF_GO_SIZE) {
-LoadState = READY;
-goPacketReady = 1;
+
+# 277
+case PID_GO_DRIVE_RECEIVED:
+uart.buf[uart.iBuf] = EUSART_Read();
+uart.iBuf++;
+if(uart.iBuf >= uart.UART_BUF_SIZE) {
+if(CheckCRC(uart) == 1) UARTUpdatePWM(pwm, uart);
+uartLoadState = UART_READY;
+
 }
 break;
-case PID_AT_RECEIVED:
-buf[iBuf] = EUSART_Read();
-iBuf++;
-if(iBuf >= BUF_AT_SIZE) {
-LoadState = READY;
-atPacketReady = 1;
-}
-break;
+
+# 296
 default:
 
-LoadState = READY;
+uartLoadState = UART_READY;
 
-}
-}
-
-bool UART_Data::IsGOPacketReady() {
-return goPacketReady;
-}
-
-bool UART_DATA::IsATPacketReady() {
-return atPacketReady;
-}
-
-bool UART_Data::CheckCRC() {
-for(size_t i = )
-}
-
-void PPM_Data::UpdateReg() {
-if(CheckCRC()) {
-for (size_t i = 0; i < BUF_SIZE; i++) {
-reg[i] = buf[i];
-}
 }
 }

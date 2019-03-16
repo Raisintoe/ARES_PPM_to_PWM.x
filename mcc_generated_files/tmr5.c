@@ -170,6 +170,7 @@ void TMR5_ISR(void)
 
     // ticker function call;
     // ticker is 1 -> Callback function gets called everytime this ISR executes
+    
     TMR5_CallBack();
 }
 
@@ -178,6 +179,39 @@ void TMR5_CallBack(void)
     // Add your custom callback code here
     //struct PORT_Data portData = GetPortData();
     //struct PWM_Data pwmData = GetPwmData();
+    
+    //Save FSRs and others
+    uint8_t saveWREG = WREG;
+    uint8_t saveBSR = BSR;
+    uint8_t saveSTATUS = STATUS;
+    uint8_t saveFSR0H = FSR0H;
+    uint8_t saveFSR0L = FSR0L;
+    uint8_t saveFSR1H = FSR1H;
+    uint8_t saveFSR1L = FSR1L;
+    
+    
+    if(TMR5_InterruptHandler)
+    {
+        TMR5_InterruptHandler();
+    }
+    
+    //Return FSRs and others
+    FSR0H = saveFSR0H;
+    FSR0L = saveFSR0L;
+    FSR1H = saveFSR1H;
+    FSR1L = saveFSR1L;
+    STATUS = saveSTATUS;
+    BSR = saveBSR;
+    WREG = saveWREG;
+}
+
+void TMR5_SetInterruptHandler(void (* InterruptHandler)(void)){
+    TMR5_InterruptHandler = InterruptHandler;
+}
+
+void TMR5_DefaultInterruptHandler(void){
+    // add your TMR5 interrupt custom code
+    // or set custom function using TMR5_SetInterruptHandler()
     
     extern struct PORT_Data portData;
     extern struct PWM_Data pwmData;
@@ -190,19 +224,6 @@ void TMR5_CallBack(void)
     //TMR3_Reload(timer3ReloadVal);   //!!!Make sure this is all I need to do to set TMR3
     TMR3_WriteTimer(pwmData.reg[portData.iPort]);   //!!!Make sure this is all I need to do to set TMR3
     
-    if(TMR5_InterruptHandler)
-    {
-        TMR5_InterruptHandler();
-    }
-}
-
-void TMR5_SetInterruptHandler(void (* InterruptHandler)(void)){
-    TMR5_InterruptHandler = InterruptHandler;
-}
-
-void TMR5_DefaultInterruptHandler(void){
-    // add your TMR5 interrupt custom code
-    // or set custom function using TMR5_SetInterruptHandler()
 }
 
 /**

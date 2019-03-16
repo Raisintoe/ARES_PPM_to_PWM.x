@@ -1,6 +1,6 @@
- build/default/debug/ARES_PPM_to_PWM.d  \
- build/default/debug/ARES_PPM_to_PWM.p1:  \
- ARES_PPM_to_PWM.c  \
+ build/default/production/main.d  \
+ build/default/production/main.p1:  \
+ main.c  \
 mcc_generated_files/mcc.h  \
 main.h  \
 mcc_generated_files/device_config.h  \

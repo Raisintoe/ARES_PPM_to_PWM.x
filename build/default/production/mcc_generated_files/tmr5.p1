@@ -1,81 +1,94 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"3135 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
-[v _LATE `Vuc ~T0 @X0 0 e@272 ]
-"3073
+[v F14522 `(v ~T0 @X0 0 tf ]
+"11102 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
+[v _T5GCON `Vuc ~T0 @X0 0 e@1042 ]
+"10925
+[v _TMR5H `Vuc ~T0 @X0 0 e@1040 ]
+"10905
+[v _TMR5L `Vuc ~T0 @X0 0 e@1039 ]
+"904
+[s S46 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S46 . TMR4IF TMR6IF TMR3IF TMR3GIF TMR5IF TMR5GIF TMR8IF ]
+"903
+[u S45 `S46 1 ]
+[n S45 . . ]
+"914
+[v _PIR4bits `VS45 ~T0 @X0 0 e@20 ]
+"2217
+[s S99 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S99 . TMR4IE TMR6IE TMR3IE TMR3GIE TMR5IE TMR5GIE TMR8IE ]
+"2216
+[u S98 `S99 1 ]
+[n S98 . . ]
+"2227
+[v _PIE4bits `VS98 ~T0 @X0 0 e@148 ]
+[v F14519 `(v ~T0 @X0 0 tf ]
+"403 mcc_generated_files/../mcc_generated_files/tmr5.h
+[v _TMR5_SetInterruptHandler `(v ~T0 @X0 0 ef1`*F14519 ]
+"439
+[v _TMR5_DefaultInterruptHandler `(v ~T0 @X0 0 ef ]
+"10945 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
+[v _T5CON `Vuc ~T0 @X0 0 e@1041 ]
+"10951
+[s S509 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :2 `uc 1 :2 `uc 1 ]
+[n S509 . ON . nSYNC OSCEN CKPS CS ]
+"10959
+[s S510 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S510 . TMRON . SYNC SOSCEN CKPS0 CKPS1 CS0 CS1 ]
+"10969
+[s S511 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S511 . TMR5ON . nT5SYNC T5OSCEN . T5CS0 T5CS1 ]
+"10978
+[s S512 :1 `uc 1 :3 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S512 . T5ON . T5CKPS0 T5CKPS1 TMR5CS0 TMR5CS1 ]
+"10950
+[u S508 `S509 1 `S510 1 `S511 1 `S512 1 ]
+[n S508 . . . . . ]
+"10987
+[v _T5CONbits `VS508 ~T0 @X0 0 e@1041 ]
+"11108
+[s S514 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S514 . GSS GVAL GGO_nDONE GSPM GTM GPOL GE ]
+"11117
+[s S515 :1 `uc 1 :1 `uc 1 :5 `uc 1 :1 `uc 1 ]
+[n S515 . GSS0 GSS1 . T5GE ]
+"11123
+[s S516 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S516 . . T5GVAL T5GGO_nDONE T5GSPM T5GTM T5GPOL TMR5GE ]
+"11132
+[s S517 :1 `uc 1 :1 `uc 1 ]
+[n S517 . T5GSS0 T5GSS1 ]
+"11107
+[u S513 `S514 1 `S515 1 `S516 1 `S517 1 ]
+[n S513 . . . . . ]
+"11137
+[v _T5GCONbits `VS513 ~T0 @X0 0 e@1042 ]
+"385 mcc_generated_files/../mcc_generated_files/tmr5.h
+[v _TMR5_CallBack `(v ~T0 @X0 0 ef ]
+"311 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
+[v _WREG `Vuc ~T0 @X0 0 e@9 ]
+"259
+[v _BSR `Vuc ~T0 @X0 0 e@8 ]
+"112
+[v _STATUS `Vuc ~T0 @X0 0 e@3 ]
+"195
+[v _FSR0H `Vuc ~T0 @X0 0 e@5 ]
+"175
+[v _FSR0L `Vuc ~T0 @X0 0 e@4 ]
+"239
+[v _FSR1H `Vuc ~T0 @X0 0 e@7 ]
+"219
+[v _FSR1L `Vuc ~T0 @X0 0 e@6 ]
+"82 mcc_generated_files/../main.h
+[s S2097 `Cuc 1 `uc 1 `uc 1 ]
+[n S2097 PORT_Data PORT_SIZE iPort frameEnd ]
+"104
+[s S2098 `Cuc 1 `Cui * -> 2 `i -> 6 `i `ui -> 6 `i `uc 1 ]
+[n S2098 PWM_Data PWM_REG_SIZE EP_ARRAY reg iReg ]
+"3073 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
 [v _LATD `Vuc ~T0 @X0 0 e@271 ]
-"2887
-[v _LATA `Vuc ~T0 @X0 0 e@268 ]
-"2949
-[v _LATB `Vuc ~T0 @X0 0 e@269 ]
-"3011
-[v _LATC `Vuc ~T0 @X0 0 e@270 ]
-"1990
-[v _TRISE `Vuc ~T0 @X0 0 e@144 ]
-"1742
-[v _TRISA `Vuc ~T0 @X0 0 e@140 ]
-"1804
-[v _TRISB `Vuc ~T0 @X0 0 e@141 ]
-"1866
-[v _TRISC `Vuc ~T0 @X0 0 e@142 ]
-"1928
-[v _TRISD `Vuc ~T0 @X0 0 e@143 ]
-"4193
-[v _ANSELD `Vuc ~T0 @X0 0 e@399 ]
-"4142
-[v _ANSELC `Vuc ~T0 @X0 0 e@398 ]
-"4092
-[v _ANSELB `Vuc ~T0 @X0 0 e@397 ]
-"4255
-[v _ANSELE `Vuc ~T0 @X0 0 e@400 ]
-"4042
-[v _ANSELA `Vuc ~T0 @X0 0 e@396 ]
-"5509
-[v _WPUD `Vuc ~T0 @X0 0 e@527 ]
-"5571
-[v _WPUE `Vuc ~T0 @X0 0 e@528 ]
-"5385
-[v _WPUB `Vuc ~T0 @X0 0 e@525 ]
-"5323
-[v _WPUA `Vuc ~T0 @X0 0 e@524 ]
-"5447
-[v _WPUC `Vuc ~T0 @X0 0 e@526 ]
-"2373
-[s S105 :3 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S105 . PS PSA TMR0SE TMR0CS INTEDG nWPUEN ]
-"2381
-[s S106 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S106 . PS0 PS1 PS2 . T0SE T0CS ]
-"2372
-[u S104 `S105 1 `S106 1 ]
-[n S104 . . . ]
-"2390
-[v _OPTION_REGbits `VS104 ~T0 @X0 0 e@151 ]
-"7665
-[v _ODCONE `Vuc ~T0 @X0 0 e@656 ]
-"7417
-[v _ODCONA `Vuc ~T0 @X0 0 e@652 ]
-"7479
-[v _ODCONB `Vuc ~T0 @X0 0 e@653 ]
-"7541
-[v _ODCONC `Vuc ~T0 @X0 0 e@654 ]
-"7603
-[v _ODCOND `Vuc ~T0 @X0 0 e@655 ]
-"8611
-[v _SLRCONA `Vuc ~T0 @X0 0 e@780 ]
-"8673
-[v _SLRCONB `Vuc ~T0 @X0 0 e@781 ]
-"8735
-[v _SLRCONC `Vuc ~T0 @X0 0 e@782 ]
-"8797
-[v _SLRCOND `Vuc ~T0 @X0 0 e@783 ]
-"8859
-[v _SLRCONE `Vuc ~T0 @X0 0 e@784 ]
-"40988
-[v _RXPPS `Vuc ~T0 @X0 0 e@3645 ]
-"40268
-[v _CCP1PPS `Vuc ~T0 @X0 0 e@3609 ]
-"41468
-[v _RC6PPS `Vuc ~T0 @X0 0 e@3750 ]
+"236 mcc_generated_files/../mcc_generated_files/tmr3.h
+[v _TMR3_WriteTimer `(v ~T0 @X0 0 ef1`ui ]
 [; ;xc.h: 18: extern const char __xc8_OPTIM_SPEED;
 [; ;xc.h: 20: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -16553,129 +16566,499 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 139: extern __bank0 __bit __timeout;
 [; ;pin_manager.h: 114: void PIN_MANAGER_Initialize (void);
 [; ;pin_manager.h: 126: void PIN_MANAGER_IOC(void);
-"55 mcc_generated_files/pin_manager.c
-[v _PIN_MANAGER_Initialize `(v ~T0 @X0 1 ef ]
-"56
-{
-[; ;pin_manager.c: 55: void PIN_MANAGER_Initialize(void)
-[; ;pin_manager.c: 56: {
-[e :U _PIN_MANAGER_Initialize ]
-[f ]
-[; ;pin_manager.c: 60: LATE = 0x00;
-"60
-[e = _LATE -> -> 0 `i `uc ]
-[; ;pin_manager.c: 61: LATD = 0x00;
-"61
-[e = _LATD -> -> 0 `i `uc ]
-[; ;pin_manager.c: 62: LATA = 0x00;
-"62
-[e = _LATA -> -> 0 `i `uc ]
-[; ;pin_manager.c: 63: LATB = 0x00;
-"63
-[e = _LATB -> -> 0 `i `uc ]
-[; ;pin_manager.c: 64: LATC = 0x00;
-"64
-[e = _LATC -> -> 0 `i `uc ]
-[; ;pin_manager.c: 69: TRISE = 0x07;
-"69
-[e = _TRISE -> -> 7 `i `uc ]
-[; ;pin_manager.c: 70: TRISA = 0xFF;
-"70
-[e = _TRISA -> -> 255 `i `uc ]
-[; ;pin_manager.c: 71: TRISB = 0xFF;
+[; ;stdint.h: 13: typedef signed char int8_t;
+[; ;stdint.h: 20: typedef signed int int16_t;
+[; ;stdint.h: 28: typedef __int24 int24_t;
+[; ;stdint.h: 36: typedef signed long int int32_t;
+[; ;stdint.h: 52: typedef unsigned char uint8_t;
+[; ;stdint.h: 58: typedef unsigned int uint16_t;
+[; ;stdint.h: 65: typedef __uint24 uint24_t;
+[; ;stdint.h: 72: typedef unsigned long int uint32_t;
+[; ;stdint.h: 88: typedef signed char int_least8_t;
+[; ;stdint.h: 96: typedef signed int int_least16_t;
+[; ;stdint.h: 109: typedef __int24 int_least24_t;
+[; ;stdint.h: 118: typedef signed long int int_least32_t;
+[; ;stdint.h: 136: typedef unsigned char uint_least8_t;
+[; ;stdint.h: 143: typedef unsigned int uint_least16_t;
+[; ;stdint.h: 154: typedef __uint24 uint_least24_t;
+[; ;stdint.h: 162: typedef unsigned long int uint_least32_t;
+[; ;stdint.h: 181: typedef signed char int_fast8_t;
+[; ;stdint.h: 188: typedef signed int int_fast16_t;
+[; ;stdint.h: 200: typedef __int24 int_fast24_t;
+[; ;stdint.h: 208: typedef signed long int int_fast32_t;
+[; ;stdint.h: 224: typedef unsigned char uint_fast8_t;
+[; ;stdint.h: 230: typedef unsigned int uint_fast16_t;
+[; ;stdint.h: 240: typedef __uint24 uint_fast24_t;
+[; ;stdint.h: 247: typedef unsigned long int uint_fast32_t;
+[; ;stdint.h: 268: typedef int32_t intmax_t;
+[; ;stdint.h: 282: typedef uint32_t uintmax_t;
+[; ;stdint.h: 289: typedef int16_t intptr_t;
+[; ;stdint.h: 294: typedef uint16_t uintptr_t;
+[; ;stdbool.h: 15: typedef unsigned char bool;
+[; ;stdbool.h: 15: typedef unsigned char bool;
+[; ;tmr5.h: 101: void TMR5_Initialize(void);
+[; ;tmr5.h: 130: void TMR5_StartTimer(void);
+[; ;tmr5.h: 162: void TMR5_StopTimer(void);
+[; ;tmr5.h: 197: uint16_t TMR5_ReadTimer(void);
+[; ;tmr5.h: 236: void TMR5_WriteTimer(uint16_t timerVal);
+[; ;tmr5.h: 272: void TMR5_Reload(void);
+[; ;tmr5.h: 311: void TMR5_StartSinglePulseAcquisition(void);
+[; ;tmr5.h: 350: uint8_t TMR5_CheckGateValueStatus(void);
+[; ;tmr5.h: 368: void TMR5_ISR(void);
+[; ;tmr5.h: 385: void TMR5_CallBack(void);
+[; ;tmr5.h: 403: void TMR5_SetInterruptHandler(void (* InterruptHandler)(void));
+[; ;tmr5.h: 421: extern void (*TMR5_InterruptHandler)(void);
+[; ;tmr5.h: 439: void TMR5_DefaultInterruptHandler(void);
+[; ;stdbool.h: 15: typedef unsigned char bool;
+[; ;tmr3.h: 101: void TMR3_Initialize(void);
+[; ;tmr3.h: 130: void TMR3_StartTimer(void);
+[; ;tmr3.h: 162: void TMR3_StopTimer(void);
+[; ;tmr3.h: 197: uint16_t TMR3_ReadTimer(void);
+[; ;tmr3.h: 236: void TMR3_WriteTimer(uint16_t timerVal);
+[; ;tmr3.h: 272: void TMR3_Reload(void);
+[; ;tmr3.h: 311: void TMR3_StartSinglePulseAcquisition(void);
+[; ;tmr3.h: 350: uint8_t TMR3_CheckGateValueStatus(void);
+[; ;tmr3.h: 368: void TMR3_ISR(void);
+[; ;tmr3.h: 385: void TMR3_CallBack(void);
+[; ;tmr3.h: 403: void TMR3_SetInterruptHandler(void (* InterruptHandler)(void));
+[; ;tmr3.h: 421: extern void (*TMR3_InterruptHandler)(void);
+[; ;tmr3.h: 439: void TMR3_DefaultInterruptHandler(void);
+[; ;stdbool.h: 15: typedef unsigned char bool;
+[; ;tmr1.h: 100: void TMR1_Initialize(void);
+[; ;tmr1.h: 129: void TMR1_StartTimer(void);
+[; ;tmr1.h: 161: void TMR1_StopTimer(void);
+[; ;tmr1.h: 196: uint16_t TMR1_ReadTimer(void);
+[; ;tmr1.h: 235: void TMR1_WriteTimer(uint16_t timerVal);
+[; ;tmr1.h: 271: void TMR1_Reload(void);
+[; ;tmr1.h: 310: void TMR1_StartSinglePulseAcquisition(void);
+[; ;tmr1.h: 349: uint8_t TMR1_CheckGateValueStatus(void);
+[; ;tmr1.h: 387: bool TMR1_HasOverflowOccured(void);
+[; ;stdbool.h: 15: typedef unsigned char bool;
+[; ;ccp1.h: 80: typedef union CCPR1Reg_tag
+[; ;ccp1.h: 81: {
+[; ;ccp1.h: 82: struct
+[; ;ccp1.h: 83: {
+[; ;ccp1.h: 84: uint8_t ccpr1l;
+[; ;ccp1.h: 85: uint8_t ccpr1h;
+[; ;ccp1.h: 86: };
+[; ;ccp1.h: 87: struct
+[; ;ccp1.h: 88: {
+[; ;ccp1.h: 89: uint16_t ccpr1_16Bit;
+[; ;ccp1.h: 90: };
+[; ;ccp1.h: 91: } CCP1_PERIOD_REG_T ;
+[; ;ccp1.h: 123: void CCP1_Initialize(void);
+[; ;ccp1.h: 150: bool CCP1_IsCapturedDataReady(void);
+[; ;ccp1.h: 180: uint16_t CCP1_CaptureRead(void);
+[; ;stdbool.h: 15: typedef unsigned char bool;
+[; ;eusart.h: 75: typedef union {
+[; ;eusart.h: 76: struct {
+[; ;eusart.h: 77: unsigned perr : 1;
+[; ;eusart.h: 78: unsigned ferr : 1;
+[; ;eusart.h: 79: unsigned oerr : 1;
+[; ;eusart.h: 80: unsigned reserved : 5;
+[; ;eusart.h: 81: };
+[; ;eusart.h: 82: uint8_t status;
+[; ;eusart.h: 83: }eusart_status_t;
+[; ;eusart.h: 111: void EUSART_Initialize(void);
+[; ;eusart.h: 159: bool EUSART_is_tx_ready(void);
+[; ;eusart.h: 207: bool EUSART_is_rx_ready(void);
+[; ;eusart.h: 254: bool EUSART_is_tx_done(void);
+[; ;eusart.h: 302: eusart_status_t EUSART_get_last_status(void);
+[; ;eusart.h: 322: uint8_t EUSART_Read(void);
+[; ;eusart.h: 342: void EUSART_Write(uint8_t txData);
+[; ;eusart.h: 362: void EUSART_SetFramingErrorHandler(void (* interruptHandler)(void));
+[; ;eusart.h: 380: void EUSART_SetOverrunErrorHandler(void (* interruptHandler)(void));
+[; ;eusart.h: 398: void EUSART_SetErrorHandler(void (* interruptHandler)(void));
+[; ;mcc.h: 74: void SYSTEM_Initialize(void);
+[; ;mcc.h: 87: void OSCILLATOR_Initialize(void);
+[; ;mcc.h: 99: void WDT_Initialize(void);
+[; ;main.h: 82: typedef struct PORT_Data {
+[; ;main.h: 83: const uint8_t PORT_SIZE;
+[; ;main.h: 88: uint8_t iPort;
+[; ;main.h: 89: bool frameEnd;
+[; ;main.h: 100: };
+[; ;main.h: 104: typedef struct PWM_Data {
+[; ;main.h: 106: const uint8_t PWM_REG_SIZE;
+[; ;main.h: 108: const uint16_t EP_ARRAY[2*6];
+[; ;main.h: 118: uint16_t reg[6];
+[; ;main.h: 119: uint8_t iReg;
+[; ;main.h: 125: };
+[; ;main.h: 129: typedef struct UART_Data {
+[; ;main.h: 131: const uint8_t UART_BUF_SIZE;
+[; ;main.h: 132: const uint8_t I_DIR;
+[; ;main.h: 133: const uint8_t I_CRC;
+[; ;main.h: 134: const uint8_t I_UART_BUF_DATA_START;
+[; ;main.h: 136: uint8_t buf[8];
+[; ;main.h: 137: uint8_t iBuf;
+[; ;main.h: 164: };
+[; ;main.h: 166: enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
+[; ;main.h: 168: typedef struct PPM_Data {
+[; ;main.h: 169: const uint8_t PPM_BUF_SIZE;
+[; ;main.h: 171: const uint8_t I_CTRL_MODE;
+[; ;main.h: 172: const uint8_t I_AUTO_MODE;
+[; ;main.h: 173: const uint8_t I_PPM_BUF_DATA_START;
+[; ;main.h: 177: uint16_t buf[8];
+[; ;main.h: 178: uint8_t iBuf;
+[; ;main.h: 181: };
+[; ;main.h: 183: enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
+[; ;main.h: 188: void Init_PPM_Data(struct PPM_Data ppm);
+[; ;main.h: 190: void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm);
+[; ;main.h: 194: bool IsManualMode(struct PPM_Data ppm);
+[; ;main.h: 195: bool IsManipulationMode(struct PPM_Data ppm);
+[; ;main.h: 196: bool IsAutoMode(struct PPM_Data ppm);
+[; ;main.h: 198: bool IsDriveCont();
+[; ;main.h: 199: bool IsUARTMode(struct PPM_Data ppm);
+[; ;main.h: 200: bool IsPPMMode(struct PPM_Data ppm);
+[; ;main.h: 202: bool GetAutoModeState(struct PPM_Data ppm);
+[; ;main.h: 203: bool GetCtrlModeState(struct PPM_Data ppm);
+[; ;main.h: 213: void Init_UART_Data(struct UART_Data uart);
+[; ;main.h: 214: bool CheckCRC(struct UART_Data uart);
+[; ;main.h: 219: void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm);
+[; ;main.h: 225: void Init_PWM_Data(struct PWM_Data pwm);
+[; ;main.h: 227: void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart);
+[; ;main.h: 228: void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm);
+[; ;main.h: 233: uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
+[; ;main.h: 237: void Init_PORT_Data(struct PORT_Data port);
+"64 mcc_generated_files/tmr5.c
+[v _timer5ReloadVal `Vui ~T0 @X0 1 e ]
+[; ;tmr5.c: 64: volatile uint16_t timer5ReloadVal;
+"65
+[v _TMR5_InterruptHandler `*F14522 ~T0 @X0 1 e ]
+[; ;tmr5.c: 65: void (*TMR5_InterruptHandler)(void);
 "71
-[e = _TRISB -> -> 255 `i `uc ]
-[; ;pin_manager.c: 72: TRISC = 0xBF;
+[v _TMR5_Initialize `(v ~T0 @X0 1 ef ]
 "72
-[e = _TRISC -> -> 191 `i `uc ]
-[; ;pin_manager.c: 73: TRISD = 0xFF;
-"73
-[e = _TRISD -> -> 255 `i `uc ]
-[; ;pin_manager.c: 78: ANSELD = 0xFF;
-"78
-[e = _ANSELD -> -> 255 `i `uc ]
-[; ;pin_manager.c: 79: ANSELC = 0x78;
-"79
-[e = _ANSELC -> -> 120 `i `uc ]
-[; ;pin_manager.c: 80: ANSELB = 0x3F;
-"80
-[e = _ANSELB -> -> 63 `i `uc ]
-[; ;pin_manager.c: 81: ANSELE = 0x07;
-"81
-[e = _ANSELE -> -> 7 `i `uc ]
-[; ;pin_manager.c: 82: ANSELA = 0x3F;
-"82
-[e = _ANSELA -> -> 63 `i `uc ]
-[; ;pin_manager.c: 87: WPUD = 0x00;
-"87
-[e = _WPUD -> -> 0 `i `uc ]
-[; ;pin_manager.c: 88: WPUE = 0x00;
-"88
-[e = _WPUE -> -> 0 `i `uc ]
-[; ;pin_manager.c: 89: WPUB = 0x00;
-"89
-[e = _WPUB -> -> 0 `i `uc ]
-[; ;pin_manager.c: 90: WPUA = 0x00;
-"90
-[e = _WPUA -> -> 0 `i `uc ]
-[; ;pin_manager.c: 91: WPUC = 0x00;
-"91
-[e = _WPUC -> -> 0 `i `uc ]
-[; ;pin_manager.c: 92: OPTION_REGbits.nWPUEN = 1;
-"92
-[e = . . _OPTION_REGbits 0 5 -> -> 1 `i `uc ]
-[; ;pin_manager.c: 97: ODCONE = 0x00;
-"97
-[e = _ODCONE -> -> 0 `i `uc ]
-[; ;pin_manager.c: 98: ODCONA = 0x00;
-"98
-[e = _ODCONA -> -> 0 `i `uc ]
-[; ;pin_manager.c: 99: ODCONB = 0x00;
-"99
-[e = _ODCONB -> -> 0 `i `uc ]
-[; ;pin_manager.c: 100: ODCONC = 0x00;
-"100
-[e = _ODCONC -> -> 0 `i `uc ]
-[; ;pin_manager.c: 101: ODCOND = 0x00;
-"101
-[e = _ODCOND -> -> 0 `i `uc ]
-[; ;pin_manager.c: 106: SLRCONA = 0xFF;
-"106
-[e = _SLRCONA -> -> 255 `i `uc ]
-[; ;pin_manager.c: 107: SLRCONB = 0xFF;
-"107
-[e = _SLRCONB -> -> 255 `i `uc ]
-[; ;pin_manager.c: 108: SLRCONC = 0xFF;
-"108
-[e = _SLRCONC -> -> 255 `i `uc ]
-[; ;pin_manager.c: 109: SLRCOND = 0xFF;
-"109
-[e = _SLRCOND -> -> 255 `i `uc ]
-[; ;pin_manager.c: 110: SLRCONE = 0x07;
-"110
-[e = _SLRCONE -> -> 7 `i `uc ]
-[; ;pin_manager.c: 119: RXPPS = 0x17;
-"119
-[e = _RXPPS -> -> 23 `i `uc ]
-[; ;pin_manager.c: 120: CCP1PPS = 0x12;
-"120
-[e = _CCP1PPS -> -> 18 `i `uc ]
-[; ;pin_manager.c: 121: RC6PPS = 0x24;
-"121
-[e = _RC6PPS -> -> 36 `i `uc ]
-[; ;pin_manager.c: 122: }
-"122
-[e :UE 2092 ]
-}
-"124
-[v _PIN_MANAGER_IOC `(v ~T0 @X0 1 ef ]
-"125
 {
-[; ;pin_manager.c: 124: void PIN_MANAGER_IOC(void)
-[; ;pin_manager.c: 125: {
-[e :U _PIN_MANAGER_IOC ]
+[; ;tmr5.c: 71: void TMR5_Initialize(void)
+[; ;tmr5.c: 72: {
+[e :U _TMR5_Initialize ]
 [f ]
-[; ;pin_manager.c: 126: }
-"126
-[e :UE 2093 ]
+[; ;tmr5.c: 76: T5GCON = 0x00;
+"76
+[e = _T5GCON -> -> 0 `i `uc ]
+[; ;tmr5.c: 79: TMR5H = 0x63;
+"79
+[e = _TMR5H -> -> 99 `i `uc ]
+[; ;tmr5.c: 82: TMR5L = 0xC0;
+"82
+[e = _TMR5L -> -> 192 `i `uc ]
+[; ;tmr5.c: 85: timer5ReloadVal=(uint16_t)((TMR5H << 8) | TMR5L);
+"85
+[e = _timer5ReloadVal -> | << -> _TMR5H `i -> 8 `i -> _TMR5L `i `ui ]
+[; ;tmr5.c: 88: PIR4bits.TMR5IF = 0;
+"88
+[e = . . _PIR4bits 0 4 -> -> 0 `i `uc ]
+[; ;tmr5.c: 91: PIE4bits.TMR5IE = 1;
+"91
+[e = . . _PIE4bits 0 4 -> -> 1 `i `uc ]
+[; ;tmr5.c: 94: TMR5_SetInterruptHandler(TMR5_DefaultInterruptHandler);
+"94
+[e ( _TMR5_SetInterruptHandler (1 &U _TMR5_DefaultInterruptHandler ]
+[; ;tmr5.c: 97: T5CON = 0x21;
+"97
+[e = _T5CON -> -> 33 `i `uc ]
+[; ;tmr5.c: 98: }
+"98
+[e :UE 2101 ]
+}
+"100
+[v _TMR5_StartTimer `(v ~T0 @X0 1 ef ]
+"101
+{
+[; ;tmr5.c: 100: void TMR5_StartTimer(void)
+[; ;tmr5.c: 101: {
+[e :U _TMR5_StartTimer ]
+[f ]
+[; ;tmr5.c: 103: T5CONbits.TMR5ON = 1;
+"103
+[e = . . _T5CONbits 2 0 -> -> 1 `i `uc ]
+[; ;tmr5.c: 104: }
+"104
+[e :UE 2102 ]
+}
+"106
+[v _TMR5_StopTimer `(v ~T0 @X0 1 ef ]
+"107
+{
+[; ;tmr5.c: 106: void TMR5_StopTimer(void)
+[; ;tmr5.c: 107: {
+[e :U _TMR5_StopTimer ]
+[f ]
+[; ;tmr5.c: 109: T5CONbits.TMR5ON = 0;
+"109
+[e = . . _T5CONbits 2 0 -> -> 0 `i `uc ]
+[; ;tmr5.c: 110: }
+"110
+[e :UE 2103 ]
+}
+"112
+[v _TMR5_ReadTimer `(ui ~T0 @X0 1 ef ]
+"113
+{
+[; ;tmr5.c: 112: uint16_t TMR5_ReadTimer(void)
+[; ;tmr5.c: 113: {
+[e :U _TMR5_ReadTimer ]
+[f ]
+"114
+[v _readVal `ui ~T0 @X0 1 a ]
+"115
+[v _readValHigh `uc ~T0 @X0 1 a ]
+"116
+[v _readValLow `uc ~T0 @X0 1 a ]
+[; ;tmr5.c: 114: uint16_t readVal;
+[; ;tmr5.c: 115: uint8_t readValHigh;
+[; ;tmr5.c: 116: uint8_t readValLow;
+[; ;tmr5.c: 119: readValLow = TMR5L;
+"119
+[e = _readValLow _TMR5L ]
+[; ;tmr5.c: 120: readValHigh = TMR5H;
+"120
+[e = _readValHigh _TMR5H ]
+[; ;tmr5.c: 122: readVal = ((uint16_t)readValHigh << 8) | readValLow;
+"122
+[e = _readVal | << -> _readValHigh `ui -> 8 `i -> _readValLow `ui ]
+[; ;tmr5.c: 124: return readVal;
+"124
+[e ) _readVal ]
+[e $UE 2104  ]
+[; ;tmr5.c: 125: }
+"125
+[e :UE 2104 ]
+}
+"127
+[v _TMR5_WriteTimer `(v ~T0 @X0 1 ef1`ui ]
+"128
+{
+[; ;tmr5.c: 127: void TMR5_WriteTimer(uint16_t timerVal)
+[; ;tmr5.c: 128: {
+[e :U _TMR5_WriteTimer ]
+"127
+[v _timerVal `ui ~T0 @X0 1 r1 ]
+"128
+[f ]
+[; ;tmr5.c: 129: if (T5CONbits.nT5SYNC == 1)
+"129
+[e $ ! == -> . . _T5CONbits 2 2 `i -> 1 `i 2106  ]
+[; ;tmr5.c: 130: {
+"130
+{
+[; ;tmr5.c: 132: T5CONbits.TMR5ON = 0;
+"132
+[e = . . _T5CONbits 2 0 -> -> 0 `i `uc ]
+[; ;tmr5.c: 135: TMR5H = (timerVal >> 8);
+"135
+[e = _TMR5H -> >> _timerVal -> 8 `i `uc ]
+[; ;tmr5.c: 136: TMR5L = timerVal;
+"136
+[e = _TMR5L -> _timerVal `uc ]
+[; ;tmr5.c: 139: T5CONbits.TMR5ON =1;
+"139
+[e = . . _T5CONbits 2 0 -> -> 1 `i `uc ]
+"140
+}
+[; ;tmr5.c: 140: }
+[e $U 2107  ]
+"141
+[e :U 2106 ]
+[; ;tmr5.c: 141: else
+[; ;tmr5.c: 142: {
+"142
+{
+[; ;tmr5.c: 144: TMR5H = (timerVal >> 8);
+"144
+[e = _TMR5H -> >> _timerVal -> 8 `i `uc ]
+[; ;tmr5.c: 145: TMR5L = timerVal;
+"145
+[e = _TMR5L -> _timerVal `uc ]
+"146
+}
+[e :U 2107 ]
+[; ;tmr5.c: 146: }
+[; ;tmr5.c: 147: }
+"147
+[e :UE 2105 ]
+}
+"149
+[v _TMR5_Reload `(v ~T0 @X0 1 ef ]
+"150
+{
+[; ;tmr5.c: 149: void TMR5_Reload(void)
+[; ;tmr5.c: 150: {
+[e :U _TMR5_Reload ]
+[f ]
+[; ;tmr5.c: 151: TMR5_WriteTimer(timer5ReloadVal);
+"151
+[e ( _TMR5_WriteTimer (1 _timer5ReloadVal ]
+[; ;tmr5.c: 152: }
+"152
+[e :UE 2108 ]
+}
+"154
+[v _TMR5_StartSinglePulseAcquisition `(v ~T0 @X0 1 ef ]
+"155
+{
+[; ;tmr5.c: 154: void TMR5_StartSinglePulseAcquisition(void)
+[; ;tmr5.c: 155: {
+[e :U _TMR5_StartSinglePulseAcquisition ]
+[f ]
+[; ;tmr5.c: 156: T5GCONbits.T5GGO_nDONE = 1;
+"156
+[e = . . _T5GCONbits 2 2 -> -> 1 `i `uc ]
+[; ;tmr5.c: 157: }
+"157
+[e :UE 2109 ]
+}
+"159
+[v _TMR5_CheckGateValueStatus `(uc ~T0 @X0 1 ef ]
+"160
+{
+[; ;tmr5.c: 159: uint8_t TMR5_CheckGateValueStatus(void)
+[; ;tmr5.c: 160: {
+[e :U _TMR5_CheckGateValueStatus ]
+[f ]
+[; ;tmr5.c: 161: return (T5GCONbits.T5GVAL);
+"161
+[e ) . . _T5GCONbits 2 1 ]
+[e $UE 2110  ]
+[; ;tmr5.c: 162: }
+"162
+[e :UE 2110 ]
+}
+"164
+[v _TMR5_ISR `(v ~T0 @X0 1 ef ]
+"165
+{
+[; ;tmr5.c: 164: void TMR5_ISR(void)
+[; ;tmr5.c: 165: {
+[e :U _TMR5_ISR ]
+[f ]
+[; ;tmr5.c: 168: PIR4bits.TMR5IF = 0;
+"168
+[e = . . _PIR4bits 0 4 -> -> 0 `i `uc ]
+[; ;tmr5.c: 169: TMR5_WriteTimer(timer5ReloadVal);
+"169
+[e ( _TMR5_WriteTimer (1 _timer5ReloadVal ]
+[; ;tmr5.c: 174: TMR5_CallBack();
+"174
+[e ( _TMR5_CallBack ..  ]
+[; ;tmr5.c: 175: }
+"175
+[e :UE 2111 ]
+}
+"177
+[v _TMR5_CallBack `(v ~T0 @X0 1 ef ]
+"178
+{
+[; ;tmr5.c: 177: void TMR5_CallBack(void)
+[; ;tmr5.c: 178: {
+[e :U _TMR5_CallBack ]
+[f ]
+"184
+[v _saveWREG `uc ~T0 @X0 1 a ]
+[; ;tmr5.c: 184: uint8_t saveWREG = WREG;
+[e = _saveWREG _WREG ]
+"185
+[v _saveBSR `uc ~T0 @X0 1 a ]
+[; ;tmr5.c: 185: uint8_t saveBSR = BSR;
+[e = _saveBSR _BSR ]
+"186
+[v _saveSTATUS `uc ~T0 @X0 1 a ]
+[; ;tmr5.c: 186: uint8_t saveSTATUS = STATUS;
+[e = _saveSTATUS _STATUS ]
+"187
+[v _saveFSR0H `uc ~T0 @X0 1 a ]
+[; ;tmr5.c: 187: uint8_t saveFSR0H = FSR0H;
+[e = _saveFSR0H _FSR0H ]
+"188
+[v _saveFSR0L `uc ~T0 @X0 1 a ]
+[; ;tmr5.c: 188: uint8_t saveFSR0L = FSR0L;
+[e = _saveFSR0L _FSR0L ]
+"189
+[v _saveFSR1H `uc ~T0 @X0 1 a ]
+[; ;tmr5.c: 189: uint8_t saveFSR1H = FSR1H;
+[e = _saveFSR1H _FSR1H ]
+"190
+[v _saveFSR1L `uc ~T0 @X0 1 a ]
+[; ;tmr5.c: 190: uint8_t saveFSR1L = FSR1L;
+[e = _saveFSR1L _FSR1L ]
+[; ;tmr5.c: 193: if(TMR5_InterruptHandler)
+"193
+[e $ ! != _TMR5_InterruptHandler -> -> 0 `i `*F14522 2113  ]
+[; ;tmr5.c: 194: {
+"194
+{
+[; ;tmr5.c: 195: TMR5_InterruptHandler();
+"195
+[e ( *U _TMR5_InterruptHandler ..  ]
+"196
+}
+[e :U 2113 ]
+[; ;tmr5.c: 196: }
+[; ;tmr5.c: 199: FSR0H = saveFSR0H;
+"199
+[e = _FSR0H _saveFSR0H ]
+[; ;tmr5.c: 200: FSR0L = saveFSR0L;
+"200
+[e = _FSR0L _saveFSR0L ]
+[; ;tmr5.c: 201: FSR1H = saveFSR1H;
+"201
+[e = _FSR1H _saveFSR1H ]
+[; ;tmr5.c: 202: FSR1L = saveFSR1L;
+"202
+[e = _FSR1L _saveFSR1L ]
+[; ;tmr5.c: 203: STATUS = saveSTATUS;
+"203
+[e = _STATUS _saveSTATUS ]
+[; ;tmr5.c: 204: BSR = saveBSR;
+"204
+[e = _BSR _saveBSR ]
+[; ;tmr5.c: 205: WREG = saveWREG;
+"205
+[e = _WREG _saveWREG ]
+[; ;tmr5.c: 206: }
+"206
+[e :UE 2112 ]
+}
+"208
+[v _TMR5_SetInterruptHandler `(v ~T0 @X0 1 ef1`*F14519 ]
+{
+[; ;tmr5.c: 208: void TMR5_SetInterruptHandler(void (* InterruptHandler)(void)){
+[e :U _TMR5_SetInterruptHandler ]
+[v F14729 `(v ~T0 @X0 0 tf ]
+[v _InterruptHandler `*F14729 ~T0 @X0 1 r1 ]
+[f ]
+[; ;tmr5.c: 209: TMR5_InterruptHandler = InterruptHandler;
+"209
+[e = _TMR5_InterruptHandler _InterruptHandler ]
+[; ;tmr5.c: 210: }
+"210
+[e :UE 2114 ]
+}
+"212
+[v _TMR5_DefaultInterruptHandler `(v ~T0 @X0 1 ef ]
+{
+[; ;tmr5.c: 212: void TMR5_DefaultInterruptHandler(void){
+[e :U _TMR5_DefaultInterruptHandler ]
+[f ]
+"216
+[v _portData `S2097 ~T0 @X0 0 e ]
+"217
+[v _pwmData `S2098 ~T0 @X0 0 e ]
+[; ;tmr5.c: 216: extern struct PORT_Data portData;
+[; ;tmr5.c: 217: extern struct PWM_Data pwmData;
+[; ;tmr5.c: 219: portData.frameEnd = 0;
+"219
+[e = . _portData 2 -> -> 0 `i `uc ]
+[; ;tmr5.c: 221: portData.iPort = 0;
+"221
+[e = . _portData 1 -> -> 0 `i `uc ]
+[; ;tmr5.c: 222: LATD = 0x01;
+"222
+[e = _LATD -> -> 1 `i `uc ]
+[; ;tmr5.c: 225: TMR3_WriteTimer(pwmData.reg[portData.iPort]);
+"225
+[e ( _TMR3_WriteTimer (1 *U + &U . _pwmData 2 * -> . _portData 1 `ux -> -> # *U &U . _pwmData 2 `ui `ux ]
+[; ;tmr5.c: 227: }
+"227
+[e :UE 2115 ]
 }
