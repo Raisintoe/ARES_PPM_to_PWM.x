@@ -122,6 +122,10 @@ void main(void)
     Init_UART_Data(uartData);
     Init_PPM_Data(ppmData);
     
+    // TODO MAYBE
+    //  1. Clear TRISD<0:5> bits
+    //  
+    
     while (1)
     {
         // Add your application code
