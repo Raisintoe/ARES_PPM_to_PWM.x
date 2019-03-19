@@ -62,10 +62,6 @@ void __interrupt() INTERRUPT_InterruptManager (void)
         {
             TMR3_ISR();
         } 
-        else if(PIE1bits.CCP1IE == 1 && PIR1bits.CCP1IF == 1)
-        {
-            CCP1_CaptureISR();
-        } 
         else
         {
             //Unhandled Interrupt

@@ -16579,9 +16579,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;tmr1.c: 68: T1GCON = 0x00;
 "68
 [e = _T1GCON -> -> 0 `i `uc ]
-[; ;tmr1.c: 71: TMR1H = 0x06;
+[; ;tmr1.c: 71: TMR1H = 0x00;
 "71
-[e = _TMR1H -> -> 6 `i `uc ]
+[e = _TMR1H -> -> 0 `i `uc ]
 [; ;tmr1.c: 74: TMR1L = 0x00;
 "74
 [e = _TMR1L -> -> 0 `i `uc ]
@@ -16591,9 +16591,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;tmr1.c: 80: PIR1bits.TMR1IF = 0;
 "80
 [e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
-[; ;tmr1.c: 83: T1CON = 0x01;
+[; ;tmr1.c: 83: T1CON = 0x11;
 "83
-[e = _T1CON -> -> 1 `i `uc ]
+[e = _T1CON -> -> 17 `i `uc ]
 [; ;tmr1.c: 84: }
 "84
 [e :UE 2092 ]

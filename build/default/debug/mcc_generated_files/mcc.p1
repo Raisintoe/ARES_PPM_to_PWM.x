@@ -16585,8 +16585,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ccp1.h: 90: };
 [; ;ccp1.h: 91: } CCP1_PERIOD_REG_T ;
 [; ;ccp1.h: 123: void CCP1_Initialize(void);
-[; ;ccp1.h: 139: void CCP1_CaptureISR(void);
-[; ;ccp1.h: 180: void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
+[; ;ccp1.h: 150: bool CCP1_IsCapturedDataReady(void);
+[; ;ccp1.h: 180: uint16_t CCP1_CaptureRead(void);
 [; ;stdbool.h: 15: typedef unsigned char bool;
 [; ;eusart.h: 75: typedef union {
 [; ;eusart.h: 76: struct {

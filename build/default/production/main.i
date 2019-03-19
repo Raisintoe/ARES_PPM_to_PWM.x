@@ -24250,11 +24250,11 @@ uint16_t ccpr1_16Bit;
 # 123
 void CCP1_Initialize(void);
 
-# 139
-void CCP1_CaptureISR(void);
+# 150
+bool CCP1_IsCapturedDataReady(void);
 
 # 180
-void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
+uint16_t CCP1_CaptureRead(void);
 
 # 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
 typedef unsigned char bool;
@@ -24442,7 +24442,7 @@ Init_PPM_Data(&ppmData);
 
 TRISD = 0xC0;
 
-# 135
+# 137
 while (1)
 {
 

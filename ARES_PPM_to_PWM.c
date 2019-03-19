@@ -121,18 +121,18 @@ void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart) {
 
 void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm) {
     for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
-        pwm->reg[i] = Filter(pwm, ppm->buf[i+ppm->I_PPM_BUF_DATA_START], i);
+        pwm->reg[i] = Filter(pwm, ~ppm->buf[i+ppm->I_PPM_BUF_DATA_START], i);   //complement of ppm (time period) gives starting time for TMR3
     }
 }
 
 //PPM_Data struct functions
 void Init_PPM_Data(struct PPM_Data *ppm) {
-//    buf[I_MANUAL_MODE] = _1MS_COMP;     //Manual mode is disabled by default
-    if(_PIC_IS_DRIVE_CONT == true) ppm->buf[ppm->I_CTRL_MODE] = _2MS_COMP;      //Drive mode is selected by default (not manipulation mode)
-    else ppm->buf[ppm->I_CTRL_MODE] = _1MS_COMP;
-    ppm->buf[ppm->I_AUTO_MODE] = _1MS_COMP;      //Autonomous Mode is disabled by default
+//    buf[I_MANUAL_MODE] = _1MS;     //Manual mode is disabled by default
+    if(_PIC_IS_DRIVE_CONT == true) ppm->buf[ppm->I_CTRL_MODE] = _2MS;      //Drive mode is selected by default (not manipulation mode)
+    else ppm->buf[ppm->I_CTRL_MODE] = _1MS;
+    ppm->buf[ppm->I_AUTO_MODE] = _1MS;      //Autonomous Mode is disabled by default
     for (uint8_t i = ppm->I_PPM_BUF_DATA_START; i < ppm->PPM_BUF_SIZE; i++) {
-        ppm->buf[i] = _1_5MS_COMP;    //1.5 ms as default (0 position)
+        ppm->buf[i] = _1_5MS;    //1.5 ms as default (0 position)
     }
     ppm->iBuf = 0;   //buffer index
     
@@ -144,7 +144,7 @@ void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm) {
         switch(ppmLoadState) {
             case PPM_READY:
                 ppm->iBuf = 0;
-                if(CCP1_CaptureRead() <= _6MS_COMP) {   //assuming a break pulse to be at least 6ms (knowing the _6MS_COMP is the compliment value)
+                if(CCP1_CaptureRead() >= _6MS) {   //assuming a break pulse to be at least 6ms (knowing the _6MS_COMP is the compliment value)
                     ppmLoadState = BREAK_RECEIVED;
                 }
                 break;
@@ -176,12 +176,12 @@ void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm) {
 }
 
 bool GetAutoModeState(struct PPM_Data *ppm) {
-    if(ppm->buf[ppm->I_AUTO_MODE] > _1_5MS_COMP) return false;
+    if(ppm->buf[ppm->I_AUTO_MODE] < _1_5MS) return false;
     else return true;
 }
 
 bool GetCtrlModeState(struct PPM_Data *ppm) {
-    if(ppm->buf[ppm->I_CTRL_MODE] > _1_5MS_COMP) return false;
+    if(ppm->buf[ppm->I_CTRL_MODE] < _1_5MS) return false;
     else return true;
 }
 
@@ -238,10 +238,12 @@ bool CheckCRC(struct UART_Data *uart) {
 }
 
 void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm) {
-    if(PIR1bits.RCIF == 1) {
-        //PIR1bits.RCIF = 0;  //clear the UART receive interrupt flag
-        //RCREG must be read to clear RCIF
-    }
+    if(PIR1bits.RCIF == 0) return;  //safe to place this in the function.
+                                    //If the flag is clear, then do not try reading UART
+//    if(PIR1bits.RCIF == 1) {
+//        //PIR1bits.RCIF = 0;  //clear the UART receive interrupt flag
+//        //RCREG must be read to clear RCIF
+//    }
     
     uint8_t byte;
     

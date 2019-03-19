@@ -67,8 +67,8 @@ void TMR1_Initialize(void)
     //GSS T1G_pin; TMR1GE disabled; T1GTM disabled; T1GPOL low; T1GGO_nDONE done; T1GSPM disabled; 
     T1GCON = 0x00;
 
-    //TMR 6; 
-    TMR1H = 0x06;
+    //TMR 0; 
+    TMR1H = 0x00;
 
     //TMR 0; 
     TMR1L = 0x00;
@@ -79,8 +79,8 @@ void TMR1_Initialize(void)
     // Clearing IF flag.
     PIR1bits.TMR1IF = 0;
 
-    // CKPS 1:1; T1OSCEN disabled; nT1SYNC synchronize; CS FOSC/4; TMR1ON enabled; 
-    T1CON = 0x01;
+    // CKPS 1:2; T1OSCEN disabled; nT1SYNC synchronize; CS FOSC/4; TMR1ON enabled; 
+    T1CON = 0x11;
 }
 
 void TMR1_StartTimer(void)

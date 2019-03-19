@@ -15,18 +15,18 @@
 #define _DIR_FORWARD    1       //UART direction interpretation
 #define _DIR_REVERSE    0
 
-#define _1MS_COMP       0xE0C0  //1ms as interpreted by timer1 and timer3
-#define _1_5MS_COMP     0xD120  //1.5ms as interpreted by timer1 and timer3
-#define _2MS_COMP       0xC180  //2ms as interpreted by timer1 and timer3
+#define _1MS_COMP       0xF060  //1ms as interpreted by timer1 and timer3
+#define _1_5MS_COMP     0xE890  //1.5ms as interpreted by timer1 and timer3
+#define _2MS_COMP       0xE0C0  //2ms as interpreted by timer1 and timer3
 #define _RESOLUTION     _1MS-_2MS
-#define _4MS_COMP       0x8300
-#define _6MS_COMP       0x4480  //For Detecting Break Pulse
+#define _4MS_COMP       0xC180
+#define _6MS_COMP       0xA240  //For Detecting Break Pulse
 
-#define _1MS            0xFFFF - _1MS_COMP
-#define _1_5MS          0xFFFF - _1_5MS_COMP
-#define _2MS            0xFFFF - _2MS_COMP
-#define _4MS            0xFFFF - _4MS_COMP
-#define _6MS            0xFFFF - _6MS_COMP
+#define _1MS            ~_1MS_COMP // or 0xFFFF - _1MS_COMP
+#define _1_5MS          ~_1_5MS_COMP // or 0xFFFF - _1_5MS_COMP
+#define _2MS            ~_2MS_COMP // or 0xFFFF - _2MS_COMP
+#define _4MS            ~_4MS_COMP // or 0xFFFF - _4MS_COMP
+#define _6MS            ~_6MS_COMP // or 0xFFFF - _6MS_COMP
 
 //GO UART command definitions 
 #define _PID_DRIVE      0x00    //UART Packet ID for drive

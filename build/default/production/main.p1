@@ -16616,8 +16616,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ccp1.h: 90: };
 [; ;ccp1.h: 91: } CCP1_PERIOD_REG_T ;
 [; ;ccp1.h: 123: void CCP1_Initialize(void);
-[; ;ccp1.h: 139: void CCP1_CaptureISR(void);
-[; ;ccp1.h: 180: void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
+[; ;ccp1.h: 150: bool CCP1_IsCapturedDataReady(void);
+[; ;ccp1.h: 180: uint16_t CCP1_CaptureRead(void);
 [; ;stdbool.h: 15: typedef unsigned char bool;
 [; ;eusart.h: 75: typedef union {
 [; ;eusart.h: 76: struct {
@@ -16725,42 +16725,42 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 129: TRISD = 0xC0;
 "129
 [e = _TRISD -> -> 192 `i `uc ]
-[; ;main.c: 135: while (1)
-"135
+[; ;main.c: 137: while (1)
+"137
 [e :U 2103 ]
-[; ;main.c: 136: {
-"136
+[; ;main.c: 138: {
+"138
 {
-[; ;main.c: 139: if(PIR1bits.CCP1IF == 1) {
-"139
+[; ;main.c: 141: if(PIR1bits.CCP1IF == 1) {
+"141
 [e $ ! == -> . . _PIR1bits 0 2 `i -> 1 `i 2105  ]
 {
-[; ;main.c: 140: PPMRead(&ppmData, &pwmData);
-"140
+[; ;main.c: 142: PPMRead(&ppmData, &pwmData);
+"142
 [e ( _PPMRead (2 , &U _ppmData &U _pwmData ]
-"141
+"143
 }
 [e :U 2105 ]
-[; ;main.c: 141: }
-[; ;main.c: 142: if(PIR1bits.RCIF == 1) {
-"142
+[; ;main.c: 143: }
+[; ;main.c: 144: if(PIR1bits.RCIF == 1) {
+"144
 [e $ ! == -> . . _PIR1bits 0 5 `i -> 1 `i 2106  ]
 {
-[; ;main.c: 143: LoadByte(&uartData, &ppmData, &pwmData);
-"143
+[; ;main.c: 145: LoadByte(&uartData, &ppmData, &pwmData);
+"145
 [e ( _LoadByte (3 , , &U _uartData &U _ppmData &U _pwmData ]
-"144
+"146
 }
 [e :U 2106 ]
-"148
+"150
 }
 [e :U 2102 ]
-"135
+"137
 [e $U 2103  ]
 [e :U 2104 ]
-[; ;main.c: 144: }
-[; ;main.c: 148: }
-[; ;main.c: 149: }
-"149
+[; ;main.c: 146: }
+[; ;main.c: 150: }
+[; ;main.c: 151: }
+"151
 [e :UE 2101 ]
 }

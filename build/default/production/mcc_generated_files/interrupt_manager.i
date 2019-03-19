@@ -24250,11 +24250,11 @@ uint16_t ccpr1_16Bit;
 # 123
 void CCP1_Initialize(void);
 
-# 139
-void CCP1_CaptureISR(void);
+# 150
+bool CCP1_IsCapturedDataReady(void);
 
 # 180
-void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
+uint16_t CCP1_CaptureRead(void);
 
 # 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
 typedef unsigned char bool;
@@ -24322,10 +24322,6 @@ TMR5_ISR();
 else if(PIE4bits.TMR3IE == 1 && PIR4bits.TMR3IF == 1)
 {
 TMR3_ISR();
-}
-else if(PIE1bits.CCP1IE == 1 && PIR1bits.CCP1IF == 1)
-{
-CCP1_CaptureISR();
 }
 else
 {

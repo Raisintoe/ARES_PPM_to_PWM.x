@@ -16645,8 +16645,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ccp1.h: 90: };
 [; ;ccp1.h: 91: } CCP1_PERIOD_REG_T ;
 [; ;ccp1.h: 123: void CCP1_Initialize(void);
-[; ;ccp1.h: 139: void CCP1_CaptureISR(void);
-[; ;ccp1.h: 180: void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
+[; ;ccp1.h: 150: bool CCP1_IsCapturedDataReady(void);
+[; ;ccp1.h: 180: uint16_t CCP1_CaptureRead(void);
 [; ;stdbool.h: 15: typedef unsigned char bool;
 [; ;eusart.h: 75: typedef union {
 [; ;eusart.h: 76: struct {
@@ -16734,12 +16734,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;tmr3.c: 70: T3GCON = 0x00;
 "70
 [e = _T3GCON -> -> 0 `i `uc ]
-[; ;tmr3.c: 73: TMR3H = 0xD1;
+[; ;tmr3.c: 73: TMR3H = 0xA2;
 "73
-[e = _TMR3H -> -> 209 `i `uc ]
-[; ;tmr3.c: 76: TMR3L = 0x20;
+[e = _TMR3H -> -> 162 `i `uc ]
+[; ;tmr3.c: 76: TMR3L = 0x40;
 "76
-[e = _TMR3L -> -> 32 `i `uc ]
+[e = _TMR3L -> -> 64 `i `uc ]
 [; ;tmr3.c: 79: timer3ReloadVal=(uint16_t)((TMR3H << 8) | TMR3L);
 "79
 [e = _timer3ReloadVal -> | << -> _TMR3H `i -> 8 `i -> _TMR3L `i `ui ]
@@ -16752,9 +16752,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;tmr3.c: 88: TMR3_SetInterruptHandler(TMR3_DefaultInterruptHandler);
 "88
 [e ( _TMR3_SetInterruptHandler (1 &U _TMR3_DefaultInterruptHandler ]
-[; ;tmr3.c: 91: T3CON = 0x01;
+[; ;tmr3.c: 91: T3CON = 0x11;
 "91
-[e = _T3CON -> -> 1 `i `uc ]
+[e = _T3CON -> -> 17 `i `uc ]
 [; ;tmr3.c: 92: }
 "92
 [e :UE 2101 ]
@@ -17019,8 +17019,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;tmr3.c: 198: void TMR3_SetInterruptHandler(void (* InterruptHandler)(void)){
 [e :U _TMR3_SetInterruptHandler ]
-[v F14731 `(v ~T0 @X0 0 tf ]
-[v _InterruptHandler `*F14731 ~T0 @X0 1 r1 ]
+[v F14729 `(v ~T0 @X0 0 tf ]
+[v _InterruptHandler `*F14729 ~T0 @X0 1 r1 ]
 [f ]
 [; ;tmr3.c: 199: TMR3_InterruptHandler = InterruptHandler;
 "199

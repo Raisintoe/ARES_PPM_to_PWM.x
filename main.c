@@ -132,6 +132,8 @@ Init_PPM_Data(&ppmData);
     //  1. Clear TRISD<0:5> bits
     //  
     
+    //TODO: add a timer to prevent driving if no signal received from either source within 200 ms (expecting 100ms update from UART, and 20ms update from PPM)
+
     while (1)
     {
         // Add your application code

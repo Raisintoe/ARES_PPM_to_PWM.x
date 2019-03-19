@@ -5,11 +5,12 @@
         <group>
             <file>file:/home/derek/MPLABXProjects/GIT_REPOSITORIES/ARES_PPM_to_PWM.x/main.h</file>
             <file>file:/home/derek/MPLABXProjects/GIT_REPOSITORIES/ARES_PPM_to_PWM.x/main.c</file>
+            <file>file:/opt/microchip/xc8/v2.05/pic/sources/c90/common/sprcmul.c</file>
             <file>file:/home/derek/MPLABXProjects/GIT_REPOSITORIES/ARES_PPM_to_PWM.x/mcc_generated_files/ccp1.c</file>
+            <file>file:/opt/microchip/xc8/v2.05/pic/sources/c90/common/xxtofl.c</file>
             <file>file:/home/derek/MPLABXProjects/GIT_REPOSITORIES/ARES_PPM_to_PWM.x/ARES_PPM_to_PWM.c</file>
-            <file>file:/home/derek/MPLABXProjects/GIT_REPOSITORIES/ARES_PPM_to_PWM.x/mcc_generated_files/tmr5.c</file>
-            <file>file:/home/derek/MPLABXProjects/GIT_REPOSITORIES/ARES_PPM_to_PWM.x/mcc_generated_files/mcc.h</file>
             <file>file:/home/derek/MPLABXProjects/GIT_REPOSITORIES/ARES_PPM_to_PWM.x/mcc_generated_files/tmr3.c</file>
+            <file>file:/home/derek/MPLABXProjects/GIT_REPOSITORIES/ARES_PPM_to_PWM.x/mcc_generated_files/tmr1.c</file>
         </group>
     </open-files>
 </project-private>

@@ -24250,11 +24250,11 @@ uint16_t ccpr1_16Bit;
 # 123
 void CCP1_Initialize(void);
 
-# 139
-void CCP1_CaptureISR(void);
+# 150
+bool CCP1_IsCapturedDataReady(void);
 
 # 180
-void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
+uint16_t CCP1_CaptureRead(void);
 
 # 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
 typedef unsigned char bool;
@@ -24422,12 +24422,12 @@ struct PORT_Data portData = {6};
 struct PWM_Data pwmData = {
 6,
 {
-0xE0C0, 0xC180,
-0xE0C0, 0xC180,
-0xE0C0, 0xC180,
-0xE0C0, 0xC180,
-0xE0C0, 0xC180,
-0xE0C0, 0xC180
+0xF060, 0xE0C0,
+0xF060, 0xE0C0,
+0xF060, 0xE0C0,
+0xF060, 0xE0C0,
+0xF060, 0xE0C0,
+0xF060, 0xE0C0
 }
 };
 
@@ -24458,7 +24458,7 @@ port->frameEnd = 1;
 
 void Init_PWM_Data(struct PWM_Data *pwm) {
 for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
-pwm->reg[i] = 0xD120;
+pwm->reg[i] = 0xE890;
 }
 pwm->iReg = 0;
 }
@@ -24480,9 +24480,9 @@ for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
 
 uint8_t dir = dir_reg&0x01;
 dir_reg = dir_reg >> 1;
-const uint16_t HIGH_PULSE = 0xC180;
-const uint16_t MID_PULSE = 0xD120;
-const uint16_t LOW_PULSE = 0xE0C0;
+const uint16_t HIGH_PULSE = 0xE0C0;
+const uint16_t MID_PULSE = 0xE890;
+const uint16_t LOW_PULSE = 0xF060;
 const uint8_t UART_MAX = 0xFF;
 
 uint16_t temp = 0;
@@ -24500,18 +24500,18 @@ pwm->reg[i] = Filter(pwm, temp, i);
 
 void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm) {
 for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
-pwm->reg[i] = Filter(pwm, ppm->buf[i+ppm->I_PPM_BUF_DATA_START], i);
+pwm->reg[i] = Filter(pwm, ~ppm->buf[i+ppm->I_PPM_BUF_DATA_START], i);
 }
 }
 
 
 void Init_PPM_Data(struct PPM_Data *ppm) {
 
-if(1 == 1) ppm->buf[ppm->I_CTRL_MODE] = 0xC180;
-else ppm->buf[ppm->I_CTRL_MODE] = 0xE0C0;
-ppm->buf[ppm->I_AUTO_MODE] = 0xE0C0;
+if(1 == 1) ppm->buf[ppm->I_CTRL_MODE] = ~0xE0C0;
+else ppm->buf[ppm->I_CTRL_MODE] = ~0xF060;
+ppm->buf[ppm->I_AUTO_MODE] = ~0xF060;
 for (uint8_t i = ppm->I_PPM_BUF_DATA_START; i < ppm->PPM_BUF_SIZE; i++) {
-ppm->buf[i] = 0xD120;
+ppm->buf[i] = ~0xE890;
 }
 ppm->iBuf = 0;
 
@@ -24523,7 +24523,7 @@ if(CCP1_IsCapturedDataReady() == 1) {
 switch(ppmLoadState) {
 case PPM_READY:
 ppm->iBuf = 0;
-if(CCP1_CaptureRead() <= 0x4480) {
+if(CCP1_CaptureRead() >= ~0xA240) {
 ppmLoadState = BREAK_RECEIVED;
 }
 break;
@@ -24555,12 +24555,12 @@ ppmLoadState = PPM_READY;
 }
 
 bool GetAutoModeState(struct PPM_Data *ppm) {
-if(ppm->buf[ppm->I_AUTO_MODE] > 0xD120) return 0;
+if(ppm->buf[ppm->I_AUTO_MODE] < ~0xE890) return 0;
 else return 1;
 }
 
 bool GetCtrlModeState(struct PPM_Data *ppm) {
-if(ppm->buf[ppm->I_CTRL_MODE] > 0xD120) return 0;
+if(ppm->buf[ppm->I_CTRL_MODE] < ~0xE890) return 0;
 else return 1;
 }
 

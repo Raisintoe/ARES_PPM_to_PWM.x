@@ -24250,11 +24250,11 @@ uint16_t ccpr1_16Bit;
 # 123
 void CCP1_Initialize(void);
 
-# 139
-void CCP1_CaptureISR(void);
+# 150
+bool CCP1_IsCapturedDataReady(void);
 
 # 180
-void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
+uint16_t CCP1_CaptureRead(void);
 
 # 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
 typedef unsigned char bool;
@@ -24428,10 +24428,10 @@ void TMR3_Initialize(void)
 T3GCON = 0x00;
 
 
-TMR3H = 0xD1;
+TMR3H = 0xA2;
 
 
-TMR3L = 0x20;
+TMR3L = 0x40;
 
 
 timer3ReloadVal=(uint16_t)((TMR3H << 8) | TMR3L);
@@ -24446,7 +24446,7 @@ PIE4bits.TMR3IE = 1;
 TMR3_SetInterruptHandler(TMR3_DefaultInterruptHandler);
 
 
-T3CON = 0x01;
+T3CON = 0x11;
 }
 
 void TMR3_StartTimer(void)

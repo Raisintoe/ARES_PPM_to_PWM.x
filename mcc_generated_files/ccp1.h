@@ -124,61 +124,60 @@ void CCP1_Initialize(void);
 
 /**
   @Summary
-    Implements ISR
+    Determines the completion of the data captured.
 
   @Description
-    This routine is used to implement the ISR for the interrupt-driven
-    implementations.
-
-  @Returns
-    None
-
-  @Param
-    None
-*/
-void CCP1_CaptureISR(void);
-
-/**
-  @Summary
-    Setter for CCP1 CallBack function
-
-  @Description
-    Calling this function will set a new custom call back function that will be 
-    called from the Capture ISR.
+    This routine is used to determine if data capture is completed.
+    When data capture is complete routine returns 1. It returns 0 otherwise.
 
   @Preconditions
-    Initialize the CCP1 module with interrupt before calling this function.
-
-  @Param
-    A pointer to the new function
+    CCP1_Initialize()function should have been called before calling this function.
 
   @Returns
+    Returns 1 if data capture is completed
+    true - Indicates data capture complete
+    false - Indicates data capture is not complete
+
+  @Param
     None
 
   @Example
     <code>
-    void Capture_CallBack(uint16_t capturedValue)
-    {
-        // Custom callback routine
-    }
-    
-    void main(void)
-    {
-        // initialize the device
-        SYSTEM_Initialize();
-        
-        // set the custom callback
-        CCP1_SetCallBack(Capture_CallBack);
-        
-        while(1)
-        {
-            //Add your application code
-        }
-    }
+    CCP1_Initialize();
+    while(!CCP1_IsCapturedDataReady());
     </code>
 */
- void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
- 
+bool CCP1_IsCapturedDataReady(void);
+
+/**
+  @Summary
+    Reads the 16 bit capture value.
+
+  @Description
+    This routine reads the 16 bit capture value.
+
+  @Preconditions
+    CCP1_Initialize() and
+    CCP1_IsCapturedDataReady() function should have been
+    called before calling this function.
+
+  @Param
+    None.
+
+  @Returns
+    Returns 16 bit captured value
+
+  @Example
+    <code>
+    uint16_t capture;
+
+    CCP1_Initialize();
+
+    while(!CCP1_IsCapturedDataReady());   //Used only for polling method
+    capture = CCP1_CaptureRead();
+    </code>
+*/
+uint16_t CCP1_CaptureRead(void);
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 
