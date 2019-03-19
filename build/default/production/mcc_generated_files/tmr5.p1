@@ -16564,8 +16564,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 137: extern __bank0 unsigned char __resetbits;
 [; ;pic.h: 138: extern __bank0 __bit __powerdown;
 [; ;pic.h: 139: extern __bank0 __bit __timeout;
-[; ;pin_manager.h: 114: void PIN_MANAGER_Initialize (void);
-[; ;pin_manager.h: 126: void PIN_MANAGER_IOC(void);
+[; ;pin_manager.h: 234: void PIN_MANAGER_Initialize (void);
+[; ;pin_manager.h: 246: void PIN_MANAGER_IOC(void);
 [; ;stdint.h: 13: typedef signed char int8_t;
 [; ;stdint.h: 20: typedef signed int int16_t;
 [; ;stdint.h: 28: typedef __int24 int24_t;
@@ -16647,8 +16647,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ccp1.h: 90: };
 [; ;ccp1.h: 91: } CCP1_PERIOD_REG_T ;
 [; ;ccp1.h: 123: void CCP1_Initialize(void);
-[; ;ccp1.h: 150: bool CCP1_IsCapturedDataReady(void);
-[; ;ccp1.h: 180: uint16_t CCP1_CaptureRead(void);
+[; ;ccp1.h: 139: void CCP1_CaptureISR(void);
+[; ;ccp1.h: 180: void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
 [; ;stdbool.h: 15: typedef unsigned char bool;
 [; ;eusart.h: 75: typedef union {
 [; ;eusart.h: 76: struct {
@@ -16672,18 +16672,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;mcc.h: 74: void SYSTEM_Initialize(void);
 [; ;mcc.h: 87: void OSCILLATOR_Initialize(void);
 [; ;mcc.h: 99: void WDT_Initialize(void);
-[; ;main.h: 82: typedef struct PORT_Data {
+[; ;main.h: 82: struct PORT_Data {
 [; ;main.h: 83: const uint8_t PORT_SIZE;
 [; ;main.h: 88: uint8_t iPort;
 [; ;main.h: 89: bool frameEnd;
 [; ;main.h: 100: };
-[; ;main.h: 104: typedef struct PWM_Data {
+[; ;main.h: 104: struct PWM_Data {
 [; ;main.h: 106: const uint8_t PWM_REG_SIZE;
 [; ;main.h: 108: const uint16_t EP_ARRAY[2*6];
 [; ;main.h: 118: uint16_t reg[6];
 [; ;main.h: 119: uint8_t iReg;
 [; ;main.h: 125: };
-[; ;main.h: 129: typedef struct UART_Data {
+[; ;main.h: 129: struct UART_Data {
 [; ;main.h: 131: const uint8_t UART_BUF_SIZE;
 [; ;main.h: 132: const uint8_t I_DIR;
 [; ;main.h: 133: const uint8_t I_CRC;
@@ -16692,7 +16692,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.h: 137: uint8_t iBuf;
 [; ;main.h: 164: };
 [; ;main.h: 166: enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
-[; ;main.h: 168: typedef struct PPM_Data {
+[; ;main.h: 168: struct PPM_Data {
 [; ;main.h: 169: const uint8_t PPM_BUF_SIZE;
 [; ;main.h: 171: const uint8_t I_CTRL_MODE;
 [; ;main.h: 172: const uint8_t I_AUTO_MODE;
@@ -16701,24 +16701,24 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.h: 178: uint8_t iBuf;
 [; ;main.h: 181: };
 [; ;main.h: 183: enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
-[; ;main.h: 188: void Init_PPM_Data(struct PPM_Data ppm);
-[; ;main.h: 190: void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm);
-[; ;main.h: 194: bool IsManualMode(struct PPM_Data ppm);
-[; ;main.h: 195: bool IsManipulationMode(struct PPM_Data ppm);
-[; ;main.h: 196: bool IsAutoMode(struct PPM_Data ppm);
+[; ;main.h: 188: void Init_PPM_Data(struct PPM_Data *ppm);
+[; ;main.h: 190: void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm);
+[; ;main.h: 194: bool IsManualMode(struct PPM_Data *ppm);
+[; ;main.h: 195: bool IsManipulationMode(struct PPM_Data *ppm);
+[; ;main.h: 196: bool IsAutoMode(struct PPM_Data *ppm);
 [; ;main.h: 198: bool IsDriveCont();
-[; ;main.h: 199: bool IsUARTMode(struct PPM_Data ppm);
-[; ;main.h: 200: bool IsPPMMode(struct PPM_Data ppm);
-[; ;main.h: 202: bool GetAutoModeState(struct PPM_Data ppm);
-[; ;main.h: 203: bool GetCtrlModeState(struct PPM_Data ppm);
-[; ;main.h: 213: void Init_UART_Data(struct UART_Data uart);
-[; ;main.h: 214: bool CheckCRC(struct UART_Data uart);
-[; ;main.h: 219: void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm);
-[; ;main.h: 225: void Init_PWM_Data(struct PWM_Data pwm);
-[; ;main.h: 227: void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart);
-[; ;main.h: 228: void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm);
-[; ;main.h: 233: uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
-[; ;main.h: 237: void Init_PORT_Data(struct PORT_Data port);
+[; ;main.h: 199: bool IsUARTMode(struct PPM_Data *ppm);
+[; ;main.h: 200: bool IsPPMMode(struct PPM_Data *ppm);
+[; ;main.h: 202: bool GetAutoModeState(struct PPM_Data *ppm);
+[; ;main.h: 203: bool GetCtrlModeState(struct PPM_Data *ppm);
+[; ;main.h: 213: void Init_UART_Data(struct UART_Data *uart);
+[; ;main.h: 214: bool CheckCRC(struct UART_Data *uart);
+[; ;main.h: 219: void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
+[; ;main.h: 225: void Init_PWM_Data(struct PWM_Data *pwm);
+[; ;main.h: 227: void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
+[; ;main.h: 228: void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm);
+[; ;main.h: 233: uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
+[; ;main.h: 237: void Init_PORT_Data(struct PORT_Data *port);
 "64 mcc_generated_files/tmr5.c
 [v _timer5ReloadVal `Vui ~T0 @X0 1 e ]
 [; ;tmr5.c: 64: volatile uint16_t timer5ReloadVal;
@@ -17024,8 +17024,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;tmr5.c: 208: void TMR5_SetInterruptHandler(void (* InterruptHandler)(void)){
 [e :U _TMR5_SetInterruptHandler ]
-[v F14729 `(v ~T0 @X0 0 tf ]
-[v _InterruptHandler `*F14729 ~T0 @X0 1 r1 ]
+[v F14731 `(v ~T0 @X0 0 tf ]
+[v _InterruptHandler `*F14731 ~T0 @X0 1 r1 ]
 [f ]
 [; ;tmr5.c: 209: TMR5_InterruptHandler = InterruptHandler;
 "209

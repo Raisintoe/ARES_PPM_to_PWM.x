@@ -206,10 +206,10 @@ void TMR3_DefaultInterruptHandler(void){
     extern struct PORT_Data portData;
     extern struct PWM_Data pwmData;
     
-    if(!portData.frameEnd) {    //if the frame has ended, and a new one has not 
+    if(portData.frameEnd == false) {    //if the frame has ended, and a new one has not 
                                 // started (20ms have not passed), then exit
         if(portData.iPort < (portData.PORT_SIZE - 1)) {
-            LATD << 1;  //turn previous channel off, and next channel on to create pulse
+            LATD = LATD << 1;  //turn previous channel off, and next channel on to create pulse
             portData.iPort++;
             //timer3ReloadVal = pwmData.reg[portData.iPort];
             //TMR3_WriteTimer(timer3ReloadVal);

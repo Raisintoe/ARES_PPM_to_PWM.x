@@ -11,18 +11,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 "168
 [s S2100 `Cuc 1 `Cuc 1 `Cuc 1 `Cuc 1 `ui -> 8 `i `uc 1 ]
 [n S2100 PPM_Data PPM_BUF_SIZE I_CTRL_MODE I_AUTO_MODE I_PPM_BUF_DATA_START buf iBuf ]
-"66 ARES_PPM_to_PWM.c
-[c E14645 0 1 2 3 .. ]
-[n E14645 UARTLoadState UART_READY G_RECEIVED O_RECEIVED PID_GO_DRIVE_RECEIVED  ]
-"67
-[c E14657 0 1 .. ]
-[n E14657 PPMLoadState PPM_READY BREAK_RECEIVED  ]
-"150 mcc_generated_files/ccp1.h
-[v _CCP1_IsCapturedDataReady `(uc ~T0 @X0 0 ef ]
-"180
-[v _CCP1_CaptureRead `(ui ~T0 @X0 0 ef ]
+"65 ARES_PPM_to_PWM.c
+[c E14647 0 1 2 3 .. ]
+[n E14647 UARTLoadState UART_READY G_RECEIVED O_RECEIVED PID_GO_DRIVE_RECEIVED  ]
+"66
+[c E14659 0 1 .. ]
+[n E14659 PPMLoadState PPM_READY BREAK_RECEIVED  ]
+"143
+[v _CCP1_IsCapturedDataReady `(i ~T0 @X0 0 ef ]
+"147
+[v _CCP1_CaptureRead `(i ~T0 @X0 0 ef ]
 "200 main.h
-[v _IsPPMMode `(uc ~T0 @X0 0 ef1`S2100 ]
+[v _IsPPMMode `(uc ~T0 @X0 0 ef1`*S2100 ]
 "721 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
 [s S39 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S39 . TMR1IF TMR2IF CCP1IF SSP1IF TXIF RCIF ADIF TMR1GIF ]
@@ -16511,8 +16511,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 137: extern __bank0 unsigned char __resetbits;
 [; ;pic.h: 138: extern __bank0 __bit __powerdown;
 [; ;pic.h: 139: extern __bank0 __bit __timeout;
-[; ;pin_manager.h: 114: void PIN_MANAGER_Initialize (void);
-[; ;pin_manager.h: 126: void PIN_MANAGER_IOC(void);
+[; ;pin_manager.h: 234: void PIN_MANAGER_Initialize (void);
+[; ;pin_manager.h: 246: void PIN_MANAGER_IOC(void);
 [; ;stdint.h: 13: typedef signed char int8_t;
 [; ;stdint.h: 20: typedef signed int int16_t;
 [; ;stdint.h: 28: typedef __int24 int24_t;
@@ -16594,8 +16594,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ccp1.h: 90: };
 [; ;ccp1.h: 91: } CCP1_PERIOD_REG_T ;
 [; ;ccp1.h: 123: void CCP1_Initialize(void);
-[; ;ccp1.h: 150: bool CCP1_IsCapturedDataReady(void);
-[; ;ccp1.h: 180: uint16_t CCP1_CaptureRead(void);
+[; ;ccp1.h: 139: void CCP1_CaptureISR(void);
+[; ;ccp1.h: 180: void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
 [; ;stdbool.h: 15: typedef unsigned char bool;
 [; ;eusart.h: 75: typedef union {
 [; ;eusart.h: 76: struct {
@@ -16619,18 +16619,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;mcc.h: 74: void SYSTEM_Initialize(void);
 [; ;mcc.h: 87: void OSCILLATOR_Initialize(void);
 [; ;mcc.h: 99: void WDT_Initialize(void);
-[; ;main.h: 82: typedef struct PORT_Data {
+[; ;main.h: 82: struct PORT_Data {
 [; ;main.h: 83: const uint8_t PORT_SIZE;
 [; ;main.h: 88: uint8_t iPort;
 [; ;main.h: 89: bool frameEnd;
 [; ;main.h: 100: };
-[; ;main.h: 104: typedef struct PWM_Data {
+[; ;main.h: 104: struct PWM_Data {
 [; ;main.h: 106: const uint8_t PWM_REG_SIZE;
 [; ;main.h: 108: const uint16_t EP_ARRAY[2*6];
 [; ;main.h: 118: uint16_t reg[6];
 [; ;main.h: 119: uint8_t iReg;
 [; ;main.h: 125: };
-[; ;main.h: 129: typedef struct UART_Data {
+[; ;main.h: 129: struct UART_Data {
 [; ;main.h: 131: const uint8_t UART_BUF_SIZE;
 [; ;main.h: 132: const uint8_t I_DIR;
 [; ;main.h: 133: const uint8_t I_CRC;
@@ -16639,7 +16639,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.h: 137: uint8_t iBuf;
 [; ;main.h: 164: };
 [; ;main.h: 166: enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
-[; ;main.h: 168: typedef struct PPM_Data {
+[; ;main.h: 168: struct PPM_Data {
 [; ;main.h: 169: const uint8_t PPM_BUF_SIZE;
 [; ;main.h: 171: const uint8_t I_CTRL_MODE;
 [; ;main.h: 172: const uint8_t I_AUTO_MODE;
@@ -16648,25 +16648,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.h: 178: uint8_t iBuf;
 [; ;main.h: 181: };
 [; ;main.h: 183: enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
-[; ;main.h: 188: void Init_PPM_Data(struct PPM_Data ppm);
-[; ;main.h: 190: void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm);
-[; ;main.h: 194: bool IsManualMode(struct PPM_Data ppm);
-[; ;main.h: 195: bool IsManipulationMode(struct PPM_Data ppm);
-[; ;main.h: 196: bool IsAutoMode(struct PPM_Data ppm);
+[; ;main.h: 188: void Init_PPM_Data(struct PPM_Data *ppm);
+[; ;main.h: 190: void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm);
+[; ;main.h: 194: bool IsManualMode(struct PPM_Data *ppm);
+[; ;main.h: 195: bool IsManipulationMode(struct PPM_Data *ppm);
+[; ;main.h: 196: bool IsAutoMode(struct PPM_Data *ppm);
 [; ;main.h: 198: bool IsDriveCont();
-[; ;main.h: 199: bool IsUARTMode(struct PPM_Data ppm);
-[; ;main.h: 200: bool IsPPMMode(struct PPM_Data ppm);
-[; ;main.h: 202: bool GetAutoModeState(struct PPM_Data ppm);
-[; ;main.h: 203: bool GetCtrlModeState(struct PPM_Data ppm);
-[; ;main.h: 213: void Init_UART_Data(struct UART_Data uart);
-[; ;main.h: 214: bool CheckCRC(struct UART_Data uart);
-[; ;main.h: 219: void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm);
-[; ;main.h: 225: void Init_PWM_Data(struct PWM_Data pwm);
-[; ;main.h: 227: void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart);
-[; ;main.h: 228: void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm);
-[; ;main.h: 233: uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
-[; ;main.h: 237: void Init_PORT_Data(struct PORT_Data port);
-"36 ARES_PPM_to_PWM.c
+[; ;main.h: 199: bool IsUARTMode(struct PPM_Data *ppm);
+[; ;main.h: 200: bool IsPPMMode(struct PPM_Data *ppm);
+[; ;main.h: 202: bool GetAutoModeState(struct PPM_Data *ppm);
+[; ;main.h: 203: bool GetCtrlModeState(struct PPM_Data *ppm);
+[; ;main.h: 213: void Init_UART_Data(struct UART_Data *uart);
+[; ;main.h: 214: bool CheckCRC(struct UART_Data *uart);
+[; ;main.h: 219: void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
+[; ;main.h: 225: void Init_PWM_Data(struct PWM_Data *pwm);
+[; ;main.h: 227: void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
+[; ;main.h: 228: void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm);
+[; ;main.h: 233: uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
+[; ;main.h: 237: void Init_PORT_Data(struct PORT_Data *port);
+"35 ARES_PPM_to_PWM.c
 [v _portData `S2097 ~T0 @X0 1 e ]
 [i _portData
 :U ..
@@ -16675,15 +16675,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-[; ;ARES_PPM_to_PWM.c: 36: struct PORT_Data portData = {6};
-"39
+[; ;ARES_PPM_to_PWM.c: 35: struct PORT_Data portData = {6};
+"38
 [v _pwmData `S2098 ~T0 @X0 1 e ]
 [i _pwmData
 :U ..
 :U ..
-"40
+"39
 -> -> 6 `i `uc
 :U ..
+"41
+-> 57536 `ui
+-> 49536 `ui
 "42
 -> 57536 `ui
 -> 49536 `ui
@@ -16698,693 +16701,690 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> 49536 `ui
 "46
 -> 57536 `ui
--> 49536 `ui
 "47
--> 57536 `ui
-"48
 -> 49536 `ui
 ..
 ..
 ..
 ]
-[; ;ARES_PPM_to_PWM.c: 39: struct PWM_Data pwmData = {
-[; ;ARES_PPM_to_PWM.c: 40: 6,
-[; ;ARES_PPM_to_PWM.c: 41: {
+[; ;ARES_PPM_to_PWM.c: 38: struct PWM_Data pwmData = {
+[; ;ARES_PPM_to_PWM.c: 39: 6,
+[; ;ARES_PPM_to_PWM.c: 40: {
+[; ;ARES_PPM_to_PWM.c: 41: 0xE0C0, 0xC180,
 [; ;ARES_PPM_to_PWM.c: 42: 0xE0C0, 0xC180,
 [; ;ARES_PPM_to_PWM.c: 43: 0xE0C0, 0xC180,
 [; ;ARES_PPM_to_PWM.c: 44: 0xE0C0, 0xC180,
 [; ;ARES_PPM_to_PWM.c: 45: 0xE0C0, 0xC180,
-[; ;ARES_PPM_to_PWM.c: 46: 0xE0C0, 0xC180,
-[; ;ARES_PPM_to_PWM.c: 47: 0xE0C0, 0xC180
-[; ;ARES_PPM_to_PWM.c: 48: }
-[; ;ARES_PPM_to_PWM.c: 49: };
-"51
+[; ;ARES_PPM_to_PWM.c: 46: 0xE0C0, 0xC180
+[; ;ARES_PPM_to_PWM.c: 47: }
+[; ;ARES_PPM_to_PWM.c: 48: };
+"50
 [v _uartData `S2099 ~T0 @X0 1 e ]
 [i _uartData
 :U ..
 :U ..
-"52
+"51
 -> -> 8 `i `uc
-"53
+"52
 -> -> 6 `i `uc
-"54
+"53
 -> - -> 8 `i -> 1 `i `uc
-"56
+"55
 -> -> 0 `i `uc
 ..
 ..
 ]
-[; ;ARES_PPM_to_PWM.c: 51: struct UART_Data uartData = {
-[; ;ARES_PPM_to_PWM.c: 52: 8,
-[; ;ARES_PPM_to_PWM.c: 53: 6,
-[; ;ARES_PPM_to_PWM.c: 54: 8 - 1,
-[; ;ARES_PPM_to_PWM.c: 55: 0
-[; ;ARES_PPM_to_PWM.c: 56: };
-"58
+[; ;ARES_PPM_to_PWM.c: 50: struct UART_Data uartData = {
+[; ;ARES_PPM_to_PWM.c: 51: 8,
+[; ;ARES_PPM_to_PWM.c: 52: 6,
+[; ;ARES_PPM_to_PWM.c: 53: 8 - 1,
+[; ;ARES_PPM_to_PWM.c: 54: 0
+[; ;ARES_PPM_to_PWM.c: 55: };
+"57
 [v _ppmData `S2100 ~T0 @X0 1 e ]
 [i _ppmData
 :U ..
 :U ..
-"59
+"58
 -> -> 8 `i `uc
-"61
+"60
 -> -> 0 `i `uc
-"62
+"61
 -> -> 1 `i `uc
-"64
+"63
 -> -> 2 `i `uc
 ..
 ..
 ]
-[; ;ARES_PPM_to_PWM.c: 58: struct PPM_Data ppmData = {
-[; ;ARES_PPM_to_PWM.c: 59: 8,
-[; ;ARES_PPM_to_PWM.c: 61: 0,
-[; ;ARES_PPM_to_PWM.c: 62: 1,
-[; ;ARES_PPM_to_PWM.c: 63: 2
-[; ;ARES_PPM_to_PWM.c: 64: };
-"66
-[v _uartLoadState `E14645 ~T0 @X0 1 e ]
+[; ;ARES_PPM_to_PWM.c: 57: struct PPM_Data ppmData = {
+[; ;ARES_PPM_to_PWM.c: 58: 8,
+[; ;ARES_PPM_to_PWM.c: 60: 0,
+[; ;ARES_PPM_to_PWM.c: 61: 1,
+[; ;ARES_PPM_to_PWM.c: 62: 2
+[; ;ARES_PPM_to_PWM.c: 63: };
+"65
+[v _uartLoadState `E14647 ~T0 @X0 1 e ]
 [i _uartLoadState
-. `E14645 0
+. `E14647 0
 ]
-[; ;ARES_PPM_to_PWM.c: 66: enum UARTLoadState uartLoadState = UART_READY;
-"67
-[v _ppmLoadState `E14657 ~T0 @X0 1 e ]
+[; ;ARES_PPM_to_PWM.c: 65: enum UARTLoadState uartLoadState = UART_READY;
+"66
+[v _ppmLoadState `E14659 ~T0 @X0 1 e ]
 [i _ppmLoadState
-. `E14657 0
+. `E14659 0
 ]
-[; ;ARES_PPM_to_PWM.c: 67: enum PPMLoadState ppmLoadState = PPM_READY;
-"75
-[v _Init_PORT_Data `(v ~T0 @X0 1 ef1`S2097 ]
+[; ;ARES_PPM_to_PWM.c: 66: enum PPMLoadState ppmLoadState = PPM_READY;
+"74
+[v _Init_PORT_Data `(v ~T0 @X0 1 ef1`*S2097 ]
 {
-[; ;ARES_PPM_to_PWM.c: 75: void Init_PORT_Data(struct PORT_Data port) {
+[; ;ARES_PPM_to_PWM.c: 74: void Init_PORT_Data(struct PORT_Data *port) {
 [e :U _Init_PORT_Data ]
-[v _port `S2097 ~T0 @X0 1 r1 ]
+[v _port `*S2097 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 76: port.iPort = 0;
+[; ;ARES_PPM_to_PWM.c: 75: port->iPort = 0;
+"75
+[e = . *U _port 1 -> -> 0 `i `uc ]
+[; ;ARES_PPM_to_PWM.c: 76: port->frameEnd = 1;
 "76
-[e = . _port 1 -> -> 0 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 77: port.frameEnd = 1;
+[e = . *U _port 2 -> -> 1 `i `uc ]
+[; ;ARES_PPM_to_PWM.c: 77: }
 "77
-[e = . _port 2 -> -> 1 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 78: }
-"78
 [e :UE 2101 ]
 }
-"81
-[v _Init_PWM_Data `(v ~T0 @X0 1 ef1`S2098 ]
+"80
+[v _Init_PWM_Data `(v ~T0 @X0 1 ef1`*S2098 ]
 {
-[; ;ARES_PPM_to_PWM.c: 81: void Init_PWM_Data(struct PWM_Data pwm) {
+[; ;ARES_PPM_to_PWM.c: 80: void Init_PWM_Data(struct PWM_Data *pwm) {
 [e :U _Init_PWM_Data ]
-[v _pwm `S2098 ~T0 @X0 1 r1 ]
+[v _pwm `*S2098 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 82: for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
-"82
+[; ;ARES_PPM_to_PWM.c: 81: for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
+"81
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
 [e $U 2106  ]
 [e :U 2103 ]
 {
-[; ;ARES_PPM_to_PWM.c: 83: pwm.reg[i] = 0xD120;
-"83
-[e = *U + &U . _pwm 2 * -> _i `ux -> -> # *U &U . _pwm 2 `ui `ux -> 53536 `ui ]
-"84
-}
+[; ;ARES_PPM_to_PWM.c: 82: pwm->reg[i] = 0xD120;
 "82
+[e = *U + &U . *U _pwm 2 * -> _i `ux -> -> # *U &U . *U _pwm 2 `ui `ux -> 53536 `ui ]
+"83
+}
+"81
 [e ++ _i -> -> 1 `i `uc ]
 [e :U 2106 ]
-[e $ < -> _i `i -> . _pwm 0 `i 2103  ]
+[e $ < -> _i `i -> . *U _pwm 0 `i 2103  ]
 [e :U 2104 ]
-"84
+"83
 }
-[; ;ARES_PPM_to_PWM.c: 84: }
-[; ;ARES_PPM_to_PWM.c: 85: pwm.iReg = 0;
+[; ;ARES_PPM_to_PWM.c: 83: }
+[; ;ARES_PPM_to_PWM.c: 84: pwm->iReg = 0;
+"84
+[e = . *U _pwm 3 -> -> 0 `i `uc ]
+[; ;ARES_PPM_to_PWM.c: 85: }
 "85
-[e = . _pwm 3 -> -> 0 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 86: }
-"86
 [e :UE 2102 ]
 }
-"88
-[v _Filter `(ui ~T0 @X0 1 ef3`S2098`ui`uc ]
+"87
+[v _Filter `(ui ~T0 @X0 1 ef3`*S2098`ui`uc ]
 {
-[; ;ARES_PPM_to_PWM.c: 88: uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i) {
+[; ;ARES_PPM_to_PWM.c: 87: uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i) {
 [e :U _Filter ]
-[v _pwm `S2098 ~T0 @X0 1 r1 ]
+[v _pwm `*S2098 ~T0 @X0 1 r1 ]
 [v _temp `ui ~T0 @X0 1 r2 ]
 [v _i `uc ~T0 @X0 1 r3 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 89: if(temp > pwm.EP_ARRAY[2*i]) temp = pwm.EP_ARRAY[2*i];
-"89
-[e $ ! > _temp *U + &U . _pwm 1 * -> -> * -> 2 `i -> _i `i `ui `ux -> -> # *U &U . _pwm 1 `ui `ux 2108  ]
-[e = _temp *U + &U . _pwm 1 * -> -> * -> 2 `i -> _i `i `ui `ux -> -> # *U &U . _pwm 1 `ui `ux ]
+[; ;ARES_PPM_to_PWM.c: 88: if(temp > pwm->EP_ARRAY[2*i]) temp = pwm->EP_ARRAY[2*i];
+"88
+[e $ ! > _temp *U + &U . *U _pwm 1 * -> -> * -> 2 `i -> _i `i `ui `ux -> -> # *U &U . *U _pwm 1 `ui `ux 2108  ]
+[e = _temp *U + &U . *U _pwm 1 * -> -> * -> 2 `i -> _i `i `ui `ux -> -> # *U &U . *U _pwm 1 `ui `ux ]
 [e $U 2109  ]
-"90
+"89
 [e :U 2108 ]
-[; ;ARES_PPM_to_PWM.c: 90: else if(temp < pwm.EP_ARRAY[2*i + 1]) temp = pwm.EP_ARRAY[2*i + 1];
-[e $ ! < _temp *U + &U . _pwm 1 * -> -> + * -> 2 `i -> _i `i -> 1 `i `ui `ux -> -> # *U &U . _pwm 1 `ui `ux 2110  ]
-[e = _temp *U + &U . _pwm 1 * -> -> + * -> 2 `i -> _i `i -> 1 `i `ui `ux -> -> # *U &U . _pwm 1 `ui `ux ]
+[; ;ARES_PPM_to_PWM.c: 89: else if(temp < pwm->EP_ARRAY[2*i + 1]) temp = pwm->EP_ARRAY[2*i + 1];
+[e $ ! < _temp *U + &U . *U _pwm 1 * -> -> + * -> 2 `i -> _i `i -> 1 `i `ui `ux -> -> # *U &U . *U _pwm 1 `ui `ux 2110  ]
+[e = _temp *U + &U . *U _pwm 1 * -> -> + * -> 2 `i -> _i `i -> 1 `i `ui `ux -> -> # *U &U . *U _pwm 1 `ui `ux ]
 [e :U 2110 ]
-"91
+"90
 [e :U 2109 ]
-[; ;ARES_PPM_to_PWM.c: 91: return temp;
+[; ;ARES_PPM_to_PWM.c: 90: return temp;
 [e ) _temp ]
 [e $UE 2107  ]
-[; ;ARES_PPM_to_PWM.c: 92: }
-"92
+[; ;ARES_PPM_to_PWM.c: 91: }
+"91
 [e :UE 2107 ]
 }
-"94
-[v _UARTUpdatePWM `(v ~T0 @X0 1 ef2`S2098`S2099 ]
+"93
+[v _UARTUpdatePWM `(v ~T0 @X0 1 ef2`*S2098`*S2099 ]
 {
-[; ;ARES_PPM_to_PWM.c: 94: void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart) {
+[; ;ARES_PPM_to_PWM.c: 93: void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart) {
 [e :U _UARTUpdatePWM ]
-[v _pwm `S2098 ~T0 @X0 1 r1 ]
-[v _uart `S2099 ~T0 @X0 1 r2 ]
+[v _pwm `*S2098 ~T0 @X0 1 r1 ]
+[v _uart `*S2099 ~T0 @X0 1 r2 ]
 [f ]
-"97
+"96
 [v _dir_reg `uc ~T0 @X0 1 a ]
-[; ;ARES_PPM_to_PWM.c: 97: uint8_t dir_reg = uart.buf[uart.I_DIR];
-[e = _dir_reg *U + &U . _uart 4 * -> . _uart 1 `ux -> -> # *U &U . _uart 4 `ui `ux ]
-[; ;ARES_PPM_to_PWM.c: 98: for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
-"98
+[; ;ARES_PPM_to_PWM.c: 96: uint8_t dir_reg = uart->buf[uart->I_DIR];
+[e = _dir_reg *U + &U . *U _uart 4 * -> . *U _uart 1 `ux -> -> # *U &U . *U _uart 4 `ui `ux ]
+[; ;ARES_PPM_to_PWM.c: 97: for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
+"97
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
 [e $U 2115  ]
 [e :U 2112 ]
 {
-"103
+"102
 [v _dir `uc ~T0 @X0 1 a ]
-[; ;ARES_PPM_to_PWM.c: 103: uint8_t dir = dir_reg&0x01;
+[; ;ARES_PPM_to_PWM.c: 102: uint8_t dir = dir_reg&0x01;
 [e = _dir -> & -> _dir_reg `i -> 1 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 104: dir_reg = dir_reg >> 1;
-"104
+[; ;ARES_PPM_to_PWM.c: 103: dir_reg = dir_reg >> 1;
+"103
 [e = _dir_reg -> >> -> _dir_reg `i -> 1 `i `uc ]
-"105
-[v F14719 `Cui ~T0 @X0 1 s HIGH_PULSE ]
-[i F14719
+"104
+[v F14721 `Cui ~T0 @X0 1 s HIGH_PULSE ]
+[i F14721
 -> 49536 `ui
 ]
-"106
-[v F14720 `Cui ~T0 @X0 1 s MID_PULSE ]
-[i F14720
+"105
+[v F14722 `Cui ~T0 @X0 1 s MID_PULSE ]
+[i F14722
 -> 53536 `ui
 ]
-"107
-[v F14721 `Cui ~T0 @X0 1 s LOW_PULSE ]
-[i F14721
+"106
+[v F14723 `Cui ~T0 @X0 1 s LOW_PULSE ]
+[i F14723
 -> 57536 `ui
 ]
-"108
-[v F14722 `Cuc ~T0 @X0 1 s UART_MAX ]
-[i F14722
+"107
+[v F14724 `Cuc ~T0 @X0 1 s UART_MAX ]
+[i F14724
 -> -> 255 `i `uc
 ]
-"110
+"109
 [v _temp `ui ~T0 @X0 1 a ]
-[; ;ARES_PPM_to_PWM.c: 105: const uint16_t HIGH_PULSE = 0xC180;
-[; ;ARES_PPM_to_PWM.c: 106: const uint16_t MID_PULSE = 0xD120;
-[; ;ARES_PPM_to_PWM.c: 107: const uint16_t LOW_PULSE = 0xE0C0;
-[; ;ARES_PPM_to_PWM.c: 108: const uint8_t UART_MAX = 0xFF;
-[; ;ARES_PPM_to_PWM.c: 110: uint16_t temp = 0;
+[; ;ARES_PPM_to_PWM.c: 104: const uint16_t HIGH_PULSE = 0xC180;
+[; ;ARES_PPM_to_PWM.c: 105: const uint16_t MID_PULSE = 0xD120;
+[; ;ARES_PPM_to_PWM.c: 106: const uint16_t LOW_PULSE = 0xE0C0;
+[; ;ARES_PPM_to_PWM.c: 107: const uint8_t UART_MAX = 0xFF;
+[; ;ARES_PPM_to_PWM.c: 109: uint16_t temp = 0;
 [e = _temp -> -> 0 `i `ui ]
-[; ;ARES_PPM_to_PWM.c: 111: if(((i < 3)&&(dir == 1))||((i >= 3)&&(dir == 0))) {
-"111
+[; ;ARES_PPM_to_PWM.c: 110: if(((i < 3)&&(dir == 1))||((i >= 3)&&(dir == 0))) {
+"110
 [e $ ! || && < -> _i `i -> 3 `i == -> _dir `i -> 1 `i && >= -> _i `i -> 3 `i == -> _dir `i -> 0 `i 2116  ]
 {
-[; ;ARES_PPM_to_PWM.c: 112: temp = ((uint16_t)((double)uart.buf[i]*(HIGH_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+[; ;ARES_PPM_to_PWM.c: 111: temp = ((uint16_t)((double)uart->buf[i]*(HIGH_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+"111
+[e = _temp + -> / * -> *U + &U . *U _uart 4 * -> _i `ux -> -> # *U &U . *U _uart 4 `ui `ux `d -> - F14721 F14722 `d -> F14724 `d `ui F14722 ]
 "112
-[e = _temp + -> / * -> *U + &U . _uart 4 * -> _i `ux -> -> # *U &U . _uart 4 `ui `ux `d -> - F14719 F14720 `d -> F14722 `d `ui F14720 ]
-"113
 }
-[; ;ARES_PPM_to_PWM.c: 113: }
+[; ;ARES_PPM_to_PWM.c: 112: }
 [e $U 2117  ]
-"114
+"113
 [e :U 2116 ]
-[; ;ARES_PPM_to_PWM.c: 114: else {
+[; ;ARES_PPM_to_PWM.c: 113: else {
 {
-[; ;ARES_PPM_to_PWM.c: 115: temp = ((uint16_t)((double)uart.buf[i]*(LOW_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+[; ;ARES_PPM_to_PWM.c: 114: temp = ((uint16_t)((double)uart->buf[i]*(LOW_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+"114
+[e = _temp + -> / * -> *U + &U . *U _uart 4 * -> _i `ux -> -> # *U &U . *U _uart 4 `ui `ux `d -> - F14723 F14722 `d -> F14724 `d `ui F14722 ]
 "115
-[e = _temp + -> / * -> *U + &U . _uart 4 * -> _i `ux -> -> # *U &U . _uart 4 `ui `ux `d -> - F14721 F14720 `d -> F14722 `d `ui F14720 ]
-"116
 }
 [e :U 2117 ]
-[; ;ARES_PPM_to_PWM.c: 116: }
-[; ;ARES_PPM_to_PWM.c: 119: pwm.reg[i] = Filter(pwm, temp, i);
+[; ;ARES_PPM_to_PWM.c: 115: }
+[; ;ARES_PPM_to_PWM.c: 118: pwm->reg[i] = Filter(pwm, temp, i);
+"118
+[e = *U + &U . *U _pwm 2 * -> _i `ux -> -> # *U &U . *U _pwm 2 `ui `ux ( _Filter (3 , , _pwm _temp _i ]
 "119
-[e = *U + &U . _pwm 2 * -> _i `ux -> -> # *U &U . _pwm 2 `ui `ux ( _Filter (3 , , _pwm _temp _i ]
-"120
 }
-"98
+"97
 [e ++ _i -> -> 1 `i `uc ]
 [e :U 2115 ]
-[e $ < -> _i `i -> . _pwm 0 `i 2112  ]
+[e $ < -> _i `i -> . *U _pwm 0 `i 2112  ]
 [e :U 2113 ]
-"120
+"119
 }
+[; ;ARES_PPM_to_PWM.c: 119: }
 [; ;ARES_PPM_to_PWM.c: 120: }
-[; ;ARES_PPM_to_PWM.c: 121: }
-"121
+"120
 [e :UE 2111 ]
 }
-"123
-[v _PPMUpdatePWM `(v ~T0 @X0 1 ef2`S2098`S2100 ]
+"122
+[v _PPMUpdatePWM `(v ~T0 @X0 1 ef2`*S2098`*S2100 ]
 {
-[; ;ARES_PPM_to_PWM.c: 123: void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm) {
+[; ;ARES_PPM_to_PWM.c: 122: void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm) {
 [e :U _PPMUpdatePWM ]
-[v _pwm `S2098 ~T0 @X0 1 r1 ]
-[v _ppm `S2100 ~T0 @X0 1 r2 ]
+[v _pwm `*S2098 ~T0 @X0 1 r1 ]
+[v _ppm `*S2100 ~T0 @X0 1 r2 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 124: for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
-"124
+[; ;ARES_PPM_to_PWM.c: 123: for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
+"123
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
 [e $U 2122  ]
 [e :U 2119 ]
 {
-[; ;ARES_PPM_to_PWM.c: 125: pwm.reg[i] = Filter(pwm, ppm.buf[i], i);
-"125
-[e = *U + &U . _pwm 2 * -> _i `ux -> -> # *U &U . _pwm 2 `ui `ux ( _Filter (3 , , _pwm *U + &U . _ppm 4 * -> _i `ux -> -> # *U &U . _ppm 4 `ui `ux _i ]
-"126
-}
+[; ;ARES_PPM_to_PWM.c: 124: pwm->reg[i] = Filter(pwm, ppm->buf[i+ppm->I_PPM_BUF_DATA_START], i);
 "124
+[e = *U + &U . *U _pwm 2 * -> _i `ux -> -> # *U &U . *U _pwm 2 `ui `ux ( _Filter (3 , , _pwm *U + &U . *U _ppm 4 * -> -> + -> _i `i -> . *U _ppm 3 `i `ui `ux -> -> # *U &U . *U _ppm 4 `ui `ux _i ]
+"125
+}
+"123
 [e ++ _i -> -> 1 `i `uc ]
 [e :U 2122 ]
-[e $ < -> _i `i -> . _pwm 0 `i 2119  ]
+[e $ < -> _i `i -> . *U _pwm 0 `i 2119  ]
 [e :U 2120 ]
-"126
+"125
 }
+[; ;ARES_PPM_to_PWM.c: 125: }
 [; ;ARES_PPM_to_PWM.c: 126: }
-[; ;ARES_PPM_to_PWM.c: 127: }
-"127
+"126
 [e :UE 2118 ]
 }
-"130
-[v _Init_PPM_Data `(v ~T0 @X0 1 ef1`S2100 ]
+"129
+[v _Init_PPM_Data `(v ~T0 @X0 1 ef1`*S2100 ]
 {
-[; ;ARES_PPM_to_PWM.c: 130: void Init_PPM_Data(struct PPM_Data ppm) {
+[; ;ARES_PPM_to_PWM.c: 129: void Init_PPM_Data(struct PPM_Data *ppm) {
 [e :U _Init_PPM_Data ]
-[v _ppm `S2100 ~T0 @X0 1 r1 ]
+[v _ppm `*S2100 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 132: if(1 == 1) ppm.buf[ppm.I_CTRL_MODE] = 0xC180;
-"132
+[; ;ARES_PPM_to_PWM.c: 131: if(1 == 1) ppm->buf[ppm->I_CTRL_MODE] = 0xC180;
+"131
 [e $ ! == -> 1 `i -> 1 `i 2124  ]
-[e = *U + &U . _ppm 4 * -> . _ppm 1 `ux -> -> # *U &U . _ppm 4 `ui `ux -> 49536 `ui ]
+[e = *U + &U . *U _ppm 4 * -> . *U _ppm 1 `ux -> -> # *U &U . *U _ppm 4 `ui `ux -> 49536 `ui ]
 [e $U 2125  ]
-"133
+"132
 [e :U 2124 ]
-[; ;ARES_PPM_to_PWM.c: 133: else ppm.buf[ppm.I_CTRL_MODE] = 0xE0C0;
-[e = *U + &U . _ppm 4 * -> . _ppm 1 `ux -> -> # *U &U . _ppm 4 `ui `ux -> 57536 `ui ]
+[; ;ARES_PPM_to_PWM.c: 132: else ppm->buf[ppm->I_CTRL_MODE] = 0xE0C0;
+[e = *U + &U . *U _ppm 4 * -> . *U _ppm 1 `ux -> -> # *U &U . *U _ppm 4 `ui `ux -> 57536 `ui ]
 [e :U 2125 ]
-[; ;ARES_PPM_to_PWM.c: 134: ppm.buf[ppm.I_AUTO_MODE] = 0xE0C0;
+[; ;ARES_PPM_to_PWM.c: 133: ppm->buf[ppm->I_AUTO_MODE] = 0xE0C0;
+"133
+[e = *U + &U . *U _ppm 4 * -> . *U _ppm 2 `ux -> -> # *U &U . *U _ppm 4 `ui `ux -> 57536 `ui ]
+[; ;ARES_PPM_to_PWM.c: 134: for (uint8_t i = ppm->I_PPM_BUF_DATA_START; i < ppm->PPM_BUF_SIZE; i++) {
 "134
-[e = *U + &U . _ppm 4 * -> . _ppm 2 `ux -> -> # *U &U . _ppm 4 `ui `ux -> 57536 `ui ]
-[; ;ARES_PPM_to_PWM.c: 135: for (uint8_t i = ppm.I_PPM_BUF_DATA_START; i < ppm.PPM_BUF_SIZE; i++) {
-"135
 {
 [v _i `uc ~T0 @X0 1 a ]
-[e = _i . _ppm 3 ]
+[e = _i . *U _ppm 3 ]
 [e $U 2129  ]
 [e :U 2126 ]
 {
-[; ;ARES_PPM_to_PWM.c: 136: ppm.buf[i] = 0xD120;
-"136
-[e = *U + &U . _ppm 4 * -> _i `ux -> -> # *U &U . _ppm 4 `ui `ux -> 53536 `ui ]
-"137
-}
+[; ;ARES_PPM_to_PWM.c: 135: ppm->buf[i] = 0xD120;
 "135
+[e = *U + &U . *U _ppm 4 * -> _i `ux -> -> # *U &U . *U _ppm 4 `ui `ux -> 53536 `ui ]
+"136
+}
+"134
 [e ++ _i -> -> 1 `i `uc ]
 [e :U 2129 ]
-[e $ < -> _i `i -> . _ppm 0 `i 2126  ]
+[e $ < -> _i `i -> . *U _ppm 0 `i 2126  ]
 [e :U 2127 ]
-"137
+"136
 }
-[; ;ARES_PPM_to_PWM.c: 137: }
-[; ;ARES_PPM_to_PWM.c: 138: ppm.iBuf = 0;
-"138
-[e = . _ppm 5 -> -> 0 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 140: ppmLoadState = PPM_READY;
+[; ;ARES_PPM_to_PWM.c: 136: }
+[; ;ARES_PPM_to_PWM.c: 137: ppm->iBuf = 0;
+"137
+[e = . *U _ppm 5 -> -> 0 `i `uc ]
+[; ;ARES_PPM_to_PWM.c: 139: ppmLoadState = PPM_READY;
+"139
+[e = _ppmLoadState . `E14659 0 ]
+[; ;ARES_PPM_to_PWM.c: 140: }
 "140
-[e = _ppmLoadState . `E14657 0 ]
-[; ;ARES_PPM_to_PWM.c: 141: }
-"141
 [e :UE 2123 ]
 }
-"143
-[v _PPMRead `(v ~T0 @X0 1 ef2`S2100`S2098 ]
+"142
+[v _PPMRead `(v ~T0 @X0 1 ef2`*S2100`*S2098 ]
 {
-[; ;ARES_PPM_to_PWM.c: 143: void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm) {
+[; ;ARES_PPM_to_PWM.c: 142: void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm) {
 [e :U _PPMRead ]
-[v _ppm `S2100 ~T0 @X0 1 r1 ]
-[v _pwm `S2098 ~T0 @X0 1 r2 ]
+[v _ppm `*S2100 ~T0 @X0 1 r1 ]
+[v _pwm `*S2098 ~T0 @X0 1 r2 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 144: if(CCP1_IsCapturedDataReady() == 1) {
-"144
-[e $ ! == -> ( _CCP1_IsCapturedDataReady ..  `i -> 1 `i 2131  ]
+[; ;ARES_PPM_to_PWM.c: 143: if(CCP1_IsCapturedDataReady() == 1) {
+"143
+[e $ ! == ( _CCP1_IsCapturedDataReady ..  -> 1 `i 2131  ]
 {
-[; ;ARES_PPM_to_PWM.c: 145: switch(ppmLoadState) {
-"145
+[; ;ARES_PPM_to_PWM.c: 144: switch(ppmLoadState) {
+"144
 [e $U 2133  ]
 {
-[; ;ARES_PPM_to_PWM.c: 146: case PPM_READY:
-"146
+[; ;ARES_PPM_to_PWM.c: 145: case PPM_READY:
+"145
 [e :U 2134 ]
-[; ;ARES_PPM_to_PWM.c: 147: ppm.iBuf = 0;
+[; ;ARES_PPM_to_PWM.c: 146: ppm->iBuf = 0;
+"146
+[e = . *U _ppm 5 -> -> 0 `i `uc ]
+[; ;ARES_PPM_to_PWM.c: 147: if(CCP1_CaptureRead() <= 0x4480) {
 "147
-[e = . _ppm 5 -> -> 0 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 148: if(CCP1_CaptureRead() <= 0x4480) {
-"148
-[e $ ! <= ( _CCP1_CaptureRead ..  -> -> 17536 `i `ui 2135  ]
+[e $ ! <= ( _CCP1_CaptureRead ..  -> 17536 `i 2135  ]
 {
-[; ;ARES_PPM_to_PWM.c: 149: ppmLoadState = BREAK_RECEIVED;
+[; ;ARES_PPM_to_PWM.c: 148: ppmLoadState = BREAK_RECEIVED;
+"148
+[e = _ppmLoadState . `E14659 1 ]
 "149
-[e = _ppmLoadState . `E14657 1 ]
-"150
 }
 [e :U 2135 ]
-[; ;ARES_PPM_to_PWM.c: 150: }
-[; ;ARES_PPM_to_PWM.c: 151: break;
-"151
+[; ;ARES_PPM_to_PWM.c: 149: }
+[; ;ARES_PPM_to_PWM.c: 150: break;
+"150
 [e $U 2132  ]
-[; ;ARES_PPM_to_PWM.c: 152: case BREAK_RECEIVED:
-"152
+[; ;ARES_PPM_to_PWM.c: 151: case BREAK_RECEIVED:
+"151
 [e :U 2136 ]
-[; ;ARES_PPM_to_PWM.c: 153: if(ppm.iBuf < ppm.PPM_BUF_SIZE) {
+[; ;ARES_PPM_to_PWM.c: 152: if(ppm->iBuf < ppm->PPM_BUF_SIZE) {
+"152
+[e $ ! < -> . *U _ppm 5 `i -> . *U _ppm 0 `i 2137  ]
+{
+[; ;ARES_PPM_to_PWM.c: 153: ppm->buf[ppm->iBuf] = CCP1_CaptureRead();
 "153
-[e $ ! < -> . _ppm 5 `i -> . _ppm 0 `i 2137  ]
-{
-[; ;ARES_PPM_to_PWM.c: 154: ppm.buf[ppm.iBuf] = CCP1_CaptureRead();
+[e = *U + &U . *U _ppm 4 * -> . *U _ppm 5 `ux -> -> # *U &U . *U _ppm 4 `ui `ux -> ( _CCP1_CaptureRead ..  `ui ]
+[; ;ARES_PPM_to_PWM.c: 154: ppm->iBuf++;
 "154
-[e = *U + &U . _ppm 4 * -> . _ppm 5 `ux -> -> # *U &U . _ppm 4 `ui `ux ( _CCP1_CaptureRead ..  ]
-[; ;ARES_PPM_to_PWM.c: 155: ppm.iBuf++;
+[e ++ . *U _ppm 5 -> -> 1 `i `uc ]
+[; ;ARES_PPM_to_PWM.c: 155: if(ppm->iBuf >= ppm->PPM_BUF_SIZE) {
 "155
-[e ++ . _ppm 5 -> -> 1 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 156: if(ppm.iBuf >= ppm.PPM_BUF_SIZE) {
-"156
-[e $ ! >= -> . _ppm 5 `i -> . _ppm 0 `i 2138  ]
+[e $ ! >= -> . *U _ppm 5 `i -> . *U _ppm 0 `i 2138  ]
 {
-[; ;ARES_PPM_to_PWM.c: 157: if(IsPPMMode(ppm) == 1) {
-"157
+[; ;ARES_PPM_to_PWM.c: 156: if(IsPPMMode(ppm) == 1) {
+"156
 [e $ ! == -> ( _IsPPMMode (1 _ppm `i -> 1 `i 2139  ]
 {
-[; ;ARES_PPM_to_PWM.c: 159: PPMUpdatePWM(pwm, ppm);
-"159
+[; ;ARES_PPM_to_PWM.c: 158: PPMUpdatePWM(pwm, ppm);
+"158
 [e ( _PPMUpdatePWM (2 , _pwm _ppm ]
-"160
+"159
 }
 [e :U 2139 ]
-[; ;ARES_PPM_to_PWM.c: 160: }
-[; ;ARES_PPM_to_PWM.c: 161: ppmLoadState = PPM_READY;
+[; ;ARES_PPM_to_PWM.c: 159: }
+[; ;ARES_PPM_to_PWM.c: 160: ppmLoadState = PPM_READY;
+"160
+[e = _ppmLoadState . `E14659 0 ]
 "161
-[e = _ppmLoadState . `E14657 0 ]
-"162
 }
 [e :U 2138 ]
-"163
+"162
 }
+[; ;ARES_PPM_to_PWM.c: 161: }
 [; ;ARES_PPM_to_PWM.c: 162: }
-[; ;ARES_PPM_to_PWM.c: 163: }
 [e $U 2140  ]
-"164
+"163
 [e :U 2137 ]
-[; ;ARES_PPM_to_PWM.c: 164: else {
+[; ;ARES_PPM_to_PWM.c: 163: else {
 {
-[; ;ARES_PPM_to_PWM.c: 166: ppmLoadState = PPM_READY;
+[; ;ARES_PPM_to_PWM.c: 165: ppmLoadState = PPM_READY;
+"165
+[e = _ppmLoadState . `E14659 0 ]
 "166
-[e = _ppmLoadState . `E14657 0 ]
-"167
 }
 [e :U 2140 ]
-[; ;ARES_PPM_to_PWM.c: 167: }
-[; ;ARES_PPM_to_PWM.c: 168: break;
+[; ;ARES_PPM_to_PWM.c: 166: }
+[; ;ARES_PPM_to_PWM.c: 167: break;
+"167
+[e $U 2132  ]
+[; ;ARES_PPM_to_PWM.c: 168: default:
 "168
-[e $U 2132  ]
-[; ;ARES_PPM_to_PWM.c: 169: default:
-"169
 [e :U 2141 ]
-[; ;ARES_PPM_to_PWM.c: 172: ppmLoadState = PPM_READY;
+[; ;ARES_PPM_to_PWM.c: 171: ppmLoadState = PPM_READY;
+"171
+[e = _ppmLoadState . `E14659 0 ]
 "172
-[e = _ppmLoadState . `E14657 0 ]
-"173
 }
-[; ;ARES_PPM_to_PWM.c: 173: }
+[; ;ARES_PPM_to_PWM.c: 172: }
 [e $U 2132  ]
-"145
+"144
 [e :U 2133 ]
-[e [\ _ppmLoadState , $ . `E14657 0 2134
- , $ . `E14657 1 2136
+[e [\ _ppmLoadState , $ . `E14659 0 2134
+ , $ . `E14659 1 2136
  2141 ]
-"173
+"172
 [e :U 2132 ]
-"175
+"174
 }
 [e :U 2131 ]
-[; ;ARES_PPM_to_PWM.c: 175: }
-[; ;ARES_PPM_to_PWM.c: 177: }
-"177
+[; ;ARES_PPM_to_PWM.c: 174: }
+[; ;ARES_PPM_to_PWM.c: 176: }
+"176
 [e :UE 2130 ]
 }
-"179
-[v _GetAutoModeState `(uc ~T0 @X0 1 ef1`S2100 ]
+"178
+[v _GetAutoModeState `(uc ~T0 @X0 1 ef1`*S2100 ]
 {
-[; ;ARES_PPM_to_PWM.c: 179: bool GetAutoModeState(struct PPM_Data ppm) {
+[; ;ARES_PPM_to_PWM.c: 178: bool GetAutoModeState(struct PPM_Data *ppm) {
 [e :U _GetAutoModeState ]
-[v _ppm `S2100 ~T0 @X0 1 r1 ]
+[v _ppm `*S2100 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 180: if(ppm.buf[ppm.I_AUTO_MODE] > 0xD120) return 0;
-"180
-[e $ ! > *U + &U . _ppm 4 * -> . _ppm 2 `ux -> -> # *U &U . _ppm 4 `ui `ux -> 53536 `ui 2143  ]
+[; ;ARES_PPM_to_PWM.c: 179: if(ppm->buf[ppm->I_AUTO_MODE] > 0xD120) return 0;
+"179
+[e $ ! > *U + &U . *U _ppm 4 * -> . *U _ppm 2 `ux -> -> # *U &U . *U _ppm 4 `ui `ux -> 53536 `ui 2143  ]
 [e ) -> -> 0 `i `uc ]
 [e $UE 2142  ]
 [e $U 2144  ]
-"181
+"180
 [e :U 2143 ]
-[; ;ARES_PPM_to_PWM.c: 181: else return 1;
+[; ;ARES_PPM_to_PWM.c: 180: else return 1;
 [e ) -> -> 1 `i `uc ]
 [e $UE 2142  ]
 [e :U 2144 ]
-[; ;ARES_PPM_to_PWM.c: 182: }
-"182
+[; ;ARES_PPM_to_PWM.c: 181: }
+"181
 [e :UE 2142 ]
 }
-"184
-[v _GetCtrlModeState `(uc ~T0 @X0 1 ef1`S2100 ]
+"183
+[v _GetCtrlModeState `(uc ~T0 @X0 1 ef1`*S2100 ]
 {
-[; ;ARES_PPM_to_PWM.c: 184: bool GetCtrlModeState(struct PPM_Data ppm) {
+[; ;ARES_PPM_to_PWM.c: 183: bool GetCtrlModeState(struct PPM_Data *ppm) {
 [e :U _GetCtrlModeState ]
-[v _ppm `S2100 ~T0 @X0 1 r1 ]
+[v _ppm `*S2100 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 185: if(ppm.buf[ppm.I_CTRL_MODE] > 0xD120) return 0;
-"185
-[e $ ! > *U + &U . _ppm 4 * -> . _ppm 1 `ux -> -> # *U &U . _ppm 4 `ui `ux -> 53536 `ui 2146  ]
+[; ;ARES_PPM_to_PWM.c: 184: if(ppm->buf[ppm->I_CTRL_MODE] > 0xD120) return 0;
+"184
+[e $ ! > *U + &U . *U _ppm 4 * -> . *U _ppm 1 `ux -> -> # *U &U . *U _ppm 4 `ui `ux -> 53536 `ui 2146  ]
 [e ) -> -> 0 `i `uc ]
 [e $UE 2145  ]
 [e $U 2147  ]
-"186
+"185
 [e :U 2146 ]
-[; ;ARES_PPM_to_PWM.c: 186: else return 1;
+[; ;ARES_PPM_to_PWM.c: 185: else return 1;
 [e ) -> -> 1 `i `uc ]
 [e $UE 2145  ]
 [e :U 2147 ]
-[; ;ARES_PPM_to_PWM.c: 187: }
-"187
+[; ;ARES_PPM_to_PWM.c: 186: }
+"186
 [e :UE 2145 ]
 }
-"189
-[v _IsAutoMode `(uc ~T0 @X0 1 ef1`S2100 ]
+"188
+[v _IsAutoMode `(uc ~T0 @X0 1 ef1`*S2100 ]
 {
-[; ;ARES_PPM_to_PWM.c: 189: bool IsAutoMode(struct PPM_Data ppm) {
+[; ;ARES_PPM_to_PWM.c: 188: bool IsAutoMode(struct PPM_Data *ppm) {
 [e :U _IsAutoMode ]
-[v _ppm `S2100 ~T0 @X0 1 r1 ]
+[v _ppm `*S2100 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 190: if((GetAutoModeState(ppm) == 1)&&(GetCtrlModeState(ppm) == 1)) return 1;
-"190
+[; ;ARES_PPM_to_PWM.c: 189: if((GetAutoModeState(ppm) == 1)&&(GetCtrlModeState(ppm) == 1)) return 1;
+"189
 [e $ ! && == -> ( _GetAutoModeState (1 _ppm `i -> 1 `i == -> ( _GetCtrlModeState (1 _ppm `i -> 1 `i 2149  ]
 [e ) -> -> 1 `i `uc ]
 [e $UE 2148  ]
 [e $U 2150  ]
-"191
+"190
 [e :U 2149 ]
-[; ;ARES_PPM_to_PWM.c: 191: else return 0;
+[; ;ARES_PPM_to_PWM.c: 190: else return 0;
 [e ) -> -> 0 `i `uc ]
 [e $UE 2148  ]
 [e :U 2150 ]
-[; ;ARES_PPM_to_PWM.c: 192: }
-"192
+[; ;ARES_PPM_to_PWM.c: 191: }
+"191
 [e :UE 2148 ]
 }
-"194
-[v _IsManualMode `(uc ~T0 @X0 1 ef1`S2100 ]
+"193
+[v _IsManualMode `(uc ~T0 @X0 1 ef1`*S2100 ]
 {
-[; ;ARES_PPM_to_PWM.c: 194: bool IsManualMode(struct PPM_Data ppm) {
+[; ;ARES_PPM_to_PWM.c: 193: bool IsManualMode(struct PPM_Data *ppm) {
 [e :U _IsManualMode ]
-[v _ppm `S2100 ~T0 @X0 1 r1 ]
+[v _ppm `*S2100 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 195: if((GetAutoModeState(ppm) == 0)&&(GetCtrlModeState(ppm) == 1)) return 1;
-"195
+[; ;ARES_PPM_to_PWM.c: 194: if((GetAutoModeState(ppm) == 0)&&(GetCtrlModeState(ppm) == 1)) return 1;
+"194
 [e $ ! && == -> ( _GetAutoModeState (1 _ppm `i -> 0 `i == -> ( _GetCtrlModeState (1 _ppm `i -> 1 `i 2152  ]
 [e ) -> -> 1 `i `uc ]
 [e $UE 2151  ]
 [e $U 2153  ]
-"196
+"195
 [e :U 2152 ]
-[; ;ARES_PPM_to_PWM.c: 196: else return 0;
+[; ;ARES_PPM_to_PWM.c: 195: else return 0;
 [e ) -> -> 0 `i `uc ]
 [e $UE 2151  ]
 [e :U 2153 ]
-[; ;ARES_PPM_to_PWM.c: 197: }
-"197
+[; ;ARES_PPM_to_PWM.c: 196: }
+"196
 [e :UE 2151 ]
 }
-"199
-[v _IsManipulationMode `(uc ~T0 @X0 1 ef1`S2100 ]
+"198
+[v _IsManipulationMode `(uc ~T0 @X0 1 ef1`*S2100 ]
 {
-[; ;ARES_PPM_to_PWM.c: 199: bool IsManipulationMode(struct PPM_Data ppm) {
+[; ;ARES_PPM_to_PWM.c: 198: bool IsManipulationMode(struct PPM_Data *ppm) {
 [e :U _IsManipulationMode ]
-[v _ppm `S2100 ~T0 @X0 1 r1 ]
+[v _ppm `*S2100 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 200: if(GetCtrlModeState(ppm) == 0) return 1;
-"200
+[; ;ARES_PPM_to_PWM.c: 199: if(GetCtrlModeState(ppm) == 0) return 1;
+"199
 [e $ ! == -> ( _GetCtrlModeState (1 _ppm `i -> 0 `i 2155  ]
 [e ) -> -> 1 `i `uc ]
 [e $UE 2154  ]
 [e $U 2156  ]
-"201
+"200
 [e :U 2155 ]
-[; ;ARES_PPM_to_PWM.c: 201: else return 0;
+[; ;ARES_PPM_to_PWM.c: 200: else return 0;
 [e ) -> -> 0 `i `uc ]
 [e $UE 2154  ]
 [e :U 2156 ]
-[; ;ARES_PPM_to_PWM.c: 202: }
-"202
+[; ;ARES_PPM_to_PWM.c: 201: }
+"201
 [e :UE 2154 ]
 }
-"204
+"203
 [v _IsDriveCont `(uc ~T0 @X0 1 ef ]
 {
-[; ;ARES_PPM_to_PWM.c: 204: bool IsDriveCont() {
+[; ;ARES_PPM_to_PWM.c: 203: bool IsDriveCont() {
 [e :U _IsDriveCont ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 205: return 1;
-"205
+[; ;ARES_PPM_to_PWM.c: 204: return 1;
+"204
 [e ) -> -> 1 `i `uc ]
 [e $UE 2157  ]
-[; ;ARES_PPM_to_PWM.c: 206: }
-"206
+[; ;ARES_PPM_to_PWM.c: 205: }
+"205
 [e :UE 2157 ]
 }
-"208
-[v _IsUARTMode `(uc ~T0 @X0 1 ef1`S2100 ]
+"207
+[v _IsUARTMode `(uc ~T0 @X0 1 ef1`*S2100 ]
 {
-[; ;ARES_PPM_to_PWM.c: 208: bool IsUARTMode(struct PPM_Data ppm) {
+[; ;ARES_PPM_to_PWM.c: 207: bool IsUARTMode(struct PPM_Data *ppm) {
 [e :U _IsUARTMode ]
-[v _ppm `S2100 ~T0 @X0 1 r1 ]
+[v _ppm `*S2100 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 209: if((IsDriveCont() == 1)&&(IsAutoMode(ppm) == 1)) return 1;
-"209
+[; ;ARES_PPM_to_PWM.c: 208: if((IsDriveCont() == 1)&&(IsAutoMode(ppm) == 1)) return 1;
+"208
 [e $ ! && == -> ( _IsDriveCont ..  `i -> 1 `i == -> ( _IsAutoMode (1 _ppm `i -> 1 `i 2159  ]
 [e ) -> -> 1 `i `uc ]
 [e $UE 2158  ]
 [e $U 2160  ]
-"210
+"209
 [e :U 2159 ]
-[; ;ARES_PPM_to_PWM.c: 210: else return 0;
+[; ;ARES_PPM_to_PWM.c: 209: else return 0;
 [e ) -> -> 0 `i `uc ]
 [e $UE 2158  ]
 [e :U 2160 ]
-[; ;ARES_PPM_to_PWM.c: 211: }
-"211
+[; ;ARES_PPM_to_PWM.c: 210: }
+"210
 [e :UE 2158 ]
 }
-"213
-[v _IsPPMMode `(uc ~T0 @X0 1 ef1`S2100 ]
+"212
+[v _IsPPMMode `(uc ~T0 @X0 1 ef1`*S2100 ]
 {
-[; ;ARES_PPM_to_PWM.c: 213: bool IsPPMMode(struct PPM_Data ppm) {
+[; ;ARES_PPM_to_PWM.c: 212: bool IsPPMMode(struct PPM_Data *ppm) {
 [e :U _IsPPMMode ]
-[v _ppm `S2100 ~T0 @X0 1 r1 ]
+[v _ppm `*S2100 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 214: if(((IsDriveCont() == 1)&&(IsManualMode(ppm) == 1))
-[; ;ARES_PPM_to_PWM.c: 215: ||(!IsDriveCont()&&IsManipulationMode(ppm))) {
-"215
+[; ;ARES_PPM_to_PWM.c: 213: if(((IsDriveCont() == 1)&&(IsManualMode(ppm) == 1))
+[; ;ARES_PPM_to_PWM.c: 214: ||(!IsDriveCont()&&IsManipulationMode(ppm))) {
+"214
 [e $ ! || && == -> ( _IsDriveCont ..  `i -> 1 `i == -> ( _IsManualMode (1 _ppm `i -> 1 `i && ! != -> ( _IsDriveCont ..  `i -> -> -> 0 `i `uc `i != -> ( _IsManipulationMode (1 _ppm `i -> -> -> 0 `i `uc `i 2162  ]
 {
-[; ;ARES_PPM_to_PWM.c: 216: return 1;
-"216
+[; ;ARES_PPM_to_PWM.c: 215: return 1;
+"215
 [e ) -> -> 1 `i `uc ]
 [e $UE 2161  ]
-"217
+"216
 }
-[; ;ARES_PPM_to_PWM.c: 217: }
+[; ;ARES_PPM_to_PWM.c: 216: }
 [e $U 2163  ]
-"218
+"217
 [e :U 2162 ]
-[; ;ARES_PPM_to_PWM.c: 218: else return 0;
+[; ;ARES_PPM_to_PWM.c: 217: else return 0;
 [e ) -> -> 0 `i `uc ]
 [e $UE 2161  ]
 [e :U 2163 ]
-[; ;ARES_PPM_to_PWM.c: 219: }
-"219
+[; ;ARES_PPM_to_PWM.c: 218: }
+"218
 [e :UE 2161 ]
 }
-"222
-[v _Init_UART_Data `(v ~T0 @X0 1 ef1`S2099 ]
+"221
+[v _Init_UART_Data `(v ~T0 @X0 1 ef1`*S2099 ]
 {
-[; ;ARES_PPM_to_PWM.c: 222: void Init_UART_Data(struct UART_Data uart) {
+[; ;ARES_PPM_to_PWM.c: 221: void Init_UART_Data(struct UART_Data *uart) {
 [e :U _Init_UART_Data ]
-[v _uart `S2099 ~T0 @X0 1 r1 ]
+[v _uart `*S2099 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 223: for (uint8_t i = uart.I_UART_BUF_DATA_START; i < uart.UART_BUF_SIZE; i++) {
-"223
+[; ;ARES_PPM_to_PWM.c: 222: for (uint8_t i = uart->I_UART_BUF_DATA_START; i < uart->UART_BUF_SIZE; i++) {
+"222
 {
 [v _i `uc ~T0 @X0 1 a ]
-[e = _i . _uart 3 ]
+[e = _i . *U _uart 3 ]
 [e $U 2168  ]
 [e :U 2165 ]
 {
-[; ;ARES_PPM_to_PWM.c: 224: uart.buf[i] = 0;
-"224
-[e = *U + &U . _uart 4 * -> _i `ux -> -> # *U &U . _uart 4 `ui `ux -> -> 0 `i `uc ]
-"225
-}
+[; ;ARES_PPM_to_PWM.c: 223: uart->buf[i] = 0;
 "223
+[e = *U + &U . *U _uart 4 * -> _i `ux -> -> # *U &U . *U _uart 4 `ui `ux -> -> 0 `i `uc ]
+"224
+}
+"222
 [e ++ _i -> -> 1 `i `uc ]
 [e :U 2168 ]
-[e $ < -> _i `i -> . _uart 0 `i 2165  ]
+[e $ < -> _i `i -> . *U _uart 0 `i 2165  ]
 [e :U 2166 ]
-"225
+"224
 }
-[; ;ARES_PPM_to_PWM.c: 225: }
-[; ;ARES_PPM_to_PWM.c: 227: uart.iBuf = 0;
+[; ;ARES_PPM_to_PWM.c: 224: }
+[; ;ARES_PPM_to_PWM.c: 226: uart->iBuf = 0;
+"226
+[e = . *U _uart 5 -> -> 0 `i `uc ]
+[; ;ARES_PPM_to_PWM.c: 227: }
 "227
-[e = . _uart 5 -> -> 0 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 228: }
-"228
 [e :UE 2164 ]
 }
-"230
-[v _CheckCRC `(uc ~T0 @X0 1 ef1`S2099 ]
+"229
+[v _CheckCRC `(uc ~T0 @X0 1 ef1`*S2099 ]
 {
-[; ;ARES_PPM_to_PWM.c: 230: bool CheckCRC(struct UART_Data uart) {
+[; ;ARES_PPM_to_PWM.c: 229: bool CheckCRC(struct UART_Data *uart) {
 [e :U _CheckCRC ]
-[v _uart `S2099 ~T0 @X0 1 r1 ]
+[v _uart `*S2099 ~T0 @X0 1 r1 ]
 [f ]
-"231
+"230
 [v _inc `uc ~T0 @X0 1 a ]
-[; ;ARES_PPM_to_PWM.c: 231: uint8_t inc = 0;
+[; ;ARES_PPM_to_PWM.c: 230: uint8_t inc = 0;
 [e = _inc -> -> 0 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 232: for(uint8_t i = uart.I_UART_BUF_DATA_START; i < uart.I_CRC; i++) {
-"232
+[; ;ARES_PPM_to_PWM.c: 231: for(uint8_t i = uart->I_UART_BUF_DATA_START; i < uart->I_CRC; i++) {
+"231
 {
 [v _i `uc ~T0 @X0 1 a ]
-[e = _i . _uart 3 ]
+[e = _i . *U _uart 3 ]
 [e $U 2173  ]
 [e :U 2170 ]
 {
-[; ;ARES_PPM_to_PWM.c: 233: for(uint8_t j = 0; j < 8; j++) {
-"233
+[; ;ARES_PPM_to_PWM.c: 232: for(uint8_t j = 0; j < 8; j++) {
+"232
 {
 [v _j `uc ~T0 @X0 1 a ]
 [e = _j -> -> 0 `i `uc ]
@@ -17392,171 +17392,171 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 2175  ]
 [e :U 2174 ]
 {
-[; ;ARES_PPM_to_PWM.c: 234: inc = inc + ((uart.buf[i] >> j)&0x01);
-"234
-[e = _inc -> + -> _inc `i & >> -> *U + &U . _uart 4 * -> _i `ux -> -> # *U &U . _uart 4 `ui `ux `i _j -> 1 `i `uc ]
-"235
-}
+[; ;ARES_PPM_to_PWM.c: 233: inc = inc + ((uart->buf[i] >> j)&0x01);
 "233
+[e = _inc -> + -> _inc `i & >> -> *U + &U . *U _uart 4 * -> _i `ux -> -> # *U &U . *U _uart 4 `ui `ux `i _j -> 1 `i `uc ]
+"234
+}
+"232
 [e ++ _j -> -> 1 `i `uc ]
 [e $ < -> _j `i -> 8 `i 2174  ]
 [e :U 2175 ]
+"234
+}
 "235
 }
-"236
-}
-"232
+"231
 [e ++ _i -> -> 1 `i `uc ]
 [e :U 2173 ]
-[e $ < -> _i `i -> . _uart 2 `i 2170  ]
+[e $ < -> _i `i -> . *U _uart 2 `i 2170  ]
 [e :U 2171 ]
-"236
+"235
 }
+[; ;ARES_PPM_to_PWM.c: 234: }
 [; ;ARES_PPM_to_PWM.c: 235: }
-[; ;ARES_PPM_to_PWM.c: 236: }
-[; ;ARES_PPM_to_PWM.c: 237: if(inc == uart.buf[uart.I_CRC]) return 1;
-"237
-[e $ ! == -> _inc `i -> *U + &U . _uart 4 * -> . _uart 2 `ux -> -> # *U &U . _uart 4 `ui `ux `i 2177  ]
+[; ;ARES_PPM_to_PWM.c: 236: if(inc == uart->buf[uart->I_CRC]) return 1;
+"236
+[e $ ! == -> _inc `i -> *U + &U . *U _uart 4 * -> . *U _uart 2 `ux -> -> # *U &U . *U _uart 4 `ui `ux `i 2177  ]
 [e ) -> -> 1 `i `uc ]
 [e $UE 2169  ]
 [e $U 2178  ]
-"238
+"237
 [e :U 2177 ]
-[; ;ARES_PPM_to_PWM.c: 238: else return 0;
+[; ;ARES_PPM_to_PWM.c: 237: else return 0;
 [e ) -> -> 0 `i `uc ]
 [e $UE 2169  ]
 [e :U 2178 ]
-[; ;ARES_PPM_to_PWM.c: 239: }
-"239
+[; ;ARES_PPM_to_PWM.c: 238: }
+"238
 [e :UE 2169 ]
 }
-"241
-[v _LoadByte `(v ~T0 @X0 1 ef3`S2099`S2100`S2098 ]
+"240
+[v _LoadByte `(v ~T0 @X0 1 ef3`*S2099`*S2100`*S2098 ]
 {
-[; ;ARES_PPM_to_PWM.c: 241: void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm) {
+[; ;ARES_PPM_to_PWM.c: 240: void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm) {
 [e :U _LoadByte ]
-[v _uart `S2099 ~T0 @X0 1 r1 ]
-[v _ppmMode `S2100 ~T0 @X0 1 r2 ]
-[v _pwm `S2098 ~T0 @X0 1 r3 ]
+[v _uart `*S2099 ~T0 @X0 1 r1 ]
+[v _ppmMode `*S2100 ~T0 @X0 1 r2 ]
+[v _pwm `*S2098 ~T0 @X0 1 r3 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 242: if(PIR1bits.RCIF == 1) {
-"242
+[; ;ARES_PPM_to_PWM.c: 241: if(PIR1bits.RCIF == 1) {
+"241
 [e $ ! == -> . . _PIR1bits 0 5 `i -> 1 `i 2180  ]
 {
-"245
+"244
 }
 [e :U 2180 ]
-"247
+"246
 [v _byte `uc ~T0 @X0 1 a ]
-[; ;ARES_PPM_to_PWM.c: 245: }
-[; ;ARES_PPM_to_PWM.c: 247: uint8_t byte;
-[; ;ARES_PPM_to_PWM.c: 249: switch(uartLoadState) {
-"249
+[; ;ARES_PPM_to_PWM.c: 244: }
+[; ;ARES_PPM_to_PWM.c: 246: uint8_t byte;
+[; ;ARES_PPM_to_PWM.c: 248: switch(uartLoadState) {
+"248
 [e $U 2182  ]
 {
-[; ;ARES_PPM_to_PWM.c: 250: case UART_READY:
-"250
+[; ;ARES_PPM_to_PWM.c: 249: case UART_READY:
+"249
 [e :U 2183 ]
-[; ;ARES_PPM_to_PWM.c: 251: byte = EUSART_Read();
-"251
+[; ;ARES_PPM_to_PWM.c: 250: byte = EUSART_Read();
+"250
 [e = _byte ( _EUSART_Read ..  ]
-[; ;ARES_PPM_to_PWM.c: 252: if(byte == 'G') uartLoadState = G_RECEIVED;
-"252
+[; ;ARES_PPM_to_PWM.c: 251: if(byte == 'G') uartLoadState = G_RECEIVED;
+"251
 [e $ ! == -> _byte `ui -> 71 `ui 2184  ]
-[e = _uartLoadState . `E14645 1 ]
+[e = _uartLoadState . `E14647 1 ]
 [e :U 2184 ]
-[; ;ARES_PPM_to_PWM.c: 254: break;
+[; ;ARES_PPM_to_PWM.c: 253: break;
+"253
+[e $U 2181  ]
+[; ;ARES_PPM_to_PWM.c: 254: case G_RECEIVED:
 "254
-[e $U 2181  ]
-[; ;ARES_PPM_to_PWM.c: 255: case G_RECEIVED:
-"255
 [e :U 2185 ]
-[; ;ARES_PPM_to_PWM.c: 256: if(EUSART_Read() == 'O') uartLoadState = O_RECEIVED;
-"256
+[; ;ARES_PPM_to_PWM.c: 255: if(EUSART_Read() == 'O') uartLoadState = O_RECEIVED;
+"255
 [e $ ! == -> ( _EUSART_Read ..  `ui -> 79 `ui 2186  ]
-[e = _uartLoadState . `E14645 2 ]
+[e = _uartLoadState . `E14647 2 ]
 [e $U 2187  ]
-"257
+"256
 [e :U 2186 ]
-[; ;ARES_PPM_to_PWM.c: 257: else uartLoadState = UART_READY;
-[e = _uartLoadState . `E14645 0 ]
+[; ;ARES_PPM_to_PWM.c: 256: else uartLoadState = UART_READY;
+[e = _uartLoadState . `E14647 0 ]
 [e :U 2187 ]
-[; ;ARES_PPM_to_PWM.c: 258: break;
-"258
+[; ;ARES_PPM_to_PWM.c: 257: break;
+"257
 [e $U 2181  ]
-[; ;ARES_PPM_to_PWM.c: 259: case O_RECEIVED:
-"259
+[; ;ARES_PPM_to_PWM.c: 258: case O_RECEIVED:
+"258
 [e :U 2188 ]
-[; ;ARES_PPM_to_PWM.c: 260: if((EUSART_Read() == 0x00)&&(IsUARTMode(ppmMode) == 1)) {
-"260
+[; ;ARES_PPM_to_PWM.c: 259: if((EUSART_Read() == 0x00)&&(IsUARTMode(ppmMode) == 1)) {
+"259
 [e $ ! && == -> ( _EUSART_Read ..  `i -> 0 `i == -> ( _IsUARTMode (1 _ppmMode `i -> 1 `i 2189  ]
 {
-[; ;ARES_PPM_to_PWM.c: 261: uartLoadState = PID_GO_DRIVE_RECEIVED;
+[; ;ARES_PPM_to_PWM.c: 260: uartLoadState = PID_GO_DRIVE_RECEIVED;
+"260
+[e = _uartLoadState . `E14647 3 ]
+[; ;ARES_PPM_to_PWM.c: 261: uart->iBuf = 0;
 "261
-[e = _uartLoadState . `E14645 3 ]
-[; ;ARES_PPM_to_PWM.c: 262: uart.iBuf = 0;
+[e = . *U _uart 5 -> -> 0 `i `uc ]
 "262
-[e = . _uart 5 -> -> 0 `i `uc ]
-"263
 }
-[; ;ARES_PPM_to_PWM.c: 263: }
+[; ;ARES_PPM_to_PWM.c: 262: }
 [e $U 2190  ]
-"264
+"263
 [e :U 2189 ]
-[; ;ARES_PPM_to_PWM.c: 264: else uartLoadState == UART_READY;
-[e == -> _uartLoadState `i -> . `E14645 0 `i ]
+[; ;ARES_PPM_to_PWM.c: 263: else uartLoadState == UART_READY;
+[e == -> _uartLoadState `i -> . `E14647 0 `i ]
 [e :U 2190 ]
-[; ;ARES_PPM_to_PWM.c: 265: break;
-"265
+[; ;ARES_PPM_to_PWM.c: 264: break;
+"264
 [e $U 2181  ]
-[; ;ARES_PPM_to_PWM.c: 277: case PID_GO_DRIVE_RECEIVED:
-"277
+[; ;ARES_PPM_to_PWM.c: 276: case PID_GO_DRIVE_RECEIVED:
+"276
 [e :U 2191 ]
-[; ;ARES_PPM_to_PWM.c: 278: uart.buf[uart.iBuf] = EUSART_Read();
+[; ;ARES_PPM_to_PWM.c: 277: uart->buf[uart->iBuf] = EUSART_Read();
+"277
+[e = *U + &U . *U _uart 4 * -> . *U _uart 5 `ux -> -> # *U &U . *U _uart 4 `ui `ux ( _EUSART_Read ..  ]
+[; ;ARES_PPM_to_PWM.c: 278: uart->iBuf++;
 "278
-[e = *U + &U . _uart 4 * -> . _uart 5 `ux -> -> # *U &U . _uart 4 `ui `ux ( _EUSART_Read ..  ]
-[; ;ARES_PPM_to_PWM.c: 279: uart.iBuf++;
+[e ++ . *U _uart 5 -> -> 1 `i `uc ]
+[; ;ARES_PPM_to_PWM.c: 279: if(uart->iBuf >= uart->UART_BUF_SIZE) {
 "279
-[e ++ . _uart 5 -> -> 1 `i `uc ]
-[; ;ARES_PPM_to_PWM.c: 280: if(uart.iBuf >= uart.UART_BUF_SIZE) {
-"280
-[e $ ! >= -> . _uart 5 `i -> . _uart 0 `i 2192  ]
+[e $ ! >= -> . *U _uart 5 `i -> . *U _uart 0 `i 2192  ]
 {
-[; ;ARES_PPM_to_PWM.c: 281: if(CheckCRC(uart) == 1) UARTUpdatePWM(pwm, uart);
-"281
+[; ;ARES_PPM_to_PWM.c: 280: if(CheckCRC(uart) == 1) UARTUpdatePWM(pwm, uart);
+"280
 [e $ ! == -> ( _CheckCRC (1 _uart `i -> 1 `i 2193  ]
 [e ( _UARTUpdatePWM (2 , _pwm _uart ]
 [e :U 2193 ]
-[; ;ARES_PPM_to_PWM.c: 282: uartLoadState = UART_READY;
-"282
-[e = _uartLoadState . `E14645 0 ]
-"284
+[; ;ARES_PPM_to_PWM.c: 281: uartLoadState = UART_READY;
+"281
+[e = _uartLoadState . `E14647 0 ]
+"283
 }
 [e :U 2192 ]
-[; ;ARES_PPM_to_PWM.c: 284: }
-[; ;ARES_PPM_to_PWM.c: 285: break;
-"285
+[; ;ARES_PPM_to_PWM.c: 283: }
+[; ;ARES_PPM_to_PWM.c: 284: break;
+"284
 [e $U 2181  ]
-[; ;ARES_PPM_to_PWM.c: 296: default:
-"296
+[; ;ARES_PPM_to_PWM.c: 295: default:
+"295
 [e :U 2194 ]
-[; ;ARES_PPM_to_PWM.c: 298: uartLoadState = UART_READY;
-"298
-[e = _uartLoadState . `E14645 0 ]
-"300
+[; ;ARES_PPM_to_PWM.c: 297: uartLoadState = UART_READY;
+"297
+[e = _uartLoadState . `E14647 0 ]
+"299
 }
-[; ;ARES_PPM_to_PWM.c: 300: }
+[; ;ARES_PPM_to_PWM.c: 299: }
 [e $U 2181  ]
-"249
+"248
 [e :U 2182 ]
-[e [\ _uartLoadState , $ . `E14645 0 2183
- , $ . `E14645 1 2185
- , $ . `E14645 2 2188
- , $ . `E14645 3 2191
+[e [\ _uartLoadState , $ . `E14647 0 2183
+ , $ . `E14647 1 2185
+ , $ . `E14647 2 2188
+ , $ . `E14647 3 2191
  2194 ]
-"300
+"299
 [e :U 2181 ]
-[; ;ARES_PPM_to_PWM.c: 301: }
-"301
+[; ;ARES_PPM_to_PWM.c: 300: }
+"300
 [e :UE 2179 ]
 }

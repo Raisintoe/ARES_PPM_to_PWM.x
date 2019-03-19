@@ -79,7 +79,7 @@
 // Struct Definitions
 
 //PORT_Data Struct
-typedef struct PORT_Data {
+struct PORT_Data {
     const uint8_t PORT_SIZE;// = _PORT_REG_SIZE;
     //const uint8_t
     //TODO other stuff
@@ -101,7 +101,7 @@ typedef struct PORT_Data {
     
 
 //PWM_Data Struct
-typedef struct PWM_Data {
+struct PWM_Data {
     
     const uint8_t PWM_REG_SIZE;// = _PWM_REG_SIZE;
     //const uint8_t I_PWM_REG_DATA_START = _I_PWM_REG_DATA_START;
@@ -126,7 +126,7 @@ typedef struct PWM_Data {
 
 
 //UART_Data Struct
-typedef struct UART_Data {
+struct UART_Data {
     //GO command constants
     const uint8_t UART_BUF_SIZE;// = _UART_BUF_GO_SIZE;  //Size of Data buffer ("GO" is the PID)
     const uint8_t I_DIR;// = _I_UART_GO_DIR;   //Direction byte 4'bxx000111' = rev,rev,rev,frw,frw,frw
@@ -165,7 +165,7 @@ typedef struct UART_Data {
 
 enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
 
-typedef struct PPM_Data {
+struct PPM_Data {
     const uint8_t PPM_BUF_SIZE;// = _PPM_BUF_SIZE;                 //PPM buffer size
     //const uint8_t I_MANUAL_MODE = _I_PPM_BUF_MANUAL_MODE;
     const uint8_t I_CTRL_MODE;// = _I_PPM_BUF_CTRL_MODE;   //_2MS for drive
@@ -185,22 +185,22 @@ enum PPMLoadState{PPM_READY, BREAK_RECEIVED};    //tracks the current state of t
 //Struct Functions
 
 //PPM Functions
-void Init_PPM_Data(struct PPM_Data ppm);         //Constructor (if allowed in C)
+void Init_PPM_Data(struct PPM_Data *ppm);         //Constructor (if allowed in C)
 //size_t state;         //tracks the state of the PPM input (0: waiting for break pulse, 1: break pulse received)
-void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm);     //Sends captured CCP1 value to PPM buffer
+void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm);     //Sends captured CCP1 value to PPM buffer
 
 //states/modes
 //bool IsPPMValid();    //returns true if whole frame was received successfully, and has not yet been written over
-bool IsManualMode(struct PPM_Data ppm);    //returns true if in manual control mode (overrides autonomous control)
-bool IsManipulationMode(struct PPM_Data ppm);     //returns true if in manipulation mode
-bool IsAutoMode(struct PPM_Data ppm);      //returns true if autonomy is enabled AND manual mode is disabled
+bool IsManualMode(struct PPM_Data *ppm);    //returns true if in manual control mode (overrides autonomous control)
+bool IsManipulationMode(struct PPM_Data *ppm);     //returns true if in manipulation mode
+bool IsAutoMode(struct PPM_Data *ppm);      //returns true if autonomy is enabled AND manual mode is disabled
 
 bool IsDriveCont();     //returns true if the controller is used as rover motor driver, and false if it is used as Manipulation controller
-bool IsUARTMode(struct PPM_Data ppm);      //returns true if the state is set for using UART data to drive the controller
-bool IsPPMMode(struct PPM_Data ppm);       //returns true if the state is set for using PPM data to drive the controller
+bool IsUARTMode(struct PPM_Data *ppm);      //returns true if the state is set for using UART data to drive the controller
+bool IsPPMMode(struct PPM_Data *ppm);       //returns true if the state is set for using PPM data to drive the controller
 
-bool GetAutoModeState(struct PPM_Data ppm);    //Interprets and returns mode setting sent over PPM
-bool GetCtrlModeState(struct PPM_Data ppm);    //Interprets and returns mode setting sent over PPM
+bool GetAutoModeState(struct PPM_Data *ppm);    //Interprets and returns mode setting sent over PPM
+bool GetCtrlModeState(struct PPM_Data *ppm);    //Interprets and returns mode setting sent over PPM
 
 //void UpdateReg(PWM_Data* &pwm);       //updates the main register (updates from its own data buffer when in manual mode,
 //void UpdateReg(UART_Data* &uart, PWM_Data* &pwm);//  or updates from UART buffer when in autonomous mode)
@@ -210,31 +210,31 @@ bool GetCtrlModeState(struct PPM_Data ppm);    //Interprets and returns mode set
 
 
 //UART Functions
-void Init_UART_Data(struct UART_Data uart);            //Constructor, (if not allowed in C, then call it explicitly)
-bool CheckCRC(struct UART_Data uart);                    //Adds data bits, and compares with CRC byte
+void Init_UART_Data(struct UART_Data *uart);            //Constructor, (if not allowed in C, then call it explicitly)
+bool CheckCRC(struct UART_Data *uart);                    //Adds data bits, and compares with CRC byte
 //void UpdateBuf(PPM_Data* &data);    //Translates data, and sends it to PPM_Data->buf;
 //Update to PPM buffer happens externally
 //bool IsGOPacketReady();   //Returns true if whole packet has been received
 //bool IsATPacketReady();
-void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm);        //loads byte from Receive Register
+void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);        //loads byte from Receive Register
 //state made into an enum: uint8_t loadState;     //holds the current state of data packet reception
 
 
 
 //PWM Functions
-void Init_PWM_Data(struct PWM_Data pwm);
+void Init_PWM_Data(struct PWM_Data *pwm);
 //done in PORT_Data Struct: void EndFrame();    //Ends PWM frame at period clock interrupt
-void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart);   //filters/converts data from uart buf, and sends it to the pwm register
-void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm);     //filters/converts data from ppm buf, and sends it to the pwm register
+void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);   //filters/converts data from uart buf, and sends it to the pwm register
+void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm);     //filters/converts data from ppm buf, and sends it to the pwm register
     
 //private:
 //void Convert(UART_Data* &uart); //Converts values to TMR3 usable values
 //void Convert(PPM_Data* &ppm);
-uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i); //cuts values at celing
+uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i); //cuts values at celing
 //void UpdateReg(); //moves buf to reg
 
 //Port Data Functions
-void Init_PORT_Data(struct PORT_Data port);
+void Init_PORT_Data(struct PORT_Data *port);
 //void EndFrame(); //I think it belongs up here, not in PWM_Data
 
 
@@ -243,4 +243,3 @@ void Init_PORT_Data(struct PORT_Data port);
 //struct PWM_Data GetPwmData();
 //struct UART_Data GetUartData();
 //struct PPM_Data GetPpmData();
-

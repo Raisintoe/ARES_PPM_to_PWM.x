@@ -30,7 +30,6 @@
 
 #include "main.h"
 
-
 //Initialize Structs
 //Declare Instances
 struct PORT_Data portData = {_PORT_REG_SIZE};
@@ -72,30 +71,30 @@ enum PPMLoadState ppmLoadState = PPM_READY;
 //struct PPM_Data GetPpmData() {return ppmData;}
 
 //PORT_Data struct
-void Init_PORT_Data(struct PORT_Data port) {
-    port.iPort = 0;
-    port.frameEnd = true;    //must wait for break pulse before sending PWM pulses
+void Init_PORT_Data(struct PORT_Data *port) {
+    port->iPort = 0;
+    port->frameEnd = true;    //must wait for break pulse before sending PWM pulses
 }
 
 //PWM_Data struct functions
-void Init_PWM_Data(struct PWM_Data pwm) {
-    for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
-        pwm.reg[i] = _1_5MS_COMP;   //initialize at center position (or stop position)
+void Init_PWM_Data(struct PWM_Data *pwm) {
+    for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
+        pwm->reg[i] = _1_5MS_COMP;   //initialize at center position (or stop position)
     }
-    pwm.iReg = 0; //indecies used in case of interrupt triggered increment
+    pwm->iReg = 0; //indecies used in case of interrupt triggered increment
 }
 
-uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i) {
-    if(temp > pwm.EP_ARRAY[2*i]) temp = pwm.EP_ARRAY[2*i];
-    else if(temp < pwm.EP_ARRAY[2*i + 1]) temp = pwm.EP_ARRAY[2*i + 1];
+uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i) {
+    if(temp > pwm->EP_ARRAY[2*i]) temp = pwm->EP_ARRAY[2*i];
+    else if(temp < pwm->EP_ARRAY[2*i + 1]) temp = pwm->EP_ARRAY[2*i + 1];
     return temp;
 }
 
-void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart) {
+void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart) {
     
     //Convert, and place in buf[]
-    uint8_t dir_reg = uart.buf[uart.I_DIR];
-    for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
+    uint8_t dir_reg = uart->buf[uart->I_DIR];
+    for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
         //if(_PIC_IS_DRIVE_CONT == true) {    //if this the PIC is the drive controller, 
                                     //  then the 3 last channels are reversed
                                     //  data interpretation is also different
@@ -109,51 +108,51 @@ void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart) {
         //const uint8_t UART_MIN = 0x00;
         uint16_t temp = 0;  //using temporary uint16_t rather than a secondary buffer
         if(((i < 3)&&(dir == _DIR_FORWARD))||((i >= 3)&&(dir == _DIR_REVERSE))) {
-            temp = ((uint16_t)((double)uart.buf[i]*(HIGH_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+            temp = ((uint16_t)((double)uart->buf[i]*(HIGH_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
         }
         else {
-            temp = ((uint16_t)((double)uart.buf[i]*(LOW_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+            temp = ((uint16_t)((double)uart->buf[i]*(LOW_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
         }
         
         //filter and place temp in reg[i]
-        pwm.reg[i] = Filter(pwm, temp, i);
+        pwm->reg[i] = Filter(pwm, temp, i);
     }
 }
 
-void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm) {
-    for(uint8_t i = 0; i < pwm.PWM_REG_SIZE; i++) {
-        pwm.reg[i] = Filter(pwm, ppm.buf[i], i);
+void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm) {
+    for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
+        pwm->reg[i] = Filter(pwm, ppm->buf[i+ppm->I_PPM_BUF_DATA_START], i);
     }
 }
 
 //PPM_Data struct functions
-void Init_PPM_Data(struct PPM_Data ppm) {
+void Init_PPM_Data(struct PPM_Data *ppm) {
 //    buf[I_MANUAL_MODE] = _1MS_COMP;     //Manual mode is disabled by default
-    if(_PIC_IS_DRIVE_CONT == true) ppm.buf[ppm.I_CTRL_MODE] = _2MS_COMP;      //Drive mode is selected by default (not manipulation mode)
-    else ppm.buf[ppm.I_CTRL_MODE] = _1MS_COMP;
-    ppm.buf[ppm.I_AUTO_MODE] = _1MS_COMP;      //Autonomous Mode is disabled by default
-    for (uint8_t i = ppm.I_PPM_BUF_DATA_START; i < ppm.PPM_BUF_SIZE; i++) {
-        ppm.buf[i] = _1_5MS_COMP;    //1.5 ms as default (0 position)
+    if(_PIC_IS_DRIVE_CONT == true) ppm->buf[ppm->I_CTRL_MODE] = _2MS_COMP;      //Drive mode is selected by default (not manipulation mode)
+    else ppm->buf[ppm->I_CTRL_MODE] = _1MS_COMP;
+    ppm->buf[ppm->I_AUTO_MODE] = _1MS_COMP;      //Autonomous Mode is disabled by default
+    for (uint8_t i = ppm->I_PPM_BUF_DATA_START; i < ppm->PPM_BUF_SIZE; i++) {
+        ppm->buf[i] = _1_5MS_COMP;    //1.5 ms as default (0 position)
     }
-    ppm.iBuf = 0;   //buffer index
+    ppm->iBuf = 0;   //buffer index
     
     ppmLoadState = PPM_READY;
 }
 
-void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm) {
+void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm) {
     if(CCP1_IsCapturedDataReady() == true) {
         switch(ppmLoadState) {
             case PPM_READY:
-                ppm.iBuf = 0;
+                ppm->iBuf = 0;
                 if(CCP1_CaptureRead() <= _6MS_COMP) {   //assuming a break pulse to be at least 6ms (knowing the _6MS_COMP is the compliment value)
                     ppmLoadState = BREAK_RECEIVED;
                 }
                 break;
             case BREAK_RECEIVED:
-                if(ppm.iBuf < ppm.PPM_BUF_SIZE) {
-                    ppm.buf[ppm.iBuf] = CCP1_CaptureRead();
-                    ppm.iBuf++;
-                    if(ppm.iBuf >= ppm.PPM_BUF_SIZE) {
+                if(ppm->iBuf < ppm->PPM_BUF_SIZE) {
+                    ppm->buf[ppm->iBuf] = CCP1_CaptureRead();
+                    ppm->iBuf++;
+                    if(ppm->iBuf >= ppm->PPM_BUF_SIZE) {
                         if(IsPPMMode(ppm) == true) {
                             //ppmValid = true;   //PPM frame has been loaded, set status to valid
                             PPMUpdatePWM(pwm, ppm);
@@ -176,27 +175,27 @@ void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm) {
     
 }
 
-bool GetAutoModeState(struct PPM_Data ppm) {
-    if(ppm.buf[ppm.I_AUTO_MODE] > _1_5MS_COMP) return false;
+bool GetAutoModeState(struct PPM_Data *ppm) {
+    if(ppm->buf[ppm->I_AUTO_MODE] > _1_5MS_COMP) return false;
     else return true;
 }
 
-bool GetCtrlModeState(struct PPM_Data ppm) {
-    if(ppm.buf[ppm.I_CTRL_MODE] > _1_5MS_COMP) return false;
+bool GetCtrlModeState(struct PPM_Data *ppm) {
+    if(ppm->buf[ppm->I_CTRL_MODE] > _1_5MS_COMP) return false;
     else return true;
 }
 
-bool IsAutoMode(struct PPM_Data ppm) {
+bool IsAutoMode(struct PPM_Data *ppm) {
     if((GetAutoModeState(ppm) == true)&&(GetCtrlModeState(ppm) == true)) return true;
     else return false;
 }
 
-bool IsManualMode(struct PPM_Data ppm) {
+bool IsManualMode(struct PPM_Data *ppm) {
     if((GetAutoModeState(ppm) == false)&&(GetCtrlModeState(ppm) == true)) return true;
     else return false;
 }
 
-bool IsManipulationMode(struct PPM_Data ppm) {
+bool IsManipulationMode(struct PPM_Data *ppm) {
     if(GetCtrlModeState(ppm) == false) return true;
     else return false;
 }
@@ -205,12 +204,12 @@ bool IsDriveCont() {  //might upgrade this to be configurable over UART, and sav
     return _PIC_IS_DRIVE_CONT;
 }
 
-bool IsUARTMode(struct PPM_Data ppm) {
+bool IsUARTMode(struct PPM_Data *ppm) {
     if((IsDriveCont() == true)&&(IsAutoMode(ppm) == true)) return true;
     else return false;
 }
 
-bool IsPPMMode(struct PPM_Data ppm) {
+bool IsPPMMode(struct PPM_Data *ppm) {
     if(((IsDriveCont() == true)&&(IsManualMode(ppm) == true))
             ||(!IsDriveCont()&&IsManipulationMode(ppm))) {
         return true;
@@ -219,26 +218,26 @@ bool IsPPMMode(struct PPM_Data ppm) {
 }
 
 // UART_Data struct functions 
-void Init_UART_Data(struct UART_Data uart) {
-    for (uint8_t i = uart.I_UART_BUF_DATA_START; i < uart.UART_BUF_SIZE; i++) {
-        uart.buf[i] = 0;    //set all defaults at 0 position, CRC is also 0
+void Init_UART_Data(struct UART_Data *uart) {
+    for (uint8_t i = uart->I_UART_BUF_DATA_START; i < uart->UART_BUF_SIZE; i++) {
+        uart->buf[i] = 0;    //set all defaults at 0 position, CRC is also 0
     }
     
-    uart.iBuf = 0;   //buffer index
+    uart->iBuf = 0;   //buffer index
 }
 
-bool CheckCRC(struct UART_Data uart) {
+bool CheckCRC(struct UART_Data *uart) {
     uint8_t inc = 0;
-    for(uint8_t i = uart.I_UART_BUF_DATA_START; i < uart.I_CRC; i++) {
+    for(uint8_t i = uart->I_UART_BUF_DATA_START; i < uart->I_CRC; i++) {
         for(uint8_t j = 0; j < 8; j++) {
-            inc = inc + ((uart.buf[i] >> j)&0x01);   //add up the number of bits
+            inc = inc + ((uart->buf[i] >> j)&0x01);   //add up the number of bits
         }
     }
-    if(inc == uart.buf[uart.I_CRC]) return true;
+    if(inc == uart->buf[uart->I_CRC]) return true;
     else return false;
 }
 
-void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm) {
+void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm) {
     if(PIR1bits.RCIF == 1) {
         //PIR1bits.RCIF = 0;  //clear the UART receive interrupt flag
         //RCREG must be read to clear RCIF
@@ -259,7 +258,7 @@ void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pw
         case O_RECEIVED:
             if((EUSART_Read() == _PID_DRIVE)&&(IsUARTMode(ppmMode) == true)) { //0 byte at start of frame
                 uartLoadState = PID_GO_DRIVE_RECEIVED;
-                uart.iBuf = 0;   //initialize the buffer pointer
+                uart->iBuf = 0;   //initialize the buffer pointer
             }
             else uartLoadState == UART_READY;    //revert back to READY if 0x00 was not received consecutively
             break;
@@ -275,9 +274,9 @@ void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pw
         //    else LoadState == READY;    //revert back to READY if 0x00 was not received consecutively
         //    break;
         case PID_GO_DRIVE_RECEIVED:
-            uart.buf[uart.iBuf] = EUSART_Read();
-            uart.iBuf++;
-            if(uart.iBuf >= uart.UART_BUF_SIZE) {
+            uart->buf[uart->iBuf] = EUSART_Read();
+            uart->iBuf++;
+            if(uart->iBuf >= uart->UART_BUF_SIZE) {
                 if(CheckCRC(uart) == true) UARTUpdatePWM(pwm, uart); //update the pwm register if UART check cum was successful
                 uartLoadState = UART_READY;
                 //goPacketReady = true;   //NOTE: make sure the buffer is read before goPacketReady = false

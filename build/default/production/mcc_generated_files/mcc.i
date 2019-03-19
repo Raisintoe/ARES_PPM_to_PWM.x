@@ -24021,10 +24021,10 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 114 "mcc_generated_files/pin_manager.h"
+# 234 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 
-# 126
+# 246
 void PIN_MANAGER_IOC(void);
 
 # 13 "/opt/microchip/xc8/v2.05/pic/include/c90/stdint.h"
@@ -24250,11 +24250,11 @@ uint16_t ccpr1_16Bit;
 # 123
 void CCP1_Initialize(void);
 
-# 150
-bool CCP1_IsCapturedDataReady(void);
+# 139
+void CCP1_CaptureISR(void);
 
 # 180
-uint16_t CCP1_CaptureRead(void);
+void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
 
 # 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
 typedef unsigned char bool;
@@ -24316,8 +24316,8 @@ void SYSTEM_Initialize(void)
 PIN_MANAGER_Initialize();
 OSCILLATOR_Initialize();
 WDT_Initialize();
-TMR3_Initialize();
 CCP1_Initialize();
+TMR3_Initialize();
 TMR5_Initialize();
 TMR1_Initialize();
 EUSART_Initialize();

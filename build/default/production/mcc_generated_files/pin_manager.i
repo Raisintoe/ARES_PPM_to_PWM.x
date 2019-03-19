@@ -24021,10 +24021,10 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 114 "mcc_generated_files/pin_manager.h"
+# 234 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 
-# 126
+# 246
 void PIN_MANAGER_IOC(void);
 
 # 55 "mcc_generated_files/pin_manager.c"
@@ -24043,7 +24043,7 @@ TRISE = 0x07;
 TRISA = 0xFF;
 TRISB = 0xFF;
 TRISC = 0xBF;
-TRISD = 0xFF;
+TRISD = 0xC0;
 
 # 78
 ANSELD = 0xFF;

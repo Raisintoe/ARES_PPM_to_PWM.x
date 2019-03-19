@@ -24021,10 +24021,10 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 114 "mcc_generated_files/../mcc_generated_files/pin_manager.h"
+# 234 "mcc_generated_files/../mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 
-# 126
+# 246
 void PIN_MANAGER_IOC(void);
 
 # 13 "/opt/microchip/xc8/v2.05/pic/include/c90/stdint.h"
@@ -24250,11 +24250,11 @@ uint16_t ccpr1_16Bit;
 # 123
 void CCP1_Initialize(void);
 
-# 150
-bool CCP1_IsCapturedDataReady(void);
+# 139
+void CCP1_CaptureISR(void);
 
 # 180
-uint16_t CCP1_CaptureRead(void);
+void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
 
 # 15 "/opt/microchip/xc8/v2.05/pic/include/c90/stdbool.h"
 typedef unsigned char bool;
@@ -24310,7 +24310,7 @@ void OSCILLATOR_Initialize(void);
 void WDT_Initialize(void);
 
 # 82 "mcc_generated_files/../main.h"
-typedef struct PORT_Data {
+struct PORT_Data {
 const uint8_t PORT_SIZE;
 
 
@@ -24324,7 +24324,7 @@ bool frameEnd;
 
 
 
-typedef struct PWM_Data {
+struct PWM_Data {
 
 const uint8_t PWM_REG_SIZE;
 
@@ -24339,7 +24339,7 @@ uint8_t iReg;
 
 
 
-typedef struct UART_Data {
+struct UART_Data {
 
 const uint8_t UART_BUF_SIZE;
 const uint8_t I_DIR;
@@ -24354,7 +24354,7 @@ uint8_t iBuf;
 
 enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
 
-typedef struct PPM_Data {
+struct PPM_Data {
 const uint8_t PPM_BUF_SIZE;
 
 const uint8_t I_CTRL_MODE;
@@ -24374,46 +24374,46 @@ enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
 
 
 
-void Init_PPM_Data(struct PPM_Data ppm);
+void Init_PPM_Data(struct PPM_Data *ppm);
 
-void PPMRead(struct PPM_Data ppm, struct PWM_Data pwm);
+void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm);
 
 
 
-bool IsManualMode(struct PPM_Data ppm);
-bool IsManipulationMode(struct PPM_Data ppm);
-bool IsAutoMode(struct PPM_Data ppm);
+bool IsManualMode(struct PPM_Data *ppm);
+bool IsManipulationMode(struct PPM_Data *ppm);
+bool IsAutoMode(struct PPM_Data *ppm);
 
 bool IsDriveCont();
-bool IsUARTMode(struct PPM_Data ppm);
-bool IsPPMMode(struct PPM_Data ppm);
+bool IsUARTMode(struct PPM_Data *ppm);
+bool IsPPMMode(struct PPM_Data *ppm);
 
-bool GetAutoModeState(struct PPM_Data ppm);
-bool GetCtrlModeState(struct PPM_Data ppm);
+bool GetAutoModeState(struct PPM_Data *ppm);
+bool GetCtrlModeState(struct PPM_Data *ppm);
 
 # 213
-void Init_UART_Data(struct UART_Data uart);
-bool CheckCRC(struct UART_Data uart);
+void Init_UART_Data(struct UART_Data *uart);
+bool CheckCRC(struct UART_Data *uart);
 
 
 
 
-void LoadByte(struct UART_Data uart, struct PPM_Data ppmMode, struct PWM_Data pwm);
+void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
 
 # 225
-void Init_PWM_Data(struct PWM_Data pwm);
+void Init_PWM_Data(struct PWM_Data *pwm);
 
-void UARTUpdatePWM(struct PWM_Data pwm, struct UART_Data uart);
-void PPMUpdatePWM(struct PWM_Data pwm, struct PPM_Data ppm);
-
-
-
-
-uint16_t Filter(struct PWM_Data pwm, uint16_t temp, uint8_t i);
+void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
+void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm);
 
 
 
-void Init_PORT_Data(struct PORT_Data port);
+
+uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
+
+
+
+void Init_PORT_Data(struct PORT_Data *port);
 
 # 64 "mcc_generated_files/tmr5.c"
 volatile uint16_t timer5ReloadVal;

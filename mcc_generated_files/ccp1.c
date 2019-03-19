@@ -48,14 +48,20 @@
   Section: Included Files
 */
 
-#include <xc.h>
-#include "ccp1.h"
+//#include <xc.h>
+#include "../main.h"
+//#include "ccp1.h"
 
+static void (*CCP1_CallBack)(uint16_t);
 
 /**
   Section: Capture Module APIs:
 */
 
+static void CCP1_DefaultCallBack(uint16_t capturedValue)
+{
+    // Add your code here
+}
 
 void CCP1_Initialize(void)
 {
@@ -73,29 +79,34 @@ void CCP1_Initialize(void)
 	// CTS CCP1 pin; 
 	CCP1CAP = 0x00;    
     
+    // Set the default call back function for CCP1
+    CCP1_SetCallBack(CCP1_DefaultCallBack);
 
     
+    // Clear the CCP1 interrupt flag
+    PIR1bits.CCP1IF = 0;
+
+    // Enable the CCP1 interrupt
+    PIE1bits.CCP1IE = 1;
 }
 
-bool CCP1_IsCapturedDataReady(void)
-{
-    // Check if data is ready to read from capture module by reading "CCPIF" flag.
-    bool status = PIR1bits.CCP1IF;
-    if(status)
-        PIR1bits.CCP1IF = 0;
-    return (status);
-}
-
-uint16_t CCP1_CaptureRead(void)
+void CCP1_CaptureISR(void)
 {
     CCP1_PERIOD_REG_T module;
 
+    // Clear the CCP1 interrupt flag
+    PIR1bits.CCP1IF = 0;
+    
     // Copy captured value.
     module.ccpr1l = CCPR1L;
     module.ccpr1h = CCPR1H;
     
     // Return 16bit captured value
-    return module.ccpr1_16Bit;
+    CCP1_CallBack(module.ccpr1_16Bit);
+}
+
+void CCP1_SetCallBack(void (*customCallBack)(uint16_t)){
+    CCP1_CallBack = customCallBack;
 }
 /**
  End of File

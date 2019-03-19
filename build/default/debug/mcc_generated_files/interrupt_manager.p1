@@ -32,6 +32,30 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TMR5_ISR `(v ~T0 @X0 0 ef ]
 "368 mcc_generated_files/tmr3.h
 [v _TMR3_ISR `(v ~T0 @X0 0 ef ]
+"2034 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
+[s S92 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S92 . TMR1IE TMR2IE CCP1IE SSP1IE TXIE RCIE ADIE TMR1GIE ]
+"2044
+[s S93 :2 `uc 1 :1 `uc 1 ]
+[n S93 . . CCPIE ]
+"2033
+[u S91 `S92 1 `S93 1 ]
+[n S91 . . . ]
+"2049
+[v _PIE1bits `VS91 ~T0 @X0 0 e@145 ]
+"721
+[s S39 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S39 . TMR1IF TMR2IF CCP1IF SSP1IF TXIF RCIF ADIF TMR1GIF ]
+"731
+[s S40 :2 `uc 1 :1 `uc 1 ]
+[n S40 . . CCPIF ]
+"720
+[u S38 `S39 1 `S40 1 ]
+[n S38 . . . ]
+"736
+[v _PIR1bits `VS38 ~T0 @X0 0 e@17 ]
+"139 mcc_generated_files/ccp1.h
+[v _CCP1_CaptureISR `(v ~T0 @X0 0 ef ]
 [; ;xc.h: 18: extern const char __xc8_OPTIM_SPEED;
 [; ;xc.h: 20: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -16507,8 +16531,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 137: extern __bank0 unsigned char __resetbits;
 [; ;pic.h: 138: extern __bank0 __bit __powerdown;
 [; ;pic.h: 139: extern __bank0 __bit __timeout;
-[; ;pin_manager.h: 114: void PIN_MANAGER_Initialize (void);
-[; ;pin_manager.h: 126: void PIN_MANAGER_IOC(void);
+[; ;pin_manager.h: 234: void PIN_MANAGER_Initialize (void);
+[; ;pin_manager.h: 246: void PIN_MANAGER_IOC(void);
 [; ;stdint.h: 13: typedef signed char int8_t;
 [; ;stdint.h: 20: typedef signed int int16_t;
 [; ;stdint.h: 28: typedef __int24 int24_t;
@@ -16590,8 +16614,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ccp1.h: 90: };
 [; ;ccp1.h: 91: } CCP1_PERIOD_REG_T ;
 [; ;ccp1.h: 123: void CCP1_Initialize(void);
-[; ;ccp1.h: 150: bool CCP1_IsCapturedDataReady(void);
-[; ;ccp1.h: 180: uint16_t CCP1_CaptureRead(void);
+[; ;ccp1.h: 139: void CCP1_CaptureISR(void);
+[; ;ccp1.h: 180: void CCP1_SetCallBack(void (*customCallBack)(uint16_t));
 [; ;stdbool.h: 15: typedef unsigned char bool;
 [; ;eusart.h: 75: typedef union {
 [; ;eusart.h: 76: struct {
@@ -16659,30 +16683,45 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 2102  ]
 "65
 [e :U 2101 ]
-[; ;interrupt_manager.c: 65: else
+[; ;interrupt_manager.c: 65: else if(PIE1bits.CCP1IE == 1 && PIR1bits.CCP1IF == 1)
+[e $ ! && == -> . . _PIE1bits 0 2 `i -> 1 `i == -> . . _PIR1bits 0 2 `i -> 1 `i 2103  ]
 [; ;interrupt_manager.c: 66: {
 "66
 {
+[; ;interrupt_manager.c: 67: CCP1_CaptureISR();
+"67
+[e ( _CCP1_CaptureISR ..  ]
 "68
 }
+[; ;interrupt_manager.c: 68: }
+[e $U 2104  ]
+"69
+[e :U 2103 ]
+[; ;interrupt_manager.c: 69: else
+[; ;interrupt_manager.c: 70: {
+"70
+{
+"72
+}
+[e :U 2104 ]
 [e :U 2102 ]
 [e :U 2100 ]
-"69
-}
-[; ;interrupt_manager.c: 68: }
-[; ;interrupt_manager.c: 69: }
-[e $U 2103  ]
-"70
-[e :U 2098 ]
-[; ;interrupt_manager.c: 70: else
-[; ;interrupt_manager.c: 71: {
-"71
-{
 "73
 }
-[e :U 2103 ]
+[; ;interrupt_manager.c: 72: }
 [; ;interrupt_manager.c: 73: }
-[; ;interrupt_manager.c: 74: }
+[e $U 2105  ]
 "74
+[e :U 2098 ]
+[; ;interrupt_manager.c: 74: else
+[; ;interrupt_manager.c: 75: {
+"75
+{
+"77
+}
+[e :U 2105 ]
+[; ;interrupt_manager.c: 77: }
+[; ;interrupt_manager.c: 78: }
+"78
 [e :UE 2097 ]
 }

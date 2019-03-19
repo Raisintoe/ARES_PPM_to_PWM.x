@@ -81,6 +81,13 @@
 
 #include "main.h"
 
+extern struct PORT_Data portData;
+extern struct PWM_Data pwmData;
+extern struct UART_Data uartData;
+extern struct PPM_Data ppmData;
+
+//extern enum UARTLoadState uartLoadState;
+//extern enum PPMLoadState ppmLoadState;
 
 /*
                          Main application
@@ -112,15 +119,14 @@ void main(void)
     
     // Initialize Objects
     
-    extern struct PORT_Data portData;
-    extern struct PWM_Data pwmData;
-    extern struct UART_Data uartData;
-    extern struct PPM_Data ppmData;
     
-    Init_PORT_Data(portData);
-    Init_PWM_Data(pwmData);
-    Init_UART_Data(uartData);
-    Init_PPM_Data(ppmData);
+Init_PORT_Data(&portData);
+Init_PWM_Data(&pwmData);
+Init_UART_Data(&uartData);
+Init_PPM_Data(&ppmData);
+    
+    //set outputs
+    TRISD = 0xC0;   //PORTD <0:5> are all outputs
     
     // TODO MAYBE
     //  1. Clear TRISD<0:5> bits
@@ -131,10 +137,10 @@ void main(void)
         // Add your application code
         /*Load PPM and UART buffers*/
         if(PIR1bits.CCP1IF == 1) {
-            PPMRead(ppmData, pwmData);  //periodic check for data, and read from ppm input
+            PPMRead(&ppmData, &pwmData);  //periodic check for data, and read from ppm input
         }
         if(PIR1bits.RCIF == 1) {    //if a byte was received on the UART
-            LoadByte(uartData, ppmData, pwmData);    //then load the byte to it's destination
+            LoadByte(&uartData, &ppmData, &pwmData);    //then load the byte to it's destination
         }
         
         
