@@ -133,7 +133,8 @@ Init_PPM_Data(&ppmData);
     //  
     
     //TODO: add a timer to prevent driving if no signal received from either source within 200 ms (expecting 100ms update from UART, and 20ms update from PPM)
-
+    //  Or use Seth's soft kill
+    TMR2_Start();   //timeout timer, set pwm reg all to _1_5MS_COMP if interrupt flag is set
     while (1)
     {
         // Add your application code
