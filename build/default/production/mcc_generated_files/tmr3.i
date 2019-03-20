@@ -24415,11 +24415,11 @@ uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
 
 void Init_PORT_Data(struct PORT_Data *port);
 
-# 58 "mcc_generated_files/tmr3.c"
+# 59 "mcc_generated_files/tmr3.c"
 volatile uint16_t timer3ReloadVal;
 void (*TMR3_InterruptHandler)(void);
 
-# 65
+# 66
 void TMR3_Initialize(void)
 {
 
@@ -24428,10 +24428,10 @@ void TMR3_Initialize(void)
 T3GCON = 0x00;
 
 
-TMR3H = 0xA2;
+TMR3H = 0xE8;
 
 
-TMR3L = 0x40;
+TMR3L = 0x90;
 
 
 timer3ReloadVal=(uint16_t)((TMR3H << 8) | TMR3L);
@@ -24478,6 +24478,7 @@ return readVal;
 
 void TMR3_WriteTimer(uint16_t timerVal)
 {
+timerVal += 0x4F;
 if (T3CONbits.nT3SYNC == 1)
 {
 

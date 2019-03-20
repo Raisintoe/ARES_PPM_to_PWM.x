@@ -16717,370 +16717,373 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.h: 228: void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm);
 [; ;main.h: 233: uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
 [; ;main.h: 237: void Init_PORT_Data(struct PORT_Data *port);
-"58 mcc_generated_files/tmr3.c
+"59 mcc_generated_files/tmr3.c
 [v _timer3ReloadVal `Vui ~T0 @X0 1 e ]
-[; ;tmr3.c: 58: volatile uint16_t timer3ReloadVal;
-"59
+[; ;tmr3.c: 59: volatile uint16_t timer3ReloadVal;
+"60
 [v _TMR3_InterruptHandler `*F14551 ~T0 @X0 1 e ]
-[; ;tmr3.c: 59: void (*TMR3_InterruptHandler)(void);
-"65
-[v _TMR3_Initialize `(v ~T0 @X0 1 ef ]
+[; ;tmr3.c: 60: void (*TMR3_InterruptHandler)(void);
 "66
+[v _TMR3_Initialize `(v ~T0 @X0 1 ef ]
+"67
 {
-[; ;tmr3.c: 65: void TMR3_Initialize(void)
-[; ;tmr3.c: 66: {
+[; ;tmr3.c: 66: void TMR3_Initialize(void)
+[; ;tmr3.c: 67: {
 [e :U _TMR3_Initialize ]
 [f ]
-[; ;tmr3.c: 70: T3GCON = 0x00;
-"70
+[; ;tmr3.c: 71: T3GCON = 0x00;
+"71
 [e = _T3GCON -> -> 0 `i `uc ]
-[; ;tmr3.c: 73: TMR3H = 0xA2;
-"73
-[e = _TMR3H -> -> 162 `i `uc ]
-[; ;tmr3.c: 76: TMR3L = 0x40;
-"76
-[e = _TMR3L -> -> 64 `i `uc ]
-[; ;tmr3.c: 79: timer3ReloadVal=(uint16_t)((TMR3H << 8) | TMR3L);
-"79
+[; ;tmr3.c: 74: TMR3H = 0xE8;
+"74
+[e = _TMR3H -> -> 232 `i `uc ]
+[; ;tmr3.c: 77: TMR3L = 0x90;
+"77
+[e = _TMR3L -> -> 144 `i `uc ]
+[; ;tmr3.c: 80: timer3ReloadVal=(uint16_t)((TMR3H << 8) | TMR3L);
+"80
 [e = _timer3ReloadVal -> | << -> _TMR3H `i -> 8 `i -> _TMR3L `i `ui ]
-[; ;tmr3.c: 82: PIR4bits.TMR3IF = 0;
-"82
+[; ;tmr3.c: 83: PIR4bits.TMR3IF = 0;
+"83
 [e = . . _PIR4bits 0 2 -> -> 0 `i `uc ]
-[; ;tmr3.c: 85: PIE4bits.TMR3IE = 1;
-"85
+[; ;tmr3.c: 86: PIE4bits.TMR3IE = 1;
+"86
 [e = . . _PIE4bits 0 2 -> -> 1 `i `uc ]
-[; ;tmr3.c: 88: TMR3_SetInterruptHandler(TMR3_DefaultInterruptHandler);
-"88
+[; ;tmr3.c: 89: TMR3_SetInterruptHandler(TMR3_DefaultInterruptHandler);
+"89
 [e ( _TMR3_SetInterruptHandler (1 &U _TMR3_DefaultInterruptHandler ]
-[; ;tmr3.c: 91: T3CON = 0x11;
-"91
-[e = _T3CON -> -> 17 `i `uc ]
-[; ;tmr3.c: 92: }
+[; ;tmr3.c: 92: T3CON = 0x11;
 "92
+[e = _T3CON -> -> 17 `i `uc ]
+[; ;tmr3.c: 93: }
+"93
 [e :UE 2101 ]
 }
-"94
-[v _TMR3_StartTimer `(v ~T0 @X0 1 ef ]
 "95
+[v _TMR3_StartTimer `(v ~T0 @X0 1 ef ]
+"96
 {
-[; ;tmr3.c: 94: void TMR3_StartTimer(void)
-[; ;tmr3.c: 95: {
+[; ;tmr3.c: 95: void TMR3_StartTimer(void)
+[; ;tmr3.c: 96: {
 [e :U _TMR3_StartTimer ]
 [f ]
-[; ;tmr3.c: 97: T3CONbits.TMR3ON = 1;
-"97
-[e = . . _T3CONbits 2 0 -> -> 1 `i `uc ]
-[; ;tmr3.c: 98: }
+[; ;tmr3.c: 98: T3CONbits.TMR3ON = 1;
 "98
+[e = . . _T3CONbits 2 0 -> -> 1 `i `uc ]
+[; ;tmr3.c: 99: }
+"99
 [e :UE 2102 ]
 }
-"100
-[v _TMR3_StopTimer `(v ~T0 @X0 1 ef ]
 "101
+[v _TMR3_StopTimer `(v ~T0 @X0 1 ef ]
+"102
 {
-[; ;tmr3.c: 100: void TMR3_StopTimer(void)
-[; ;tmr3.c: 101: {
+[; ;tmr3.c: 101: void TMR3_StopTimer(void)
+[; ;tmr3.c: 102: {
 [e :U _TMR3_StopTimer ]
 [f ]
-[; ;tmr3.c: 103: T3CONbits.TMR3ON = 0;
-"103
-[e = . . _T3CONbits 2 0 -> -> 0 `i `uc ]
-[; ;tmr3.c: 104: }
+[; ;tmr3.c: 104: T3CONbits.TMR3ON = 0;
 "104
+[e = . . _T3CONbits 2 0 -> -> 0 `i `uc ]
+[; ;tmr3.c: 105: }
+"105
 [e :UE 2103 ]
 }
-"106
-[v _TMR3_ReadTimer `(ui ~T0 @X0 1 ef ]
 "107
+[v _TMR3_ReadTimer `(ui ~T0 @X0 1 ef ]
+"108
 {
-[; ;tmr3.c: 106: uint16_t TMR3_ReadTimer(void)
-[; ;tmr3.c: 107: {
+[; ;tmr3.c: 107: uint16_t TMR3_ReadTimer(void)
+[; ;tmr3.c: 108: {
 [e :U _TMR3_ReadTimer ]
 [f ]
-"108
-[v _readVal `ui ~T0 @X0 1 a ]
 "109
-[v _readValHigh `uc ~T0 @X0 1 a ]
+[v _readVal `ui ~T0 @X0 1 a ]
 "110
+[v _readValHigh `uc ~T0 @X0 1 a ]
+"111
 [v _readValLow `uc ~T0 @X0 1 a ]
-[; ;tmr3.c: 108: uint16_t readVal;
-[; ;tmr3.c: 109: uint8_t readValHigh;
-[; ;tmr3.c: 110: uint8_t readValLow;
-[; ;tmr3.c: 113: readValLow = TMR3L;
-"113
-[e = _readValLow _TMR3L ]
-[; ;tmr3.c: 114: readValHigh = TMR3H;
+[; ;tmr3.c: 109: uint16_t readVal;
+[; ;tmr3.c: 110: uint8_t readValHigh;
+[; ;tmr3.c: 111: uint8_t readValLow;
+[; ;tmr3.c: 114: readValLow = TMR3L;
 "114
+[e = _readValLow _TMR3L ]
+[; ;tmr3.c: 115: readValHigh = TMR3H;
+"115
 [e = _readValHigh _TMR3H ]
-[; ;tmr3.c: 116: readVal = ((uint16_t)readValHigh << 8) | readValLow;
-"116
+[; ;tmr3.c: 117: readVal = ((uint16_t)readValHigh << 8) | readValLow;
+"117
 [e = _readVal | << -> _readValHigh `ui -> 8 `i -> _readValLow `ui ]
-[; ;tmr3.c: 118: return readVal;
-"118
+[; ;tmr3.c: 119: return readVal;
+"119
 [e ) _readVal ]
 [e $UE 2104  ]
-[; ;tmr3.c: 119: }
-"119
+[; ;tmr3.c: 120: }
+"120
 [e :UE 2104 ]
 }
-"121
+"122
 [v _TMR3_WriteTimer `(v ~T0 @X0 1 ef1`ui ]
-"122
-{
-[; ;tmr3.c: 121: void TMR3_WriteTimer(uint16_t timerVal)
-[; ;tmr3.c: 122: {
-[e :U _TMR3_WriteTimer ]
-"121
-[v _timerVal `ui ~T0 @X0 1 r1 ]
-"122
-[f ]
-[; ;tmr3.c: 123: if (T3CONbits.nT3SYNC == 1)
 "123
-[e $ ! == -> . . _T3CONbits 2 2 `i -> 1 `i 2106  ]
-[; ;tmr3.c: 124: {
+{
+[; ;tmr3.c: 122: void TMR3_WriteTimer(uint16_t timerVal)
+[; ;tmr3.c: 123: {
+[e :U _TMR3_WriteTimer ]
+"122
+[v _timerVal `ui ~T0 @X0 1 r1 ]
+"123
+[f ]
+[; ;tmr3.c: 124: timerVal += 0x4F;
 "124
-{
-[; ;tmr3.c: 126: T3CONbits.TMR3ON = 0;
+[e =+ _timerVal -> -> 79 `i `ui ]
+[; ;tmr3.c: 125: if (T3CONbits.nT3SYNC == 1)
+"125
+[e $ ! == -> . . _T3CONbits 2 2 `i -> 1 `i 2106  ]
+[; ;tmr3.c: 126: {
 "126
-[e = . . _T3CONbits 2 0 -> -> 0 `i `uc ]
-[; ;tmr3.c: 129: TMR3H = (timerVal >> 8);
-"129
-[e = _TMR3H -> >> _timerVal -> 8 `i `uc ]
-[; ;tmr3.c: 130: TMR3L = timerVal;
-"130
-[e = _TMR3L -> _timerVal `uc ]
-[; ;tmr3.c: 133: T3CONbits.TMR3ON =1;
-"133
-[e = . . _T3CONbits 2 0 -> -> 1 `i `uc ]
-"134
-}
-[; ;tmr3.c: 134: }
-[e $U 2107  ]
-"135
-[e :U 2106 ]
-[; ;tmr3.c: 135: else
-[; ;tmr3.c: 136: {
-"136
 {
-[; ;tmr3.c: 138: TMR3H = (timerVal >> 8);
-"138
+[; ;tmr3.c: 128: T3CONbits.TMR3ON = 0;
+"128
+[e = . . _T3CONbits 2 0 -> -> 0 `i `uc ]
+[; ;tmr3.c: 131: TMR3H = (timerVal >> 8);
+"131
 [e = _TMR3H -> >> _timerVal -> 8 `i `uc ]
-[; ;tmr3.c: 139: TMR3L = timerVal;
-"139
+[; ;tmr3.c: 132: TMR3L = timerVal;
+"132
 [e = _TMR3L -> _timerVal `uc ]
+[; ;tmr3.c: 135: T3CONbits.TMR3ON =1;
+"135
+[e = . . _T3CONbits 2 0 -> -> 1 `i `uc ]
+"136
+}
+[; ;tmr3.c: 136: }
+[e $U 2107  ]
+"137
+[e :U 2106 ]
+[; ;tmr3.c: 137: else
+[; ;tmr3.c: 138: {
+"138
+{
+[; ;tmr3.c: 140: TMR3H = (timerVal >> 8);
 "140
+[e = _TMR3H -> >> _timerVal -> 8 `i `uc ]
+[; ;tmr3.c: 141: TMR3L = timerVal;
+"141
+[e = _TMR3L -> _timerVal `uc ]
+"142
 }
 [e :U 2107 ]
-[; ;tmr3.c: 140: }
-[; ;tmr3.c: 141: }
-"141
+[; ;tmr3.c: 142: }
+[; ;tmr3.c: 143: }
+"143
 [e :UE 2105 ]
 }
-"143
+"145
 [v _TMR3_Reload `(v ~T0 @X0 1 ef ]
-"144
+"146
 {
-[; ;tmr3.c: 143: void TMR3_Reload(void)
-[; ;tmr3.c: 144: {
+[; ;tmr3.c: 145: void TMR3_Reload(void)
+[; ;tmr3.c: 146: {
 [e :U _TMR3_Reload ]
 [f ]
-[; ;tmr3.c: 145: TMR3_WriteTimer(timer3ReloadVal);
-"145
+[; ;tmr3.c: 147: TMR3_WriteTimer(timer3ReloadVal);
+"147
 [e ( _TMR3_WriteTimer (1 _timer3ReloadVal ]
-[; ;tmr3.c: 146: }
-"146
+[; ;tmr3.c: 148: }
+"148
 [e :UE 2108 ]
 }
-"148
+"150
 [v _TMR3_StartSinglePulseAcquisition `(v ~T0 @X0 1 ef ]
-"149
+"151
 {
-[; ;tmr3.c: 148: void TMR3_StartSinglePulseAcquisition(void)
-[; ;tmr3.c: 149: {
+[; ;tmr3.c: 150: void TMR3_StartSinglePulseAcquisition(void)
+[; ;tmr3.c: 151: {
 [e :U _TMR3_StartSinglePulseAcquisition ]
 [f ]
-[; ;tmr3.c: 150: T3GCONbits.T3GGO_nDONE = 1;
-"150
+[; ;tmr3.c: 152: T3GCONbits.T3GGO_nDONE = 1;
+"152
 [e = . . _T3GCONbits 2 2 -> -> 1 `i `uc ]
-[; ;tmr3.c: 151: }
-"151
+[; ;tmr3.c: 153: }
+"153
 [e :UE 2109 ]
 }
-"153
+"155
 [v _TMR3_CheckGateValueStatus `(uc ~T0 @X0 1 ef ]
-"154
+"156
 {
-[; ;tmr3.c: 153: uint8_t TMR3_CheckGateValueStatus(void)
-[; ;tmr3.c: 154: {
+[; ;tmr3.c: 155: uint8_t TMR3_CheckGateValueStatus(void)
+[; ;tmr3.c: 156: {
 [e :U _TMR3_CheckGateValueStatus ]
 [f ]
-[; ;tmr3.c: 155: return (T3GCONbits.T3GVAL);
-"155
+[; ;tmr3.c: 157: return (T3GCONbits.T3GVAL);
+"157
 [e ) . . _T3GCONbits 2 1 ]
 [e $UE 2110  ]
-[; ;tmr3.c: 156: }
-"156
+[; ;tmr3.c: 158: }
+"158
 [e :UE 2110 ]
 }
-"158
+"160
 [v _TMR3_ISR `(v ~T0 @X0 1 ef ]
-"159
+"161
 {
-[; ;tmr3.c: 158: void TMR3_ISR(void)
-[; ;tmr3.c: 159: {
+[; ;tmr3.c: 160: void TMR3_ISR(void)
+[; ;tmr3.c: 161: {
 [e :U _TMR3_ISR ]
 [f ]
-[; ;tmr3.c: 162: PIR4bits.TMR3IF = 0;
-"162
+[; ;tmr3.c: 164: PIR4bits.TMR3IF = 0;
+"164
 [e = . . _PIR4bits 0 2 -> -> 0 `i `uc ]
-[; ;tmr3.c: 167: TMR3_CallBack();
-"167
+[; ;tmr3.c: 169: TMR3_CallBack();
+"169
 [e ( _TMR3_CallBack ..  ]
-[; ;tmr3.c: 168: }
-"168
+[; ;tmr3.c: 170: }
+"170
 [e :UE 2111 ]
 }
-"170
+"172
 [v _TMR3_CallBack `(v ~T0 @X0 1 ef ]
-"171
+"173
 {
-[; ;tmr3.c: 170: void TMR3_CallBack(void)
-[; ;tmr3.c: 171: {
+[; ;tmr3.c: 172: void TMR3_CallBack(void)
+[; ;tmr3.c: 173: {
 [e :U _TMR3_CallBack ]
 [f ]
-"175
-[v _saveWREG `uc ~T0 @X0 1 a ]
-[; ;tmr3.c: 175: uint8_t saveWREG = WREG;
-[e = _saveWREG _WREG ]
-"176
-[v _saveBSR `uc ~T0 @X0 1 a ]
-[; ;tmr3.c: 176: uint8_t saveBSR = BSR;
-[e = _saveBSR _BSR ]
 "177
-[v _saveSTATUS `uc ~T0 @X0 1 a ]
-[; ;tmr3.c: 177: uint8_t saveSTATUS = STATUS;
-[e = _saveSTATUS _STATUS ]
+[v _saveWREG `uc ~T0 @X0 1 a ]
+[; ;tmr3.c: 177: uint8_t saveWREG = WREG;
+[e = _saveWREG _WREG ]
 "178
-[v _saveFSR0H `uc ~T0 @X0 1 a ]
-[; ;tmr3.c: 178: uint8_t saveFSR0H = FSR0H;
-[e = _saveFSR0H _FSR0H ]
+[v _saveBSR `uc ~T0 @X0 1 a ]
+[; ;tmr3.c: 178: uint8_t saveBSR = BSR;
+[e = _saveBSR _BSR ]
 "179
-[v _saveFSR0L `uc ~T0 @X0 1 a ]
-[; ;tmr3.c: 179: uint8_t saveFSR0L = FSR0L;
-[e = _saveFSR0L _FSR0L ]
+[v _saveSTATUS `uc ~T0 @X0 1 a ]
+[; ;tmr3.c: 179: uint8_t saveSTATUS = STATUS;
+[e = _saveSTATUS _STATUS ]
 "180
-[v _saveFSR1H `uc ~T0 @X0 1 a ]
-[; ;tmr3.c: 180: uint8_t saveFSR1H = FSR1H;
-[e = _saveFSR1H _FSR1H ]
+[v _saveFSR0H `uc ~T0 @X0 1 a ]
+[; ;tmr3.c: 180: uint8_t saveFSR0H = FSR0H;
+[e = _saveFSR0H _FSR0H ]
 "181
-[v _saveFSR1L `uc ~T0 @X0 1 a ]
-[; ;tmr3.c: 181: uint8_t saveFSR1L = FSR1L;
-[e = _saveFSR1L _FSR1L ]
-[; ;tmr3.c: 183: if(TMR3_InterruptHandler)
+[v _saveFSR0L `uc ~T0 @X0 1 a ]
+[; ;tmr3.c: 181: uint8_t saveFSR0L = FSR0L;
+[e = _saveFSR0L _FSR0L ]
+"182
+[v _saveFSR1H `uc ~T0 @X0 1 a ]
+[; ;tmr3.c: 182: uint8_t saveFSR1H = FSR1H;
+[e = _saveFSR1H _FSR1H ]
 "183
-[e $ ! != _TMR3_InterruptHandler -> -> 0 `i `*F14551 2113  ]
-[; ;tmr3.c: 184: {
-"184
-{
-[; ;tmr3.c: 185: TMR3_InterruptHandler();
+[v _saveFSR1L `uc ~T0 @X0 1 a ]
+[; ;tmr3.c: 183: uint8_t saveFSR1L = FSR1L;
+[e = _saveFSR1L _FSR1L ]
+[; ;tmr3.c: 185: if(TMR3_InterruptHandler)
 "185
-[e ( *U _TMR3_InterruptHandler ..  ]
+[e $ ! != _TMR3_InterruptHandler -> -> 0 `i `*F14551 2113  ]
+[; ;tmr3.c: 186: {
 "186
+{
+[; ;tmr3.c: 187: TMR3_InterruptHandler();
+"187
+[e ( *U _TMR3_InterruptHandler ..  ]
+"188
 }
 [e :U 2113 ]
-[; ;tmr3.c: 186: }
-[; ;tmr3.c: 189: FSR0H = saveFSR0H;
-"189
-[e = _FSR0H _saveFSR0H ]
-[; ;tmr3.c: 190: FSR0L = saveFSR0L;
-"190
-[e = _FSR0L _saveFSR0L ]
-[; ;tmr3.c: 191: FSR1H = saveFSR1H;
+[; ;tmr3.c: 188: }
+[; ;tmr3.c: 191: FSR0H = saveFSR0H;
 "191
-[e = _FSR1H _saveFSR1H ]
-[; ;tmr3.c: 192: FSR1L = saveFSR1L;
+[e = _FSR0H _saveFSR0H ]
+[; ;tmr3.c: 192: FSR0L = saveFSR0L;
 "192
-[e = _FSR1L _saveFSR1L ]
-[; ;tmr3.c: 193: STATUS = saveSTATUS;
+[e = _FSR0L _saveFSR0L ]
+[; ;tmr3.c: 193: FSR1H = saveFSR1H;
 "193
-[e = _STATUS _saveSTATUS ]
-[; ;tmr3.c: 194: BSR = saveBSR;
+[e = _FSR1H _saveFSR1H ]
+[; ;tmr3.c: 194: FSR1L = saveFSR1L;
 "194
-[e = _BSR _saveBSR ]
-[; ;tmr3.c: 195: WREG = saveWREG;
+[e = _FSR1L _saveFSR1L ]
+[; ;tmr3.c: 195: STATUS = saveSTATUS;
 "195
-[e = _WREG _saveWREG ]
-[; ;tmr3.c: 196: }
+[e = _STATUS _saveSTATUS ]
+[; ;tmr3.c: 196: BSR = saveBSR;
 "196
+[e = _BSR _saveBSR ]
+[; ;tmr3.c: 197: WREG = saveWREG;
+"197
+[e = _WREG _saveWREG ]
+[; ;tmr3.c: 198: }
+"198
 [e :UE 2112 ]
 }
-"198
+"200
 [v _TMR3_SetInterruptHandler `(v ~T0 @X0 1 ef1`*F14548 ]
 {
-[; ;tmr3.c: 198: void TMR3_SetInterruptHandler(void (* InterruptHandler)(void)){
+[; ;tmr3.c: 200: void TMR3_SetInterruptHandler(void (* InterruptHandler)(void)){
 [e :U _TMR3_SetInterruptHandler ]
 [v F14729 `(v ~T0 @X0 0 tf ]
 [v _InterruptHandler `*F14729 ~T0 @X0 1 r1 ]
 [f ]
-[; ;tmr3.c: 199: TMR3_InterruptHandler = InterruptHandler;
-"199
+[; ;tmr3.c: 201: TMR3_InterruptHandler = InterruptHandler;
+"201
 [e = _TMR3_InterruptHandler _InterruptHandler ]
-[; ;tmr3.c: 200: }
-"200
+[; ;tmr3.c: 202: }
+"202
 [e :UE 2114 ]
 }
-"202
+"204
 [v _TMR3_DefaultInterruptHandler `(v ~T0 @X0 1 ef ]
 {
-[; ;tmr3.c: 202: void TMR3_DefaultInterruptHandler(void){
+[; ;tmr3.c: 204: void TMR3_DefaultInterruptHandler(void){
 [e :U _TMR3_DefaultInterruptHandler ]
 [f ]
-"206
+"208
 [v _portData `S2097 ~T0 @X0 0 e ]
-"207
-[v _pwmData `S2098 ~T0 @X0 0 e ]
-[; ;tmr3.c: 206: extern struct PORT_Data portData;
-[; ;tmr3.c: 207: extern struct PWM_Data pwmData;
-[; ;tmr3.c: 209: if(portData.frameEnd == 0) {
 "209
+[v _pwmData `S2098 ~T0 @X0 0 e ]
+[; ;tmr3.c: 208: extern struct PORT_Data portData;
+[; ;tmr3.c: 209: extern struct PWM_Data pwmData;
+[; ;tmr3.c: 211: if(portData.frameEnd == 0) {
+"211
 [e $ ! == -> . _portData 2 `i -> 0 `i 2116  ]
 {
-[; ;tmr3.c: 211: if(portData.iPort < (portData.PORT_SIZE - 1)) {
-"211
+[; ;tmr3.c: 213: if(portData.iPort < (portData.PORT_SIZE - 1)) {
+"213
 [e $ ! < -> . _portData 1 `i - -> . _portData 0 `i -> 1 `i 2117  ]
 {
-[; ;tmr3.c: 212: LATD = LATD << 1;
-"212
+[; ;tmr3.c: 214: LATD = LATD << 1;
+"214
 [e = _LATD -> << -> _LATD `i -> 1 `i `uc ]
-[; ;tmr3.c: 213: portData.iPort++;
-"213
+[; ;tmr3.c: 215: portData.iPort++;
+"215
 [e ++ . _portData 1 -> -> 1 `i `uc ]
-[; ;tmr3.c: 216: TMR3_WriteTimer(pwmData.reg[portData.iPort]);
-"216
-[e ( _TMR3_WriteTimer (1 *U + &U . _pwmData 2 * -> . _portData 1 `ux -> -> # *U &U . _pwmData 2 `ui `ux ]
+[; ;tmr3.c: 218: TMR3_WriteTimer(pwmData.reg[portData.iPort]);
 "218
-}
-[; ;tmr3.c: 218: }
-[e $U 2118  ]
-"219
-[e :U 2117 ]
-[; ;tmr3.c: 219: else {
-{
-[; ;tmr3.c: 220: LATD = 0;
+[e ( _TMR3_WriteTimer (1 *U + &U . _pwmData 2 * -> . _portData 1 `ux -> -> # *U &U . _pwmData 2 `ui `ux ]
 "220
-[e = _LATD -> -> 0 `i `uc ]
-[; ;tmr3.c: 221: portData.frameEnd = 1;
+}
+[; ;tmr3.c: 220: }
+[e $U 2118  ]
 "221
-[e = . _portData 2 -> -> 1 `i `uc ]
+[e :U 2117 ]
+[; ;tmr3.c: 221: else {
+{
+[; ;tmr3.c: 222: LATD = 0;
 "222
+[e = _LATD -> -> 0 `i `uc ]
+[; ;tmr3.c: 223: portData.frameEnd = 1;
+"223
+[e = . _portData 2 -> -> 1 `i `uc ]
+"224
 }
 [e :U 2118 ]
-"223
+"225
 }
 [e :U 2116 ]
-[; ;tmr3.c: 222: }
-[; ;tmr3.c: 223: }
 [; ;tmr3.c: 224: }
-"224
+[; ;tmr3.c: 225: }
+[; ;tmr3.c: 226: }
+"226
 [e :UE 2115 ]
 }

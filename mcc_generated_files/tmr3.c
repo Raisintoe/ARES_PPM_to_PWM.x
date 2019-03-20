@@ -52,6 +52,7 @@
 #include "../main.h"
 //#include "tmr3.h"
 
+#define _20us 0x4F  //20 microseconds as interpreted by TMR3 and TMR1
 /**
   Section: Global Variables Definitions
 */
@@ -69,11 +70,11 @@ void TMR3_Initialize(void)
     //GSS T3G_pin; TMR3GE disabled; T3GTM disabled; T3GPOL low; T3GGO_nDONE done; T3GSPM disabled; 
     T3GCON = 0x00;
 
-    //TMR 162; 
-    TMR3H = 0xA2;
+    //TMR 232; 
+    TMR3H = 0xE8;
 
-    //TMR 64; 
-    TMR3L = 0x40;
+    //TMR 144; 
+    TMR3L = 0x90;
 
     // Load the TMR value to reload variable
     timer3ReloadVal=(uint16_t)((TMR3H << 8) | TMR3L);
@@ -120,6 +121,7 @@ uint16_t TMR3_ReadTimer(void)
 
 void TMR3_WriteTimer(uint16_t timerVal)
 {
+    timerVal += _20us;
     if (T3CONbits.nT3SYNC == 1)
     {
         // Stop the Timer by writing to TMRxON bit

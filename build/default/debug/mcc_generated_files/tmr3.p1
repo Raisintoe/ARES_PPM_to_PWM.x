@@ -16734,12 +16734,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;tmr3.c: 70: T3GCON = 0x00;
 "70
 [e = _T3GCON -> -> 0 `i `uc ]
-[; ;tmr3.c: 73: TMR3H = 0xA2;
+[; ;tmr3.c: 73: TMR3H = 0xE8;
 "73
-[e = _TMR3H -> -> 162 `i `uc ]
-[; ;tmr3.c: 76: TMR3L = 0x40;
+[e = _TMR3H -> -> 232 `i `uc ]
+[; ;tmr3.c: 76: TMR3L = 0x90;
 "76
-[e = _TMR3L -> -> 64 `i `uc ]
+[e = _TMR3L -> -> 144 `i `uc ]
 [; ;tmr3.c: 79: timer3ReloadVal=(uint16_t)((TMR3H << 8) | TMR3L);
 "79
 [e = _timer3ReloadVal -> | << -> _TMR3H `i -> 8 `i -> _TMR3L `i `ui ]

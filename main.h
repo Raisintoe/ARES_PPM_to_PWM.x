@@ -18,7 +18,6 @@
 #define _1MS_COMP       0xF060  //1ms as interpreted by timer1 and timer3
 #define _1_5MS_COMP     0xE890  //1.5ms as interpreted by timer1 and timer3
 #define _2MS_COMP       0xE0C0  //2ms as interpreted by timer1 and timer3
-#define _RESOLUTION     _1MS-_2MS
 #define _4MS_COMP       0xC180
 #define _6MS_COMP       0xA240  //For Detecting Break Pulse
 
@@ -27,6 +26,7 @@
 #define _2MS            ~_2MS_COMP // or 0xFFFF - _2MS_COMP
 #define _4MS            ~_4MS_COMP // or 0xFFFF - _4MS_COMP
 #define _6MS            ~_6MS_COMP // or 0xFFFF - _6MS_COMP
+#define _RESOLUTION     _2MS-_1MS
 
 //GO UART command definitions 
 #define _PID_DRIVE      0x00    //UART Packet ID for drive

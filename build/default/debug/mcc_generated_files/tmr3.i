@@ -24428,10 +24428,10 @@ void TMR3_Initialize(void)
 T3GCON = 0x00;
 
 
-TMR3H = 0xA2;
+TMR3H = 0xE8;
 
 
-TMR3L = 0x40;
+TMR3L = 0x90;
 
 
 timer3ReloadVal=(uint16_t)((TMR3H << 8) | TMR3L);

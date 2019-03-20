@@ -30,12 +30,22 @@
 
 #include "main.h"
 
+//#define HIGH_PULSE  _2MS_COMP
+//#define MID_PULSE   _1_5MS_COMP
+//#define LOW_PULSE   _1MS_COMP
+//#define UART_MAX    0xFF
+//#define UART_MIN    0x00;
+
+static const float UART_CONVERSION_MULTIPLIER_HIGH  =  -7.843137255;     //calculated from (_2MS_COMP - _1_5MS_COMP)/255
+static const float UART_CONVERSION_MULTIPLIER_LOW  =    7.843137255; //calculated from (_1MS_COMP - _1_5MS_COMP)/255
+static const float OFFSET = 59536;   //=_1_5MS_COMP
+
 //Initialize Structs
 //Declare Instances
-struct PORT_Data portData = {_PORT_REG_SIZE};
+volatile struct PORT_Data portData = {_PORT_REG_SIZE};
 
 
-struct PWM_Data pwmData = {
+volatile struct PWM_Data pwmData = {
     _PWM_REG_SIZE, 
     {       //Full 180 degrees allowed on all channels
         _1MS_COMP, _2MS_COMP,
@@ -47,14 +57,14 @@ struct PWM_Data pwmData = {
     }  //contains all endpoint values};
 };
 
-struct UART_Data uartData = {
+volatile struct UART_Data uartData = {
     _UART_BUF_GO_SIZE,  //Size of Data buffer ("GO" is the PID)
     _I_UART_GO_DIR,   //Direction byte 4'bxx000111' = rev,rev,rev,frw,frw,frw
     _I_UART_GO_CRC,   //Cyclic redundancy check, this is a check-sum of data bytes only, (PID not included)
     _I_UART_DATA_START  //Start position of data (is 0)
 };
 
-struct PPM_Data ppmData = {
+volatile struct PPM_Data ppmData = {
     _PPM_BUF_SIZE,                 //PPM buffer size
     //_I_PPM_BUF_MANUAL_MODE,
     _I_PPM_BUF_CTRL_MODE,   //_2MS for drive
@@ -62,8 +72,8 @@ struct PPM_Data ppmData = {
     _I_PPM_BUF_DATA_START
 };
 
-enum UARTLoadState uartLoadState = UART_READY;
-enum PPMLoadState ppmLoadState = PPM_READY;
+volatile enum UARTLoadState uartLoadState = UART_READY;
+volatile enum PPMLoadState ppmLoadState = PPM_READY;
 
 //struct PORT_Data GetPortData() {return portData;}
 //struct PWM_Data GetPwmData() {return pwmData;}
@@ -101,17 +111,27 @@ void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart) {
                                     //  but as for now, no manipulation data should be coming through uart
         uint8_t dir = dir_reg&0x01; //get the direction for the ith channel
         dir_reg = dir_reg >> 1; //then shift the direction register down to get the next direction bit
-        const uint16_t HIGH_PULSE = _2MS_COMP;
-        const uint16_t MID_PULSE = _1_5MS_COMP;
-        const uint16_t LOW_PULSE = _1MS_COMP;
-        const uint8_t UART_MAX = 0xFF;
+        //const float HIGH_PULSE = ((uint16_t)_2MS_COMP);
+        //const float MID_PULSE = ((uint16_t)_1_5MS_COMP);
+        //const float LOW_PULSE = ((uint16_t)_1MS_COMP);
+        //const float UART_MAX = ((uint16_t)0x00FF);
         //const uint8_t UART_MIN = 0x00;
-        uint16_t temp = 0;  //using temporary uint16_t rather than a secondary buffer
+        //uint16_t temp = 0;  //using temporary uint16_t rather than a secondary buffer
+        //if(((i < 3)&&(dir == _DIR_FORWARD))||((i >= 3)&&(dir == _DIR_REVERSE))) {
+        //    temp = ((uint16_t)((float)uart->buf[i]*(HIGH_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+        //}
+        //else {
+        //    temp = ((uint16_t)((float)uart->buf[i]*(LOW_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+        //}
+        
+        //second attempt at above equastions:
+        uint16_t temp = uart->buf[i];
+        
         if(((i < 3)&&(dir == _DIR_FORWARD))||((i >= 3)&&(dir == _DIR_REVERSE))) {
-            temp = ((uint16_t)((double)uart->buf[i]*(HIGH_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+            temp = temp*UART_CONVERSION_MULTIPLIER_HIGH + OFFSET;
         }
         else {
-            temp = ((uint16_t)((double)uart->buf[i]*(LOW_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+            temp = temp*UART_CONVERSION_MULTIPLIER_LOW + OFFSET;
         }
         
         //filter and place temp in reg[i]
@@ -211,7 +231,7 @@ bool IsUARTMode(struct PPM_Data *ppm) {
 
 bool IsPPMMode(struct PPM_Data *ppm) {
     if(((IsDriveCont() == true)&&(IsManualMode(ppm) == true))
-            ||(!IsDriveCont()&&IsManipulationMode(ppm))) {
+            ||((IsDriveCont() == false)&&IsManipulationMode(ppm))) {
         return true;
     }
     else return false;
@@ -245,7 +265,7 @@ void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data 
 //        //RCREG must be read to clear RCIF
 //    }
     
-    uint8_t byte;
+    uint8_t byte;   //temporary storage for uart read
     
     switch(uartLoadState) {
         case UART_READY:

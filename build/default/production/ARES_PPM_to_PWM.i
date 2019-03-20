@@ -24415,11 +24415,17 @@ uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
 
 void Init_PORT_Data(struct PORT_Data *port);
 
-# 35 "ARES_PPM_to_PWM.c"
-struct PORT_Data portData = {6};
+# 39 "ARES_PPM_to_PWM.c"
+static const float UART_CONVERSION_MULTIPLIER_HIGH = -7.843137255;
+static const float UART_CONVERSION_MULTIPLIER_LOW = 7.843137255;
+static const float OFFSET = 59536;
 
 
-struct PWM_Data pwmData = {
+
+volatile struct PORT_Data portData = {6};
+
+
+volatile struct PWM_Data pwmData = {
 6,
 {
 0xF060, 0xE0C0,
@@ -24431,14 +24437,14 @@ struct PWM_Data pwmData = {
 }
 };
 
-struct UART_Data uartData = {
+volatile struct UART_Data uartData = {
 8,
 6,
 8 - 1,
 0
 };
 
-struct PPM_Data ppmData = {
+volatile struct PPM_Data ppmData = {
 8,
 
 0,
@@ -24446,10 +24452,10 @@ struct PPM_Data ppmData = {
 2
 };
 
-enum UARTLoadState uartLoadState = UART_READY;
-enum PPMLoadState ppmLoadState = PPM_READY;
+volatile enum UARTLoadState uartLoadState = UART_READY;
+volatile enum PPMLoadState ppmLoadState = PPM_READY;
 
-# 74
+# 84
 void Init_PORT_Data(struct PORT_Data *port) {
 port->iPort = 0;
 port->frameEnd = 1;
@@ -24480,17 +24486,15 @@ for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
 
 uint8_t dir = dir_reg&0x01;
 dir_reg = dir_reg >> 1;
-const uint16_t HIGH_PULSE = 0xE0C0;
-const uint16_t MID_PULSE = 0xE890;
-const uint16_t LOW_PULSE = 0xF060;
-const uint8_t UART_MAX = 0xFF;
 
-uint16_t temp = 0;
+# 128
+uint16_t temp = uart->buf[i];
+
 if(((i < 3)&&(dir == 1))||((i >= 3)&&(dir == 0))) {
-temp = ((uint16_t)((double)uart->buf[i]*(HIGH_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+temp = temp*UART_CONVERSION_MULTIPLIER_HIGH + OFFSET;
 }
 else {
-temp = ((uint16_t)((double)uart->buf[i]*(LOW_PULSE - MID_PULSE)/UART_MAX) + MID_PULSE);
+temp = temp*UART_CONVERSION_MULTIPLIER_LOW + OFFSET;
 }
 
 
@@ -24590,7 +24594,7 @@ else return 0;
 
 bool IsPPMMode(struct PPM_Data *ppm) {
 if(((IsDriveCont() == 1)&&(IsManualMode(ppm) == 1))
-||(!IsDriveCont()&&IsManipulationMode(ppm))) {
+||((IsDriveCont() == 0)&&IsManipulationMode(ppm))) {
 return 1;
 }
 else return 0;
@@ -24617,11 +24621,9 @@ else return 0;
 }
 
 void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm) {
-if(PIR1bits.RCIF == 1) {
+if(PIR1bits.RCIF == 0) return;
 
-
-}
-
+# 268
 uint8_t byte;
 
 switch(uartLoadState) {
@@ -24642,7 +24644,7 @@ uart->iBuf = 0;
 else uartLoadState == UART_READY;
 break;
 
-# 276
+# 298
 case PID_GO_DRIVE_RECEIVED:
 uart->buf[uart->iBuf] = EUSART_Read();
 uart->iBuf++;
@@ -24653,7 +24655,7 @@ uartLoadState = UART_READY;
 }
 break;
 
-# 295
+# 317
 default:
 
 uartLoadState = UART_READY;
