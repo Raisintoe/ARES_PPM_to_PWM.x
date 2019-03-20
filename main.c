@@ -128,12 +128,7 @@ Init_PPM_Data(&ppmData);
     //set outputs
     TRISD = 0xC0;   //PORTD <0:5> are all outputs
     
-    // TODO MAYBE
-    //  1. Clear TRISD<0:5> bits
-    //  
-    
-    //TODO: add a timer to prevent driving if no signal received from either source within 200 ms (expecting 100ms update from UART, and 20ms update from PPM)
-    //  Or use Seth's soft kill
+    //TODO: make _PIC_IS_DRIVE_CONT into a dip-switch input on a pin
     while (1)
     {
         // Add your application code

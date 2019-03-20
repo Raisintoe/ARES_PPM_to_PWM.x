@@ -24518,7 +24518,7 @@ driveWDT = 0;
 
 void Init_PPM_Data(struct PPM_Data *ppm) {
 
-if(0 == 1) ppm->buf[ppm->I_CTRL_MODE] = ~0xE0C0;
+if(1 == 1) ppm->buf[ppm->I_CTRL_MODE] = ~0xE0C0;
 else ppm->buf[ppm->I_CTRL_MODE] = ~0xF060;
 ppm->buf[ppm->I_AUTO_MODE] = ~0xF060;
 for (uint8_t i = ppm->I_PPM_BUF_DATA_START; i < ppm->PPM_BUF_SIZE; i++) {
@@ -24591,7 +24591,7 @@ else return 0;
 }
 
 bool IsDriveCont() {
-return 0;
+return 1;
 }
 
 bool IsUARTMode(struct PPM_Data *ppm) {

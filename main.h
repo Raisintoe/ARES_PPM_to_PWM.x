@@ -9,7 +9,7 @@
 #include "mcc_generated_files/mcc.h"
 
 //!!! driver Specific Definitions !!! must change for programming controllers
-#define _PIC_IS_DRIVE_CONT      false
+#define _PIC_IS_DRIVE_CONT      true
 
 // Definitions
 #define _DIR_FORWARD    1       //UART direction interpretation

@@ -16995,9 +16995,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U _Init_PPM_Data ]
 [v _ppm `*S2100 ~T0 @X0 1 r1 ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 153: if(0 == 1) ppm->buf[ppm->I_CTRL_MODE] = ~0xE0C0;
+[; ;ARES_PPM_to_PWM.c: 153: if(1 == 1) ppm->buf[ppm->I_CTRL_MODE] = ~0xE0C0;
 "153
-[e $ ! == -> 0 `i -> 1 `i 2124  ]
+[e $ ! == -> 1 `i -> 1 `i 2124  ]
 [e = *U + &U . *U _ppm 4 * -> . *U _ppm 1 `ux -> -> # *U &U . *U _ppm 4 `ui `ux ~ -> 57536 `ui ]
 [e $U 2125  ]
 "154
@@ -17274,9 +17274,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ARES_PPM_to_PWM.c: 225: bool IsDriveCont() {
 [e :U _IsDriveCont ]
 [f ]
-[; ;ARES_PPM_to_PWM.c: 226: return 0;
+[; ;ARES_PPM_to_PWM.c: 226: return 1;
 "226
-[e ) -> -> 0 `i `uc ]
+[e ) -> -> 1 `i `uc ]
 [e $UE 2157  ]
 [; ;ARES_PPM_to_PWM.c: 227: }
 "227
