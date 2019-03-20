@@ -9,7 +9,7 @@
 #include "mcc_generated_files/mcc.h"
 
 //!!! driver Specific Definitions !!! must change for programming controllers
-#define _PIC_IS_DRIVE_CONT      true
+#define _PIC_IS_DRIVE_CONT      false
 
 // Definitions
 #define _DIR_FORWARD    1       //UART direction interpretation
@@ -75,6 +75,9 @@
 //PORT Definitions
 #define _PORT_REG_SIZE          6
 
+
+// Global Variables
+volatile uint8_t driveWDT = 0;  //watch dog timer for drive signal input timout
 
 // Struct Definitions
 

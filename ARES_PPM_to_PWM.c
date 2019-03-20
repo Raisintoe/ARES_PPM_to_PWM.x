@@ -136,12 +136,14 @@ void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart) {
         
         //filter and place temp in reg[i]
         pwm->reg[i] = Filter(pwm, temp, i);
+        driveWDT = 0;   //clear drive watch dog timer
     }
 }
 
 void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm) {
     for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
         pwm->reg[i] = Filter(pwm, ~ppm->buf[i+ppm->I_PPM_BUF_DATA_START], i);   //complement of ppm (time period) gives starting time for TMR3
+        driveWDT = 0;   //clear drive watch dog timer
     }
 }
 

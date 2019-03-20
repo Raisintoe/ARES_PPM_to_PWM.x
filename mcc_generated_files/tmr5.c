@@ -224,6 +224,8 @@ void TMR5_DefaultInterruptHandler(void){
     //TMR3_Reload(timer3ReloadVal);   //!!!Make sure this is all I need to do to set TMR3
     TMR3_WriteTimer(pwmData.reg[portData.iPort]);   //!!!Make sure this is all I need to do to set TMR3
     
+    driveWDT++; //increment drive watch dog timer every 20ms
+    
 }
 
 /**

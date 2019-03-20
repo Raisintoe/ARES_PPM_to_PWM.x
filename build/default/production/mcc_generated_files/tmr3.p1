@@ -79,10 +79,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _FSR1H `Vuc ~T0 @X0 0 e@7 ]
 "219
 [v _FSR1L `Vuc ~T0 @X0 0 e@6 ]
-"82 mcc_generated_files/../main.h
+"85 mcc_generated_files/../main.h
 [s S2097 `Cuc 1 `uc 1 `uc 1 ]
 [n S2097 PORT_Data PORT_SIZE iPort frameEnd ]
-"104
+"107
 [s S2098 `Cuc 1 `Cui * -> 2 `i -> 6 `i `ui -> 6 `i `uc 1 ]
 [n S2098 PWM_Data PWM_REG_SIZE EP_ARRAY reg iReg ]
 "3073 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
@@ -16670,53 +16670,59 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;mcc.h: 74: void SYSTEM_Initialize(void);
 [; ;mcc.h: 87: void OSCILLATOR_Initialize(void);
 [; ;mcc.h: 99: void WDT_Initialize(void);
-[; ;main.h: 82: struct PORT_Data {
-[; ;main.h: 83: const uint8_t PORT_SIZE;
-[; ;main.h: 88: uint8_t iPort;
-[; ;main.h: 89: bool frameEnd;
-[; ;main.h: 100: };
-[; ;main.h: 104: struct PWM_Data {
-[; ;main.h: 106: const uint8_t PWM_REG_SIZE;
-[; ;main.h: 108: const uint16_t EP_ARRAY[2*6];
-[; ;main.h: 118: uint16_t reg[6];
-[; ;main.h: 119: uint8_t iReg;
-[; ;main.h: 125: };
-[; ;main.h: 129: struct UART_Data {
-[; ;main.h: 131: const uint8_t UART_BUF_SIZE;
-[; ;main.h: 132: const uint8_t I_DIR;
-[; ;main.h: 133: const uint8_t I_CRC;
-[; ;main.h: 134: const uint8_t I_UART_BUF_DATA_START;
-[; ;main.h: 136: uint8_t buf[8];
-[; ;main.h: 137: uint8_t iBuf;
-[; ;main.h: 164: };
-[; ;main.h: 166: enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
-[; ;main.h: 168: struct PPM_Data {
-[; ;main.h: 169: const uint8_t PPM_BUF_SIZE;
-[; ;main.h: 171: const uint8_t I_CTRL_MODE;
-[; ;main.h: 172: const uint8_t I_AUTO_MODE;
-[; ;main.h: 173: const uint8_t I_PPM_BUF_DATA_START;
-[; ;main.h: 177: uint16_t buf[8];
-[; ;main.h: 178: uint8_t iBuf;
-[; ;main.h: 181: };
-[; ;main.h: 183: enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
-[; ;main.h: 188: void Init_PPM_Data(struct PPM_Data *ppm);
-[; ;main.h: 190: void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm);
-[; ;main.h: 194: bool IsManualMode(struct PPM_Data *ppm);
-[; ;main.h: 195: bool IsManipulationMode(struct PPM_Data *ppm);
-[; ;main.h: 196: bool IsAutoMode(struct PPM_Data *ppm);
-[; ;main.h: 198: bool IsDriveCont();
-[; ;main.h: 199: bool IsUARTMode(struct PPM_Data *ppm);
-[; ;main.h: 200: bool IsPPMMode(struct PPM_Data *ppm);
-[; ;main.h: 202: bool GetAutoModeState(struct PPM_Data *ppm);
-[; ;main.h: 203: bool GetCtrlModeState(struct PPM_Data *ppm);
-[; ;main.h: 213: void Init_UART_Data(struct UART_Data *uart);
-[; ;main.h: 214: bool CheckCRC(struct UART_Data *uart);
-[; ;main.h: 219: void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
-[; ;main.h: 225: void Init_PWM_Data(struct PWM_Data *pwm);
-[; ;main.h: 227: void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
-[; ;main.h: 228: void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm);
-[; ;main.h: 233: uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
-[; ;main.h: 237: void Init_PORT_Data(struct PORT_Data *port);
+"80 mcc_generated_files/../main.h
+[v _driveWDT `Vuc ~T0 @X0 1 e ]
+[i _driveWDT
+-> -> 0 `i `uc
+]
+[; ;main.h: 80: volatile uint8_t driveWDT = 0;
+[; ;main.h: 85: struct PORT_Data {
+[; ;main.h: 86: const uint8_t PORT_SIZE;
+[; ;main.h: 91: uint8_t iPort;
+[; ;main.h: 92: bool frameEnd;
+[; ;main.h: 103: };
+[; ;main.h: 107: struct PWM_Data {
+[; ;main.h: 109: const uint8_t PWM_REG_SIZE;
+[; ;main.h: 111: const uint16_t EP_ARRAY[2*6];
+[; ;main.h: 121: uint16_t reg[6];
+[; ;main.h: 122: uint8_t iReg;
+[; ;main.h: 128: };
+[; ;main.h: 132: struct UART_Data {
+[; ;main.h: 134: const uint8_t UART_BUF_SIZE;
+[; ;main.h: 135: const uint8_t I_DIR;
+[; ;main.h: 136: const uint8_t I_CRC;
+[; ;main.h: 137: const uint8_t I_UART_BUF_DATA_START;
+[; ;main.h: 139: uint8_t buf[8];
+[; ;main.h: 140: uint8_t iBuf;
+[; ;main.h: 167: };
+[; ;main.h: 169: enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
+[; ;main.h: 171: struct PPM_Data {
+[; ;main.h: 172: const uint8_t PPM_BUF_SIZE;
+[; ;main.h: 174: const uint8_t I_CTRL_MODE;
+[; ;main.h: 175: const uint8_t I_AUTO_MODE;
+[; ;main.h: 176: const uint8_t I_PPM_BUF_DATA_START;
+[; ;main.h: 180: uint16_t buf[8];
+[; ;main.h: 181: uint8_t iBuf;
+[; ;main.h: 184: };
+[; ;main.h: 186: enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
+[; ;main.h: 191: void Init_PPM_Data(struct PPM_Data *ppm);
+[; ;main.h: 193: void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm);
+[; ;main.h: 197: bool IsManualMode(struct PPM_Data *ppm);
+[; ;main.h: 198: bool IsManipulationMode(struct PPM_Data *ppm);
+[; ;main.h: 199: bool IsAutoMode(struct PPM_Data *ppm);
+[; ;main.h: 201: bool IsDriveCont();
+[; ;main.h: 202: bool IsUARTMode(struct PPM_Data *ppm);
+[; ;main.h: 203: bool IsPPMMode(struct PPM_Data *ppm);
+[; ;main.h: 205: bool GetAutoModeState(struct PPM_Data *ppm);
+[; ;main.h: 206: bool GetCtrlModeState(struct PPM_Data *ppm);
+[; ;main.h: 216: void Init_UART_Data(struct UART_Data *uart);
+[; ;main.h: 217: bool CheckCRC(struct UART_Data *uart);
+[; ;main.h: 222: void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
+[; ;main.h: 228: void Init_PWM_Data(struct PWM_Data *pwm);
+[; ;main.h: 230: void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
+[; ;main.h: 231: void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm);
+[; ;main.h: 236: uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
+[; ;main.h: 240: void Init_PORT_Data(struct PORT_Data *port);
 "59 mcc_generated_files/tmr3.c
 [v _timer3ReloadVal `Vui ~T0 @X0 1 e ]
 [; ;tmr3.c: 59: volatile uint16_t timer3ReloadVal;
@@ -17022,8 +17028,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;tmr3.c: 200: void TMR3_SetInterruptHandler(void (* InterruptHandler)(void)){
 [e :U _TMR3_SetInterruptHandler ]
-[v F14729 `(v ~T0 @X0 0 tf ]
-[v _InterruptHandler `*F14729 ~T0 @X0 1 r1 ]
+[v F14730 `(v ~T0 @X0 0 tf ]
+[v _InterruptHandler `*F14730 ~T0 @X0 1 r1 ]
 [f ]
 [; ;tmr3.c: 201: TMR3_InterruptHandler = InterruptHandler;
 "201

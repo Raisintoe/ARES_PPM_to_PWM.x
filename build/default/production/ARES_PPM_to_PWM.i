@@ -24309,7 +24309,12 @@ void OSCILLATOR_Initialize(void);
 # 99
 void WDT_Initialize(void);
 
-# 82 "main.h"
+# 80 "main.h"
+volatile uint8_t driveWDT = 0;
+
+
+
+
 struct PORT_Data {
 const uint8_t PORT_SIZE;
 
@@ -24319,7 +24324,7 @@ const uint8_t PORT_SIZE;
 uint8_t iPort;
 bool frameEnd;
 
-# 100
+# 103
 };
 
 
@@ -24330,11 +24335,11 @@ const uint8_t PWM_REG_SIZE;
 
 const uint16_t EP_ARRAY[2*6];
 
-# 118
+# 121
 uint16_t reg[6];
 uint8_t iReg;
 
-# 125
+# 128
 };
 
 
@@ -24349,7 +24354,7 @@ const uint8_t I_UART_BUF_DATA_START;
 uint8_t buf[8];
 uint8_t iBuf;
 
-# 164
+# 167
 };
 
 enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
@@ -24391,7 +24396,7 @@ bool IsPPMMode(struct PPM_Data *ppm);
 bool GetAutoModeState(struct PPM_Data *ppm);
 bool GetCtrlModeState(struct PPM_Data *ppm);
 
-# 213
+# 216
 void Init_UART_Data(struct UART_Data *uart);
 bool CheckCRC(struct UART_Data *uart);
 
@@ -24400,7 +24405,7 @@ bool CheckCRC(struct UART_Data *uart);
 
 void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
 
-# 225
+# 228
 void Init_PWM_Data(struct PWM_Data *pwm);
 
 void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
@@ -24499,19 +24504,21 @@ temp = temp*UART_CONVERSION_MULTIPLIER_LOW + OFFSET;
 
 
 pwm->reg[i] = Filter(pwm, temp, i);
+driveWDT = 0;
 }
 }
 
 void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm) {
 for(uint8_t i = 0; i < pwm->PWM_REG_SIZE; i++) {
 pwm->reg[i] = Filter(pwm, ~ppm->buf[i+ppm->I_PPM_BUF_DATA_START], i);
+driveWDT = 0;
 }
 }
 
 
 void Init_PPM_Data(struct PPM_Data *ppm) {
 
-if(1 == 1) ppm->buf[ppm->I_CTRL_MODE] = ~0xE0C0;
+if(0 == 1) ppm->buf[ppm->I_CTRL_MODE] = ~0xE0C0;
 else ppm->buf[ppm->I_CTRL_MODE] = ~0xF060;
 ppm->buf[ppm->I_AUTO_MODE] = ~0xF060;
 for (uint8_t i = ppm->I_PPM_BUF_DATA_START; i < ppm->PPM_BUF_SIZE; i++) {
@@ -24584,7 +24591,7 @@ else return 0;
 }
 
 bool IsDriveCont() {
-return 1;
+return 0;
 }
 
 bool IsUARTMode(struct PPM_Data *ppm) {
@@ -24623,7 +24630,7 @@ else return 0;
 void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm) {
 if(PIR1bits.RCIF == 0) return;
 
-# 268
+# 270
 uint8_t byte;
 
 switch(uartLoadState) {
@@ -24644,7 +24651,7 @@ uart->iBuf = 0;
 else uartLoadState == UART_READY;
 break;
 
-# 298
+# 300
 case PID_GO_DRIVE_RECEIVED:
 uart->buf[uart->iBuf] = EUSART_Read();
 uart->iBuf++;
@@ -24655,7 +24662,7 @@ uartLoadState = UART_READY;
 }
 break;
 
-# 317
+# 319
 default:
 
 uartLoadState = UART_READY;

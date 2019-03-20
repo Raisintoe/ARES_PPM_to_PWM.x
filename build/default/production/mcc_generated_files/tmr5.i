@@ -24309,7 +24309,12 @@ void OSCILLATOR_Initialize(void);
 # 99
 void WDT_Initialize(void);
 
-# 82 "mcc_generated_files/../main.h"
+# 80 "mcc_generated_files/../main.h"
+volatile uint8_t driveWDT = 0;
+
+
+
+
 struct PORT_Data {
 const uint8_t PORT_SIZE;
 
@@ -24319,7 +24324,7 @@ const uint8_t PORT_SIZE;
 uint8_t iPort;
 bool frameEnd;
 
-# 100
+# 103
 };
 
 
@@ -24330,11 +24335,11 @@ const uint8_t PWM_REG_SIZE;
 
 const uint16_t EP_ARRAY[2*6];
 
-# 118
+# 121
 uint16_t reg[6];
 uint8_t iReg;
 
-# 125
+# 128
 };
 
 
@@ -24349,7 +24354,7 @@ const uint8_t I_UART_BUF_DATA_START;
 uint8_t buf[8];
 uint8_t iBuf;
 
-# 164
+# 167
 };
 
 enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
@@ -24391,7 +24396,7 @@ bool IsPPMMode(struct PPM_Data *ppm);
 bool GetAutoModeState(struct PPM_Data *ppm);
 bool GetCtrlModeState(struct PPM_Data *ppm);
 
-# 213
+# 216
 void Init_UART_Data(struct UART_Data *uart);
 bool CheckCRC(struct UART_Data *uart);
 
@@ -24400,7 +24405,7 @@ bool CheckCRC(struct UART_Data *uart);
 
 void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
 
-# 225
+# 228
 void Init_PWM_Data(struct PWM_Data *pwm);
 
 void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
@@ -24572,6 +24577,8 @@ LATD = 0x01;
 
 
 TMR3_WriteTimer(pwmData.reg[portData.iPort]);
+
+driveWDT++;
 
 }
 

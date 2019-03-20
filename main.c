@@ -134,7 +134,6 @@ Init_PPM_Data(&ppmData);
     
     //TODO: add a timer to prevent driving if no signal received from either source within 200 ms (expecting 100ms update from UART, and 20ms update from PPM)
     //  Or use Seth's soft kill
-    TMR2_Start();   //timeout timer, set pwm reg all to _1_5MS_COMP if interrupt flag is set
     while (1)
     {
         // Add your application code
@@ -145,9 +144,9 @@ Init_PPM_Data(&ppmData);
         if(PIR1bits.RCIF == 1) {    //if a byte was received on the UART
             LoadByte(&uartData, &ppmData, &pwmData);    //then load the byte to it's destination
         }
-        
-        
-        
+        if((IsDriveCont() == true)&&(driveWDT > 20)) {  //driveWDT increments every 20ms, and clears upon ever pwm update 
+            Init_PWM_Data(&pwmData);    //sets all reg back to _1_5MS_COMP, and clears iReg which is never used
+        }
     }
 }
 /**
