@@ -24447,7 +24447,7 @@ Init_PPM_Data(&ppmData);
 
 TRISD = 0xC0;
 
-# 137
+
 while (1)
 {
 

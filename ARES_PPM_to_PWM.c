@@ -97,10 +97,20 @@ void Init_PWM_Data(struct PWM_Data *pwm) {
 uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i) {
     if(temp > pwm->EP_ARRAY[2*i]) temp = pwm->EP_ARRAY[2*i];
     else if(temp < pwm->EP_ARRAY[2*i + 1]) temp = pwm->EP_ARRAY[2*i + 1];
+    
+    if((IsDriveCont() == true)&&(i >= 3)) { //channels <3:5> of the drive 
+                                            //  controller are reversed
+        temp = (2*_1_5MS_COMP - temp);
+    }
+    
     return temp;
 }
 
 void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart) {
+    
+    //NOTE: UART data is always for Drive control, therefore all data conversion
+    //  is meant only for drive control. No consideration for Manipulation
+    //  control via UART has been made yet.
     
     //Convert, and place in buf[]
     uint8_t dir_reg = uart->buf[uart->I_DIR];
@@ -127,7 +137,14 @@ void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart) {
         //second attempt at above equastions:
         uint16_t temp = uart->buf[i];
         
-        if(((i < 3)&&(dir == _DIR_FORWARD))||((i >= 3)&&(dir == _DIR_REVERSE))) {
+        //if(((i < 3)&&(dir == _DIR_FORWARD))||((i >= 3)&&(dir == _DIR_REVERSE))) {
+        //    temp = temp*UART_CONVERSION_MULTIPLIER_HIGH + OFFSET;
+        //}
+        //else {
+        //    temp = temp*UART_CONVERSION_MULTIPLIER_LOW + OFFSET;
+        //}
+        
+        if(dir == _DIR_FORWARD) {
             temp = temp*UART_CONVERSION_MULTIPLIER_HIGH + OFFSET;
         }
         else {
