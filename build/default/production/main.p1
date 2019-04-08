@@ -13,36 +13,42 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S25 . . . ]
 "374
 [v _INTCONbits `VS25 ~T0 @X0 0 e@11 ]
-"85 main.h
+"87 main.h
 [s S2097 `Cuc 1 `uc 1 `uc 1 ]
 [n S2097 PORT_Data PORT_SIZE iPort frameEnd ]
-"240
+"242
 [v _Init_PORT_Data `(v ~T0 @X0 0 ef1`*S2097 ]
 "84 main.c
 [v _portData `S2097 ~T0 @X0 0 e ]
-"107 main.h
+"109 main.h
 [s S2098 `Cuc 1 `Cui * -> 2 `i -> 6 `i `ui -> 6 `i `uc 1 ]
 [n S2098 PWM_Data PWM_REG_SIZE EP_ARRAY reg iReg ]
-"228
+"230
 [v _Init_PWM_Data `(v ~T0 @X0 0 ef1`*S2098 ]
 "85 main.c
 [v _pwmData `S2098 ~T0 @X0 0 e ]
-"132 main.h
+"134 main.h
 [s S2099 `Cuc 1 `Cuc 1 `Cuc 1 `Cuc 1 `uc -> 8 `i `uc 1 ]
 [n S2099 UART_Data UART_BUF_SIZE I_DIR I_CRC I_UART_BUF_DATA_START buf iBuf ]
-"216
+"218
 [v _Init_UART_Data `(v ~T0 @X0 0 ef1`*S2099 ]
 "86 main.c
 [v _uartData `S2099 ~T0 @X0 0 e ]
-"171 main.h
+"173 main.h
 [s S2100 `Cuc 1 `Cuc 1 `Cuc 1 `Cuc 1 `ui -> 8 `i `uc 1 ]
 [n S2100 PPM_Data PPM_BUF_SIZE I_CTRL_MODE I_AUTO_MODE I_PPM_BUF_DATA_START buf iBuf ]
-"191
+"193
 [v _Init_PPM_Data `(v ~T0 @X0 0 ef1`*S2100 ]
 "87 main.c
 [v _ppmData `S2100 ~T0 @X0 0 e ]
-"1928 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
-[v _TRISD `Vuc ~T0 @X0 0 e@143 ]
+"559 /opt/microchip/xc8/v2.05/pic/include/pic16f1777.h
+[s S33 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S33 . RC0 RC1 RC2 RC3 RC4 RC5 RC6 RC7 ]
+"558
+[u S32 `S33 1 ]
+[n S32 . . ]
+"570
+[v _PORTCbits `VS32 ~T0 @X0 0 e@14 ]
 "721
 [s S39 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S39 . TMR1IF TMR2IF CCP1IF SSP1IF TXIF RCIF ADIF TMR1GIF ]
@@ -54,11 +60,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S38 . . . ]
 "736
 [v _PIR1bits `VS38 ~T0 @X0 0 e@17 ]
-"193 main.h
+"195 main.h
 [v _PPMRead `(v ~T0 @X0 0 ef2`*S2100`*S2098 ]
-"222
+"224
 [v _LoadByte `(v ~T0 @X0 0 ef3`*S2099`*S2100`*S2098 ]
-"201
+"203
 [v _IsDriveCont `(uc ~T0 @X0 0 ef ]
 [; ;xc.h: 18: extern const char __xc8_OPTIM_SPEED;
 [; ;xc.h: 20: extern double __fpnormalize(double);
@@ -16535,8 +16541,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 137: extern __bank0 unsigned char __resetbits;
 [; ;pic.h: 138: extern __bank0 __bit __powerdown;
 [; ;pic.h: 139: extern __bank0 __bit __timeout;
-[; ;pin_manager.h: 234: void PIN_MANAGER_Initialize (void);
-[; ;pin_manager.h: 246: void PIN_MANAGER_IOC(void);
+[; ;pin_manager.h: 251: void PIN_MANAGER_Initialize (void);
+[; ;pin_manager.h: 263: void PIN_MANAGER_IOC(void);
 [; ;stdint.h: 13: typedef signed char int8_t;
 [; ;stdint.h: 20: typedef signed int int16_t;
 [; ;stdint.h: 28: typedef __int24 int24_t;
@@ -16644,58 +16650,64 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;mcc.h: 87: void OSCILLATOR_Initialize(void);
 [; ;mcc.h: 99: void WDT_Initialize(void);
 "80 main.h
+[v _PIC_IS_DRIVE_CONT `Vuc ~T0 @X0 1 e ]
+[i _PIC_IS_DRIVE_CONT
+-> -> 1 `i `uc
+]
+[; ;main.h: 80: volatile bool PIC_IS_DRIVE_CONT = 1;
+"82
 [v _driveWDT `Vuc ~T0 @X0 1 e ]
 [i _driveWDT
 -> -> 0 `i `uc
 ]
-[; ;main.h: 80: volatile uint8_t driveWDT = 0;
-[; ;main.h: 85: struct PORT_Data {
-[; ;main.h: 86: const uint8_t PORT_SIZE;
-[; ;main.h: 91: uint8_t iPort;
-[; ;main.h: 92: bool frameEnd;
-[; ;main.h: 103: };
-[; ;main.h: 107: struct PWM_Data {
-[; ;main.h: 109: const uint8_t PWM_REG_SIZE;
-[; ;main.h: 111: const uint16_t EP_ARRAY[2*6];
-[; ;main.h: 121: uint16_t reg[6];
-[; ;main.h: 122: uint8_t iReg;
-[; ;main.h: 128: };
-[; ;main.h: 132: struct UART_Data {
-[; ;main.h: 134: const uint8_t UART_BUF_SIZE;
-[; ;main.h: 135: const uint8_t I_DIR;
-[; ;main.h: 136: const uint8_t I_CRC;
-[; ;main.h: 137: const uint8_t I_UART_BUF_DATA_START;
-[; ;main.h: 139: uint8_t buf[8];
-[; ;main.h: 140: uint8_t iBuf;
-[; ;main.h: 167: };
-[; ;main.h: 169: enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
-[; ;main.h: 171: struct PPM_Data {
-[; ;main.h: 172: const uint8_t PPM_BUF_SIZE;
-[; ;main.h: 174: const uint8_t I_CTRL_MODE;
-[; ;main.h: 175: const uint8_t I_AUTO_MODE;
-[; ;main.h: 176: const uint8_t I_PPM_BUF_DATA_START;
-[; ;main.h: 180: uint16_t buf[8];
-[; ;main.h: 181: uint8_t iBuf;
-[; ;main.h: 184: };
-[; ;main.h: 186: enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
-[; ;main.h: 191: void Init_PPM_Data(struct PPM_Data *ppm);
-[; ;main.h: 193: void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm);
-[; ;main.h: 197: bool IsManualMode(struct PPM_Data *ppm);
-[; ;main.h: 198: bool IsManipulationMode(struct PPM_Data *ppm);
-[; ;main.h: 199: bool IsAutoMode(struct PPM_Data *ppm);
-[; ;main.h: 201: bool IsDriveCont();
-[; ;main.h: 202: bool IsUARTMode(struct PPM_Data *ppm);
-[; ;main.h: 203: bool IsPPMMode(struct PPM_Data *ppm);
-[; ;main.h: 205: bool GetAutoModeState(struct PPM_Data *ppm);
-[; ;main.h: 206: bool GetCtrlModeState(struct PPM_Data *ppm);
-[; ;main.h: 216: void Init_UART_Data(struct UART_Data *uart);
-[; ;main.h: 217: bool CheckCRC(struct UART_Data *uart);
-[; ;main.h: 222: void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
-[; ;main.h: 228: void Init_PWM_Data(struct PWM_Data *pwm);
-[; ;main.h: 230: void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
-[; ;main.h: 231: void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm);
-[; ;main.h: 236: uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
-[; ;main.h: 240: void Init_PORT_Data(struct PORT_Data *port);
+[; ;main.h: 82: volatile uint8_t driveWDT = 0;
+[; ;main.h: 87: struct PORT_Data {
+[; ;main.h: 88: const uint8_t PORT_SIZE;
+[; ;main.h: 93: uint8_t iPort;
+[; ;main.h: 94: bool frameEnd;
+[; ;main.h: 105: };
+[; ;main.h: 109: struct PWM_Data {
+[; ;main.h: 111: const uint8_t PWM_REG_SIZE;
+[; ;main.h: 113: const uint16_t EP_ARRAY[2*6];
+[; ;main.h: 123: uint16_t reg[6];
+[; ;main.h: 124: uint8_t iReg;
+[; ;main.h: 130: };
+[; ;main.h: 134: struct UART_Data {
+[; ;main.h: 136: const uint8_t UART_BUF_SIZE;
+[; ;main.h: 137: const uint8_t I_DIR;
+[; ;main.h: 138: const uint8_t I_CRC;
+[; ;main.h: 139: const uint8_t I_UART_BUF_DATA_START;
+[; ;main.h: 141: uint8_t buf[8];
+[; ;main.h: 142: uint8_t iBuf;
+[; ;main.h: 169: };
+[; ;main.h: 171: enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
+[; ;main.h: 173: struct PPM_Data {
+[; ;main.h: 174: const uint8_t PPM_BUF_SIZE;
+[; ;main.h: 176: const uint8_t I_CTRL_MODE;
+[; ;main.h: 177: const uint8_t I_AUTO_MODE;
+[; ;main.h: 178: const uint8_t I_PPM_BUF_DATA_START;
+[; ;main.h: 182: uint16_t buf[8];
+[; ;main.h: 183: uint8_t iBuf;
+[; ;main.h: 186: };
+[; ;main.h: 188: enum PPMLoadState{PPM_READY, BREAK_RECEIVED};
+[; ;main.h: 193: void Init_PPM_Data(struct PPM_Data *ppm);
+[; ;main.h: 195: void PPMRead(struct PPM_Data *ppm, struct PWM_Data *pwm);
+[; ;main.h: 199: bool IsManualMode(struct PPM_Data *ppm);
+[; ;main.h: 200: bool IsManipulationMode(struct PPM_Data *ppm);
+[; ;main.h: 201: bool IsAutoMode(struct PPM_Data *ppm);
+[; ;main.h: 203: bool IsDriveCont();
+[; ;main.h: 204: bool IsUARTMode(struct PPM_Data *ppm);
+[; ;main.h: 205: bool IsPPMMode(struct PPM_Data *ppm);
+[; ;main.h: 207: bool GetAutoModeState(struct PPM_Data *ppm);
+[; ;main.h: 208: bool GetCtrlModeState(struct PPM_Data *ppm);
+[; ;main.h: 218: void Init_UART_Data(struct UART_Data *uart);
+[; ;main.h: 219: bool CheckCRC(struct UART_Data *uart);
+[; ;main.h: 224: void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
+[; ;main.h: 230: void Init_PWM_Data(struct PWM_Data *pwm);
+[; ;main.h: 232: void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
+[; ;main.h: 233: void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm);
+[; ;main.h: 238: uint16_t Filter(struct PWM_Data *pwm, uint16_t temp, uint8_t i);
+[; ;main.h: 242: void Init_PORT_Data(struct PORT_Data *port);
 [; ;main.c: 84: extern struct PORT_Data portData;
 [; ;main.c: 85: extern struct PWM_Data pwmData;
 [; ;main.c: 86: extern struct UART_Data uartData;
@@ -16730,56 +16742,63 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 126: Init_PPM_Data(&ppmData);
 "126
 [e ( _Init_PPM_Data (1 &U _ppmData ]
-[; ;main.c: 129: TRISD = 0xC0;
-"129
-[e = _TRISD -> -> 192 `i `uc ]
-[; ;main.c: 132: while (1)
-"132
+[; ;main.c: 127: if(PORTCbits.RC0 == 1) PIC_IS_DRIVE_CONT = 1;
+"127
+[e $ ! == -> . . _PORTCbits 0 0 `i -> 1 `i 2102  ]
+[e = _PIC_IS_DRIVE_CONT -> -> 1 `i `uc ]
+[e $U 2103  ]
+"131
+[e :U 2102 ]
+[; ;main.c: 131: else PIC_IS_DRIVE_CONT = 0;
+[e = _PIC_IS_DRIVE_CONT -> -> 0 `i `uc ]
 [e :U 2103 ]
-[; ;main.c: 133: {
-"133
-{
-[; ;main.c: 136: if(PIR1bits.CCP1IF == 1) {
-"136
-[e $ ! == -> . . _PIR1bits 0 2 `i -> 1 `i 2105  ]
-{
-[; ;main.c: 137: PPMRead(&ppmData, &pwmData);
+[; ;main.c: 137: while (1)
 "137
-[e ( _PPMRead (2 , &U _ppmData &U _pwmData ]
-"138
-}
 [e :U 2105 ]
-[; ;main.c: 138: }
-[; ;main.c: 139: if(PIR1bits.RCIF == 1) {
-"139
-[e $ ! == -> . . _PIR1bits 0 5 `i -> 1 `i 2106  ]
+[; ;main.c: 138: {
+"138
 {
-[; ;main.c: 140: LoadByte(&uartData, &ppmData, &pwmData);
-"140
-[e ( _LoadByte (3 , , &U _uartData &U _ppmData &U _pwmData ]
+[; ;main.c: 141: if(PIR1bits.CCP1IF == 1) {
 "141
-}
-[e :U 2106 ]
-[; ;main.c: 141: }
-[; ;main.c: 142: if((IsDriveCont() == 1)&&(driveWDT > 20)) {
-"142
-[e $ ! && == -> ( _IsDriveCont ..  `i -> 1 `i > -> _driveWDT `i -> 20 `i 2107  ]
+[e $ ! == -> . . _PIR1bits 0 2 `i -> 1 `i 2107  ]
 {
-[; ;main.c: 143: Init_PWM_Data(&pwmData);
+[; ;main.c: 142: PPMRead(&ppmData, &pwmData);
+"142
+[e ( _PPMRead (2 , &U _ppmData &U _pwmData ]
 "143
-[e ( _Init_PWM_Data (1 &U _pwmData ]
-"144
 }
 [e :U 2107 ]
+[; ;main.c: 143: }
+[; ;main.c: 144: if(PIR1bits.RCIF == 1) {
+"144
+[e $ ! == -> . . _PIR1bits 0 5 `i -> 1 `i 2108  ]
+{
+[; ;main.c: 145: LoadByte(&uartData, &ppmData, &pwmData);
 "145
-}
-[e :U 2102 ]
-"132
-[e $U 2103  ]
-[e :U 2104 ]
-[; ;main.c: 144: }
-[; ;main.c: 145: }
-[; ;main.c: 146: }
+[e ( _LoadByte (3 , , &U _uartData &U _ppmData &U _pwmData ]
 "146
+}
+[e :U 2108 ]
+[; ;main.c: 146: }
+[; ;main.c: 147: if((IsDriveCont() == 1)&&(driveWDT > 20)) {
+"147
+[e $ ! && == -> ( _IsDriveCont ..  `i -> 1 `i > -> _driveWDT `i -> 20 `i 2109  ]
+{
+[; ;main.c: 148: Init_PWM_Data(&pwmData);
+"148
+[e ( _Init_PWM_Data (1 &U _pwmData ]
+"149
+}
+[e :U 2109 ]
+"150
+}
+[e :U 2104 ]
+"137
+[e $U 2105  ]
+[e :U 2106 ]
+[; ;main.c: 149: }
+[; ;main.c: 150: }
+[; ;main.c: 151: }
+"151
 [e :UE 2101 ]
 }

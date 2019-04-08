@@ -24021,10 +24021,10 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 234 "mcc_generated_files/pin_manager.h"
+# 251 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 
-# 246
+# 263
 void PIN_MANAGER_IOC(void);
 
 # 13 "/opt/microchip/xc8/v2.05/pic/include/c90/stdint.h"
@@ -24310,6 +24310,8 @@ void OSCILLATOR_Initialize(void);
 void WDT_Initialize(void);
 
 # 80 "main.h"
+volatile bool PIC_IS_DRIVE_CONT = 1;
+
 volatile uint8_t driveWDT = 0;
 
 
@@ -24324,7 +24326,7 @@ const uint8_t PORT_SIZE;
 uint8_t iPort;
 bool frameEnd;
 
-# 103
+# 105
 };
 
 
@@ -24335,11 +24337,11 @@ const uint8_t PWM_REG_SIZE;
 
 const uint16_t EP_ARRAY[2*6];
 
-# 121
+# 123
 uint16_t reg[6];
 uint8_t iReg;
 
-# 128
+# 130
 };
 
 
@@ -24354,7 +24356,7 @@ const uint8_t I_UART_BUF_DATA_START;
 uint8_t buf[8];
 uint8_t iBuf;
 
-# 167
+# 169
 };
 
 enum UARTLoadState{UART_READY, G_RECEIVED, O_RECEIVED, PID_GO_DRIVE_RECEIVED};
@@ -24396,7 +24398,7 @@ bool IsPPMMode(struct PPM_Data *ppm);
 bool GetAutoModeState(struct PPM_Data *ppm);
 bool GetCtrlModeState(struct PPM_Data *ppm);
 
-# 216
+# 218
 void Init_UART_Data(struct UART_Data *uart);
 bool CheckCRC(struct UART_Data *uart);
 
@@ -24405,7 +24407,7 @@ bool CheckCRC(struct UART_Data *uart);
 
 void LoadByte(struct UART_Data *uart, struct PPM_Data *ppmMode, struct PWM_Data *pwm);
 
-# 228
+# 230
 void Init_PWM_Data(struct PWM_Data *pwm);
 
 void UARTUpdatePWM(struct PWM_Data *pwm, struct UART_Data *uart);
@@ -24443,11 +24445,13 @@ Init_PORT_Data(&portData);
 Init_PWM_Data(&pwmData);
 Init_UART_Data(&uartData);
 Init_PPM_Data(&ppmData);
+if(PORTCbits.RC0 == 1) PIC_IS_DRIVE_CONT = 1;
 
 
-TRISD = 0xC0;
 
+else PIC_IS_DRIVE_CONT = 0;
 
+# 137
 while (1)
 {
 

@@ -167,7 +167,8 @@ void PPMUpdatePWM(struct PWM_Data *pwm, struct PPM_Data *ppm) {
 //PPM_Data struct functions
 void Init_PPM_Data(struct PPM_Data *ppm) {
 //    buf[I_MANUAL_MODE] = _1MS;     //Manual mode is disabled by default
-    if(_PIC_IS_DRIVE_CONT == true) ppm->buf[ppm->I_CTRL_MODE] = _2MS;      //Drive mode is selected by default (not manipulation mode)
+    //Updated to reference RC0 -> if(_PIC_IS_DRIVE_CONT == true) ppm->buf[ppm->I_CTRL_MODE] = _2MS;      //Drive mode is selected by default (not manipulation mode)
+    if(IsDriveCont()) ppm->buf[ppm->I_CTRL_MODE] = _2MS;      //Drive mode is selected by default (not manipulation mode)
     else ppm->buf[ppm->I_CTRL_MODE] = _1MS;
     ppm->buf[ppm->I_AUTO_MODE] = _1MS;      //Autonomous Mode is disabled by default
     for (uint8_t i = ppm->I_PPM_BUF_DATA_START; i < ppm->PPM_BUF_SIZE; i++) {
@@ -240,7 +241,7 @@ bool IsManipulationMode(struct PPM_Data *ppm) {
 }
 
 bool IsDriveCont() {  //might upgrade this to be configurable over UART, and saved in EEPROM (PIC16F1777 has no EEPROM storage)
-    return _PIC_IS_DRIVE_CONT;
+    return PIC_IS_DRIVE_CONT;
 }
 
 bool IsUARTMode(struct PPM_Data *ppm) {

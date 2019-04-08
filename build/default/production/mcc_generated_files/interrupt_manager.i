@@ -24021,10 +24021,10 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 234 "mcc_generated_files/pin_manager.h"
+# 251 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 
-# 246
+# 263
 void PIN_MANAGER_IOC(void);
 
 # 13 "/opt/microchip/xc8/v2.05/pic/include/c90/stdint.h"

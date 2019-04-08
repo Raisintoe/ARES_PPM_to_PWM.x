@@ -124,9 +124,14 @@ Init_PORT_Data(&portData);
 Init_PWM_Data(&pwmData);
 Init_UART_Data(&uartData);
 Init_PPM_Data(&ppmData);
+if(PORTCbits.RC0 == 1) PIC_IS_DRIVE_CONT = true;    //Set the controller state 
+    //  upon initialization. The Jumper at RC0 could potentially come off during 
+    //  operation of the vehicle. To prevent a sudden change in controller mode, 
+    //  RC0 is referenced only at startup.
+else PIC_IS_DRIVE_CONT = false;
     
     //set outputs
-    TRISD = 0xC0;   //PORTD <0:5> are all outputs
+    //Should be taken care of in MCC Generated Files -> TRISD = 0xC0;   //PORTD <0:5> are all outputs
     
     //TODO: make _PIC_IS_DRIVE_CONT into a dip-switch input on a pin
     while (1)

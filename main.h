@@ -9,7 +9,7 @@
 #include "mcc_generated_files/mcc.h"
 
 //!!! driver Specific Definitions !!! must change for programming controllers
-#define _PIC_IS_DRIVE_CONT      true
+//Updated to use RC0 input as reference -> #define _PIC_IS_DRIVE_CONT      false
 
 // Definitions
 #define _DIR_FORWARD    1       //UART direction interpretation
@@ -77,6 +77,8 @@
 
 
 // Global Variables
+volatile bool PIC_IS_DRIVE_CONT = true; //defualt is true, but RC0 is determines 
+                                        //  the mode of the controller
 volatile uint8_t driveWDT = 0;  //watch dog timer for drive signal input timout
 
 // Struct Definitions
